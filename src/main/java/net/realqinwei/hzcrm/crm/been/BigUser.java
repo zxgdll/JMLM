@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 
 public final class BigUser implements java.io.Serializable, Comparable<BigUser> {
 
-	private static final long serialVersionUID = 8361315435155225717L;
-
 	private Integer id;
 	private String userPassword;
 	private String userIDCard;

@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 
 public final class Node implements java.io.Serializable, Comparable<Node> {
 
-	private static final long serialVersionUID = 8361315435155225717L;
-
 	private Integer id;
 	private String userPassword;
 	private String userIDCard;

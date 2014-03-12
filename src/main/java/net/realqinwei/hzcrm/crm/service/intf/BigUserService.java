@@ -1,16 +1,16 @@
 package net.realqinwei.hzcrm.crm.service.intf;
 
-import java.util.List;
+import net.realqinwei.hzcrm.crm.been.BigUser;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import java.util.List;
 
 public interface BigUserService {
 
 	public boolean userIDExist(Integer userID);
 	public boolean isPasswordRight(Integer userID, String password);
 	
-	public void save(User user);
-	public void update(User user);
+	public void save(BigUser user);
+	public void update(BigUser user);
 	
-	public List<User> getUsers();
+	public List<BigUser> getUsers();
 }

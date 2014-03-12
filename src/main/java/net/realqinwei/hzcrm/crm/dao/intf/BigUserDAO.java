@@ -1,15 +1,15 @@
 package net.realqinwei.hzcrm.crm.dao.intf;
 
-import java.util.List;
+import net.realqinwei.hzcrm.crm.been.BigUser;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import java.util.List;
 
 public interface BigUserDAO {
 	
-	public void saveUser(User user);
-	public void removeUser(User user);
-	public User findUserByID(Integer id);
-	public List<User> findAll();
-	public void updateUser(User user);
+	public void saveUser(BigUser user);
+	public void removeUser(BigUser user);
+	public BigUser findUserByID(Integer id);
+	public List<BigUser> findAll();
+	public void updateUser(BigUser user);
 
 }
