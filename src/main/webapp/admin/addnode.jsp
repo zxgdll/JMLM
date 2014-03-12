@@ -26,16 +26,18 @@
 	
 	<div class="span10">
 	<div class="hero-unit">
-		<s:form action="save-node">
+		<s:form name="nodeFrom" action="save-node">
 		<s:token></s:token>
+        <style>
+            .table br{display:none}
+        </style>
 		<table class="table">
-			<s:select name="node.userReferID" label="%{getText('table.owner')}"
-					list="list" listKey="id" listValue="id + ' ' + userName" value="%{list.{userID}}"
-					headerKey="0" headerValue="%{getText('table.owner.select')}" />
-			<s:select name="user.userReferID" label="%{getText('table.owner')}" 
-					list="list" listKey="id" listValue="id + ' ' + userName" value="%{list.{userID}}"
-					headerKey="0" headerValue="%{getText('table.owner.select')}" />
-			<s:submit value="%{getText('addnode.submit')}" />
+            <s:doubleselect id= "doubleSelectID" name="doubleSelectName" label="%{getText('table.refer')}"
+                            headerKey="0" headerValue="%{getText('adduser.select.headerValue')}"
+                            list="userList" listKey="id" listValue="userName"
+                            doubleId="nodeSelectID" doubleName="nodeSelectName"
+                            doubleValue="%{getText('adduser.select.headerValue')}"
+                            doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
 		</table>
 		</s:form>
 	</div>

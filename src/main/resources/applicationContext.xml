@@ -216,7 +216,7 @@
 	<bean id="NodeAction" class="net.realqinwei.hzcrm.crm.action.NodeAction"
 		scope="prototype">
 		<property name="service" ref="nodeService"/>
-        <property name="bigUserServie" ref="bigUserService"/>
+        <property name="bigUserService" ref="bigUserService"/>
 		<property name="timer" ref="TimestampCreator"/>
 	</bean>
 	

@@ -42,11 +42,6 @@ public final class BigUserServiceImpl implements BigUserService {
 	
 	@Override
 	public List<BigUser> getUsers() {
-		List<BigUser> users = new ArrayList<BigUser>();
-		for (BigUser u: this.bigUserDAO.findAll()) {
-			u.setUserName(u.getUserName() + "K");
-			users.add(u);
-		}
-		return users;
+        return this.bigUserDAO.findAll();
 	}
 }

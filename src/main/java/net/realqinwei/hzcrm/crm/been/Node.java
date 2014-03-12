@@ -14,6 +14,7 @@ public final class Node implements java.io.Serializable, Comparable<Node> {
 	private String userLoginID;
 	private Timestamp userCreateTime;
 	private Integer userReferID;
+    private Integer nodeUserID;
 
 	public Node() {
 
@@ -21,21 +22,22 @@ public final class Node implements java.io.Serializable, Comparable<Node> {
 
 	/** minimal constructor */
 	public Node(String userPassword, String userIDCard, String userName,
-                Integer userType, Timestamp userCreateTime) {
+                Integer userType, Timestamp userCreateTime, Integer nodeUserID) {
 
 		this.userPassword = userPassword;
 		this.userIDCard = userIDCard;
 		this.userName = userName;
 		this.userType = userType;
 		this.userCreateTime = userCreateTime;
+        this.nodeUserID = nodeUserID;
 	}
 
 	/** full constructor */
 	public Node(String userPassword, String userIDCard, String userName,
                 String userPhone, String userAddress, Integer userType,
-                Timestamp userCreateTime, Integer userReferID, String userLoginID) {
+                Timestamp userCreateTime, Integer userReferID, String userLoginID, Integer nodeUserID) {
 		
-		this(userPassword, userIDCard, userName, userType, userCreateTime);
+		this(userPassword, userIDCard, userName, userType, userCreateTime, nodeUserID);
 		
 		this.userName = userName;
 		this.userPhone = userPhone;
@@ -150,7 +152,15 @@ public final class Node implements java.io.Serializable, Comparable<Node> {
 		this.userReferID = userReferID;
 	}
 
-	@Override
+    public Integer getNodeUserID() {
+        return nodeUserID;
+    }
+
+    public void setNodeUserID(Integer nodeUserID) {
+        this.nodeUserID = nodeUserID;
+    }
+
+    @Override
 	public int compareTo(Node other) {
 		return this.userCreateTime.compareTo(other.getUserCreateTime());
 	}
