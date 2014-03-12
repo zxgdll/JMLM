@@ -1,0 +1,95 @@
+/*!
+ * 
+ * Created by Qin Wei 
+ * qinwei2600@gmail.com
+ *
+ * Base on Bootstrap v2.0.2
+ */
+body {
+	background: gray;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	background-image: url("../../img/bg-tangcha.jpg");
+}
+
+body > .container {
+    -moz-box-shadow: 3px 3px 10px #888;
+    -webkit-box-shadow: 3px 3px 10px #888;
+    box-shadow: 3px 3px 10px #666;
+    background: white;
+    background-image: url("../../img/paper.jpg");
+}
+
+body > .container {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.hero-unit {
+  padding: 30px;
+  color: #555555;
+}
+
+.header-unit {
+    margin-bottom: 1em;
+    padding: 0;
+    -moz-border-radius: 15px 15px 0 0;
+    border-radius: 15px 15px 0 0;
+    background-image: url("../../img/title.jpg");
+    background-color: green;
+    background-position: 0px -60px;
+}
+
+footer {
+    background: #2c2c2c;
+    margin-top: 1em;
+    padding: 1em;
+    -moz-border-radius: 0 0 15px 15px;
+    border-radius: 0 0 15px 15px;
+    color: #ccc;
+}
+
+footer h3 {
+    font-size: 1em;
+    color: #ccc;
+}
+
+footer .logo {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.carousel .item > img {
+	max-width: 100%;
+}
+
+.teaser {
+    font-weight: bold;
+}
+
+#siteHeader {
+    padding-top: 3em;
+    padding-bottom: 3em;
+    margin-left: 4em;
+    overflow: auto;
+}
+
+#siteLogo {
+    float: left;
+}
+
+#siteInfo {
+    float: left;
+    margin-left: 1em;
+}
+
+#motto {
+    margin: 0;
+    margin-left: 0.5em;
+    padding-top: 0.5em;
+}
+
+#title {
+	 text-align: center;
+	 padding-bottom: 30px;
+}

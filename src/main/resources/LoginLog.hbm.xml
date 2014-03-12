@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="net.realqinwei.hzcrm.crm.been.LoginLog" table="login_log">
+		<id name="id" type="java.lang.Integer">
+			<column name="log_id" />
+			<generator class="identity" />
+		</id>
+		<property name="userId" type="java.lang.Integer">
+			<column name="user_id" length="11" not-null="true" />
+		</property>
+		<property name="userName" type="java.lang.String">
+			<column name="user_name" length="1024" not-null="true" />
+		</property>
+		<property name="loginTime" type="java.sql.Timestamp">
+			<column name="login_time" length="19" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

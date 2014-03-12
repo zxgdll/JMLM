@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+
+	<!-- <constant name="struts.action.excludePattern" value="tree2applet"/> 
+		<constant name="struts.multipart.saveDir" value="/hztemp"/> -->
+		
+	<constant name="struts.action.excludePattern" value="/TreeServlet"/>
+		
+	<package name="nm-huazhi" extends="struts-default">
+	
+		<!-- 
+		<interceptors>
+			<interceptor-stack name="defaultStack">
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo..*,d-..*</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		 -->
+		
+		<action name="doc-analyze" class="WordAnalyzeAction">
+			<result>/doc-upload-success.jsp</result>
+		</action>
+
+		<action name="login" class="LoginAction">
+			<result>/login-success.jsp</result>
+			<result name="admin" type="chain">
+				<param name="actionName">newslist</param>
+				<param name="namespace">/admin</param>
+			</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="logoff" class="springLogoffAction">
+			<result name="login">/goodbye.jsp</result>
+		</action>
+
+		<action name="userlist" class="UserListAction">
+			<result name="input">/login-success.jsp</result>
+			<result>/userlist.jsp</result>
+		</action>
+
+		<action name="modifyuser" class="ModifyUserAction">
+			<result name="input">/login-success.jsp</result>
+			<result>/login-success.jsp</result>
+		</action>
+
+		<action name="billlist" class="BillListAction">
+			<result>/admin/bill-list.jsp</result>
+		</action>
+
+		<action name="tree2applet" class="Tree2AppletAction">
+			<result>/login.jsp</result>
+		</action>
+
+		<action name="index" class="IndexAction">
+			<result>/index.jsp</result>
+		</action>
+
+		<action name="viewnews" class="NewsAction" method="view">
+			<result>/news.jsp</result>
+		</action>
+
+		<action name="viewabout" class="AboutAction" method="view">
+			<result>/about.jsp</result>
+		</action>
+
+		<action name="viewcontact" class="ContactAction" method="view">
+			<result>/contact.jsp</result>
+		</action>
+
+		<action name="modifypassword" class="ModifyPasswordAction">
+			<result>/login-success.jsp</result>
+			<result name="input">/modifypassword.jsp</result>
+		</action>
+
+		<action name="editsavenews" class="NewsAction" method="editsave">
+			<result type="chain">
+				<param name="namespace">/admin</param>
+				<param name="actionName">newslist</param>
+			</result>
+			<result name="input" type="chain">
+				<param name="namespace">/admin</param>
+				<param name="actionName">editnews</param>
+			</result>
+		</action>
+
+		<action name="viewproduct" class="ProductAction" method="view">
+			<result>/product.jsp</result>
+		</action>
+		
+		<action name="product-show" class="ProductAction" method="show">
+			<result>/product-detail.jsp</result>
+		</action>
+
+	</package>
+	
+	
+	<package name="nm-huazhi.secure" extends="nm-huazhi" namespace="/secure">
+	
+		<action name="modify-password" class="UserAction" method="modify">
+			<result type="chain">
+				<param name="namespace">/admin</param>
+				<param name="actionName">newslist</param>
+			</result>
+			<result name="input">/secure/modifypassword.jsp</result>
+		</action>
+		
+		<action name="courses-list" class="SchoolAction" method="list">
+			<result>/secure/nm-huazhi-school.jsp</result>
+		</action>
+		
+	</package>
+
+	<package name="nm-huazhi.admin" extends="nm-huazhi" namespace="/admin">
+	
+	    <action name="tree-show" class="TreeAction" method="show">
+			<result>/admin/tree-show.jsp</result>
+		</action>
+		
+		<action name="image-list" class="ImageAction" method="list">
+			<result>/admin/image-manage.jsp</result>
+		</action>
+		
+		<action name="image-delete" class="ImageAction" method="delete">
+			<result type="chain">image-list</result>
+		</action>
+		
+		<action name="image-upload" class="ImageAction" method="upload">
+			<result type="chain">image-list</result>
+		</action>
+	
+		<action name="courses-manage" class="SchoolAction" method="manage">
+			<result>/admin/course-manage.jsp</result>
+		</action>
+		
+		<action name="courses-edit" class="SchoolAction" method="edit">
+			<result>/admin/course-edit.jsp</result>
+		</action>
+		
+		<action name="courses-delete" class="SchoolAction" method="delete">
+			<result type="chain">courses-manage</result>
+		</action>
+		
+		<action name="courses-modify" class="SchoolAction" method="modify">
+			<result type="chain">courses-manage</result>
+		</action>
+		
+		<action name="courses-create" class="SchoolAction" method="create">
+			<result type="chain">courses-manage</result>
+		</action>
+
+		<action name="view-log" class="LogAction">
+			<result>/admin/login-log.jsp</result>
+		</action>
+
+		<action name="adduser" class="UserAction" method="addUser">
+			<result>/admin/adduser.jsp</result>
+		</action>
+		
+		<action name="addnode" class="NodeAction" method="addNode">
+			<result>/admin/addnode.jsp</result>
+		</action>
+
+		<action name="save-user" class="UserAction" method="save">
+			<result name="input">adduser.jsp</result>
+			<result>/login-success.jsp</result>
+			<interceptor-ref name="token" />
+			<interceptor-ref name="defaultStack" />
+			<result name="invalid.token">/login.jsp</result>
+		</action>
+		
+		<action name="save-node" class="NodeAction" method="save">
+			<result name="input">adduser.jsp</result>
+			<result>/login-success.jsp</result>
+			<interceptor-ref name="token" />
+			<interceptor-ref name="defaultStack" />
+			<result name="invalid.token">/login.jsp</result>
+		</action>
+
+		<action name="edit-user" class="UserAction" method="edit">
+			<result>/admin/modifyuser.jsp</result>
+			<result name="input">/login-success.jsp</result>
+		</action>
+
+		<action name="edit-user-save" class="UserAction" method="saveEdit">
+			<result name="input">/admin/modifyuser.jsp</result>
+			<result>/login-success.jsp</result>
+		</action>
+
+		<action name="editnews" class="NewsAction" method="edit">
+			<result>/admin/editnews.jsp</result>
+		</action>
+
+		<action name="create-product" class="ProductAction" method="create">
+			<result type="chain">listproduct</result>
+			<result name="input">/admin/product-create.jsp</result>
+		</action>
+
+		<action name="delete-product" class="ProductAction" method="delete">
+			<result type="chain">listproduct</result>
+		</action>
+
+		<action name="edit-product" class="ProductAction" method="edit">
+			<result>/admin/product-edit.jsp</result>
+		</action>
+
+		<action name="save-product" class="ProductAction" method="update">
+			<result type="chain">listproduct</result>
+		</action>
+
+		<action name="listproduct" class="ProductAction" method="list">
+			<result>/admin/product-list.jsp</result>
+		</action>
+
+		<action name="editabout" class="AboutAction" method="edit">
+			<result>/admin/modifyabout.jsp</result>
+		</action>
+
+		<action name="update_about" class="AboutAction" method="update">
+			<result>/about.jsp</result>
+		</action>
+
+		<action name="editcontact" class="ContactAction" method="edit">
+			<result>/admin/editcontact.jsp</result>
+		</action>
+
+		<action name="update_contact" class="ContactAction" method="update">
+			<result>/contact.jsp</result>
+		</action>
+
+		<action name="addnews" class="AddNewsAction">
+			<result type="chain">newslist</result>
+		</action>
+
+		<action name="newslist" class="NewsListAction">
+			<result>/admin/newslist.jsp</result>
+		</action>
+
+		<action name="deletenews" class="NewsAction" method="delete">
+			<result type="chain">newslist</result>
+		</action>
+
+		<action name="createsavenews" class="NewsAction" method="createsave">
+			<result type="chain">newslist</result>
+			<result name="input">/createnews.jsp</result>
+		</action>
+
+	</package>
+</struts>
