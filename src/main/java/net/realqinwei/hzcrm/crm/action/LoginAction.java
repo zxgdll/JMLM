@@ -8,12 +8,14 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import net.realqinwei.hzcrm.crm.been.LoginLog;
 import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.domain.NodeRepository;
 import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
 import net.realqinwei.hzcrm.crm.service.intf.LogService;
 import net.realqinwei.hzcrm.crm.service.intf.NodeService;
+import net.realqinwei.hzcrm.crm.service.intf.UserService;
 import net.realqinwei.hzcrm.crm.util.TimestampCreator;
 
 import org.apache.log4j.Logger;
@@ -22,10 +24,12 @@ import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 public class LoginAction extends ActionSupport implements SessionAware, ApplicationAware {
-	
-	private static final Logger LOG = Logger.getLogger(LoginAction.class);
-	//private static final Pattern pattern = Pattern.compile("");
-	
+
+    private static final long serialVersionUID = 1918926563861586309L;
+    private static final Logger LOG = Logger.getLogger(LoginAction.class);
+
+    private static final String USER_TYPE_ADMIN = "admin";
+
 	private int loginId;
 	private String password;
     private NodeService nodeService;
@@ -35,51 +39,46 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	private TimestampCreator timer;
 	private Map<String, Object> session;
 	private Map<String, Object> application;
-	
+    private UserService userService;
+
 	private boolean userIDExist() {
-		return this.getNodeService().nodeIDExist(this.loginId);
+		return this.getUserService().userIDExist(this.getLoginId());
 	}
 	
 	private boolean isPasswordRight() {
-		return this.getNodeService().isPasswordRight(this.loginId, this.password);
+		return this.getUserService().isPasswordRight(this.getLoginId(), this.getPassword());
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void loginInit(Node node) {
-		Map<Integer, Node> onlineUsers = (Map<Integer, Node>) this.application.get("online");
+	private void loginInit(User user) {
+		Map<Integer, User> onlineUsers = (Map<Integer, User>) this.application.get("online");
 		if (null == onlineUsers) {
-			onlineUsers = new HashMap<Integer, Node>();
+			onlineUsers = new HashMap<Integer, User>();
 		}
-		onlineUsers.put(node.getId(), node);
+		onlineUsers.put(user.getId(), user);
 		this.application.put("online", onlineUsers);
 	}
 	
 	@Override
 	public String execute() throws Exception {
-		LOG.debug(this.loginId);
 		LOG.debug(this.loginId + " try to login");
 		if (this.userIDExist()) {
 			if (this.isPasswordRight()) {
+
+                User user = this.getUserService().findById(this.getLoginId());
+				this.session.put("user", user);
+				this.loginInit(user);
 				
-				Node node = this.getNodeRepository().findById(this.loginId);
-				//ServletActionContext.getRequest().getSession().setAttribute("user", user);
-				this.session.put("user", node);
-				
-				this.loginInit(node);
-				
-				TreeComponent<Node> tree = this.treeRepository.getTree();
-				//ServletActionContext.getRequest().getSession().setAttribute("tree", tree);
-				//ServletActionContext.getRequest().getSession().setAttribute("userDAO", this.userRepository);
+				TreeComponent<Node> tree = this.getTreeRepository().getTree();
 				this.session.put("tree", tree);
 				this.session.put("userDAO", this.getNodeRepository());
 				
-				SortedSet<Node> users = this.treeRepository.getBill();
-				//ServletActionContext.getRequest().getSession().setAttribute("users", users);
+				SortedSet<Node> users = this.getTreeRepository().getBill();
 				this.session.put("users", users);
 				
-				this.logService.saveLog(new LoginLog(node.getId(), node.getUserName(), timer.getTimestamp()));
+				this.getLogService().saveLog(new LoginLog(user.getId(), user.getUserName(), timer.getTimestamp()));
 				
-				return node.getUserType() == 0 ? "admin" : SUCCESS;
+				return user.getUserType() == 0 ? LoginAction.USER_TYPE_ADMIN : SUCCESS;
 			} else {
 				LOG.warn("Password is not right");
 				return INPUT;
@@ -89,6 +88,14 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 			return INPUT;
 		}
 	}
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public NodeService getNodeService() {
         return nodeService;
@@ -114,7 +121,6 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 		this.loginId = loginId;
 	}
 
-	//@RequiredStringValidator(message="password", key="message.error.password.required", trim=true)
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -146,8 +152,6 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	public void setTimer(TimestampCreator timer) {
 		this.timer = timer;
 	}
-	
-	private static final long serialVersionUID = 1918926563861586309L;
 
 	@Override
 	public void setSession(Map<String, Object> session) {

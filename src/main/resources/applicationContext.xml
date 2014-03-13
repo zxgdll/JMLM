@@ -29,7 +29,7 @@
 		<property name="mappingResources">
 			<list>
                 <value>Node.hbm.xml</value>
-                <value>BigUser.hbm.xml</value>
+                <value>User.hbm.xml</value>
 				<value>News.hbm.xml</value>
 				<value>LoginLog.hbm.xml</value>
 				<value>Image.hbm.xml</value>
@@ -43,7 +43,7 @@
         </property>
     </bean>
 
-    <bean id="bigUserDAO" class="net.realqinwei.hzcrm.crm.dao.impl.BigUserDAOImpl">
+    <bean id="userDAO" class="net.realqinwei.hzcrm.crm.dao.impl.UserDAOImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
@@ -65,8 +65,8 @@
 		<property name="nodeDAO" ref="nodeDAO" />
 	</bean>
 
-    <bean id="bigUserService" class="net.realqinwei.hzcrm.crm.service.impl.BigUserServiceImpl">
-        <property name="bigUserDAO" ref="bigUserDAO" />
+    <bean id="userService" class="net.realqinwei.hzcrm.crm.service.impl.UserServiceImpl">
+        <property name="userDAO" ref="userDAO" />
     </bean>
 	
 	<bean id="newsService" class="net.realqinwei.hzcrm.crm.service.impl.NewsServiceImpl">
@@ -109,6 +109,7 @@
 		<property name="treeRepository" ref="TreeRepositoryBean" />
 		<property name="logService" ref="LogService" />
 		<property name="timer" ref="TimestampCreator"/>
+        <property name="userService" ref="userService"/>
 	</bean>
 
 	<bean id="springLogoffAction" class="net.realqinwei.hzcrm.crm.action.LogoffAction"
@@ -168,14 +169,14 @@
 	
 	<bean id="UserAction" class="net.realqinwei.hzcrm.crm.action.UserAction"
 		scope="prototype">
-		<property name="bigUserService" ref="bigUserService"/>
+		<property name="userService" ref="userService"/>
 		<property name="timer" ref="TimestampCreator"/>
 	</bean>
 	
 	<bean id="NodeAction" class="net.realqinwei.hzcrm.crm.action.NodeAction"
 		scope="prototype">
 		<property name="nodeService" ref="nodeService"/>
-        <property name="bigUserService" ref="bigUserService"/>
+        <property name="userService" ref="userService"/>
 		<property name="timer" ref="TimestampCreator"/>
 	</bean>
 	

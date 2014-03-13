@@ -2,7 +2,7 @@ package net.realqinwei.hzcrm.crm.been;
 
 import java.sql.Timestamp;
 
-public final class BigUser implements java.io.Serializable, Comparable<BigUser> {
+public final class User implements java.io.Serializable, Comparable<User> {
 
 	private Integer id;
 	private String userPassword;
@@ -15,13 +15,13 @@ public final class BigUser implements java.io.Serializable, Comparable<BigUser> 
 	private Timestamp userCreateTime;
 	private Integer userReferID;
 
-	public BigUser() {
+	public User() {
 
 	}
 
 	/** minimal constructor */
-	public BigUser(String userPassword, String userIDCard, String userName,
-                   Integer userType, Timestamp userCreateTime) {
+	public User(String userPassword, String userIDCard, String userName,
+                Integer userType, Timestamp userCreateTime) {
 
 		this.userPassword = userPassword;
 		this.userIDCard = userIDCard;
@@ -31,9 +31,9 @@ public final class BigUser implements java.io.Serializable, Comparable<BigUser> 
 	}
 
 	/** full constructor */
-	public BigUser(String userPassword, String userIDCard, String userName,
-                   String userPhone, String userAddress, Integer userType,
-                   Timestamp userCreateTime, Integer userReferID, String userLoginID) {
+	public User(String userPassword, String userIDCard, String userName,
+                String userPhone, String userAddress, Integer userType,
+                Timestamp userCreateTime, Integer userReferID, String userLoginID) {
 		
 		this(userPassword, userIDCard, userName, userType, userCreateTime);
 		
@@ -60,7 +60,7 @@ public final class BigUser implements java.io.Serializable, Comparable<BigUser> 
 		} else if (this == anotherObject) {
 			return true;
 		} else {
-			BigUser anotherUser = (BigUser) anotherObject;
+			User anotherUser = (User) anotherObject;
 			return anotherUser.objectID().equals(this.objectID()) ? true : false;
 		}
 	}
@@ -151,7 +151,7 @@ public final class BigUser implements java.io.Serializable, Comparable<BigUser> 
 	}
 
 	@Override
-	public int compareTo(BigUser other) {
+	public int compareTo(User other) {
 		return this.userCreateTime.compareTo(other.getUserCreateTime());
 	}
 }

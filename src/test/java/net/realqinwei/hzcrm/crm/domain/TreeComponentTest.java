@@ -2,14 +2,15 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import net.realqinwei.hzcrm.crm.been.Node;
 
 public class TreeComponentTest extends TestCase {
 
-	private TreeComponent<User> tree;
+	private TreeComponent<Node> tree;
 
 	public void setUp() {
 
-		this.tree = new TreeComponent<User>();
+		this.tree = new TreeComponent<Node>();
 	}
 
 	public void testFindTheOneBlank() {

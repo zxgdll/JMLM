@@ -1,7 +1,7 @@
 package net.realqinwei.hzcrm.crm.dao.impl;
 
-import net.realqinwei.hzcrm.crm.been.BigUser;
 import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.dao.intf.NodeDAO;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -43,7 +43,7 @@ public class NodeDAOImpl extends HibernateDaoSupport implements NodeDAO {
 	}
 
     @Override
-    public List<Node> fintByOwner(BigUser user) {
+    public List<Node> fintByOwner(User user) {
         return (List<Node>) this.getHibernateTemplate().find("FROM Node WHERE nodeUserID = " + user.getId());
     }
 }

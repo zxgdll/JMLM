@@ -2,9 +2,8 @@ package net.realqinwei.hzcrm.crm.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import net.realqinwei.hzcrm.crm.been.BigUser;
-import net.realqinwei.hzcrm.crm.domain.NodeRepository;
-import net.realqinwei.hzcrm.crm.service.intf.BigUserService;
+import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.service.intf.UserService;
 import net.realqinwei.hzcrm.crm.util.MD5;
 import net.realqinwei.hzcrm.crm.util.TimestampCreator;
 
@@ -18,8 +17,8 @@ public class UserAction extends ActionSupport {
 	private static final Logger LOG = Logger.getLogger(UserAction.class);
 
     private TimestampCreator timer;
-    private BigUserService bigUserService;
-    private BigUser user;
+    private UserService userService;
+    private User user;
     private String oldPassword;
     private String newPassword;
     private String newPasswordAgain;
@@ -57,12 +56,12 @@ public class UserAction extends ActionSupport {
 				this.user.getUserIDCard().length())));
 		this.user.setUserType(CREATE_USER_TYPE);
 		this.user.setUserCreateTime(this.timer.getTimestamp());
-		this.getBigUserService().save(this.user);
+		this.getUserService().save(this.user);
 		return SUCCESS;
 	}
 	
 	public String saveEdit() {
-		this.getBigUserService().update(this.user);
+		this.getUserService().update(this.user);
 		return SUCCESS;
 	}
 	
@@ -76,10 +75,10 @@ public class UserAction extends ActionSupport {
 	
 	public String modify() {
 		if (this.newPassword.equals(this.newPasswordAgain)) {
-			this.user = (BigUser) ServletActionContext.getRequest().getSession().getAttribute("user");
+			this.user = (User) ServletActionContext.getRequest().getSession().getAttribute("user");
 			if (this.user.getUserPassword().equals(MD5.getMD5Str(this.oldPassword))) {
 				this.user.setUserPassword(MD5.getMD5Str(this.newPassword));
-				this.getBigUserService().update(this.user);
+				this.getUserService().update(this.user);
 				ServletActionContext.getRequest().getSession().setAttribute("user", this.user);
 				return SUCCESS;
 			} else {
@@ -93,12 +92,12 @@ public class UserAction extends ActionSupport {
 		}
 	}
 
-    public BigUserService getBigUserService() {
-        return bigUserService;
+    public UserService getUserService() {
+        return userService;
     }
 
-    public void setBigUserService(BigUserService bigUserService) {
-        this.bigUserService = bigUserService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 	
 	public String getOldPassword() {

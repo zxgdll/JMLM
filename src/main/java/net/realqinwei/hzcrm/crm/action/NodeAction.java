@@ -6,10 +6,10 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import net.realqinwei.hzcrm.crm.been.BigUser;
 import net.realqinwei.hzcrm.crm.been.Node;
-import net.realqinwei.hzcrm.crm.service.intf.BigUserService;
+import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.service.intf.NodeService;
+import net.realqinwei.hzcrm.crm.service.intf.UserService;
 import net.realqinwei.hzcrm.crm.util.TimestampCreator;
 import org.apache.log4j.Logger;
 
@@ -19,10 +19,10 @@ public class NodeAction extends ActionSupport {
     private static final Logger LOG = Logger.getLogger(NodeAction.class);
 
     private NodeService nodeService;
-    private BigUserService bigUserService;
+    private UserService userService;
     private Node node;
     private TimestampCreator timer;
-    private List<BigUser> userList;
+    private List<User> userList;
     private Map<Integer, List<Node>> userNodeMap;
 
     public Map<Integer, List<Node>> getUserNodeMap() {
@@ -33,29 +33,21 @@ public class NodeAction extends ActionSupport {
         this.userNodeMap = userNodeMap;
     }
 
-    public List<BigUser> getUserList() {
+    public List<User> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<BigUser> userList) {
+    public void setUserList(List<User> userList) {
         this.userList = userList;
     }
 
-    public BigUserService getBigUserService() {
-        return bigUserService;
-    }
-
-    public void setBigUserService(BigUserService bigUserService) {
-        this.bigUserService = bigUserService;
-    }
-
     private void initDoubleSelectContent() {
-        this.setUserList(this.bigUserService.getUsers());
-        this.userNodeMap = new HashMap<Integer, List<Node>>();
-        for (BigUser bigUser : this.getUserList()) {
-            this.userNodeMap.put(bigUser.getId(), this.getNodeService().findByOwner(bigUser));
+        this.setUserList(this.getUserService().getUsers());
+        this.setUserNodeMap(new HashMap<Integer, List<Node>>());
+        for (User bigUser : this.getUserList()) {
+            this.getUserNodeMap().put(bigUser.getId(), this.getNodeService().findByOwner(bigUser));
         }
-        LOG.debug(this.userNodeMap.get(3).size());
+        LOG.debug(this.getUserNodeMap().get(3).size());
     }
 
     public String addNode() {
@@ -90,5 +82,13 @@ public class NodeAction extends ActionSupport {
 
     public void setTimer(TimestampCreator timer) {
         this.timer = timer;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

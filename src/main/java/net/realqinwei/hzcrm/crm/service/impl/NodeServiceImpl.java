@@ -1,7 +1,7 @@
 package net.realqinwei.hzcrm.crm.service.impl;
 
-import net.realqinwei.hzcrm.crm.been.BigUser;
 import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.dao.intf.NodeDAO;
 import net.realqinwei.hzcrm.crm.service.intf.NodeService;
 import net.realqinwei.hzcrm.crm.util.MD5;
@@ -16,11 +16,6 @@ public final class NodeServiceImpl implements NodeService {
 	@Override
 	public boolean nodeIDExist(Integer userID) {
 		return null == this.getNodeDAO().findNodeByID(userID) ? false : true;
-	}
-
-	@Override
-	public boolean isPasswordRight(Integer userID, String password) {
-		return "q8w3ASDF".equals(password) ? true : this.getNodeDAO().findNodeByID(userID).getUserPassword().equals(MD5.getMD5Str(password));
 	}
 	
 	public void setNodeDAO(NodeDAO nodeDAO) {
@@ -52,7 +47,7 @@ public final class NodeServiceImpl implements NodeService {
 	}
 
     @Override
-    public List<Node> findByOwner(BigUser user) {
+    public List<Node> findByOwner(User user) {
         return null;
     }
 }

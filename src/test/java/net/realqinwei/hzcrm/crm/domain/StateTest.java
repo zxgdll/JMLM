@@ -2,30 +2,31 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import net.realqinwei.hzcrm.crm.been.Node;
 
 
 public class StateTest extends TestCase {
 	
-	private State<User> branchState;
-	private State<User> budState;
-	private State<User> emptyState;
-	private State<User> leafState;
-	private State<User> successState;
+	private State<Node> branchState;
+	private State<Node> budState;
+	private State<Node> emptyState;
+	private State<Node> leafState;
+	private State<Node> successState;
 	
-	private State<User> successState2;
-	private State<User> successState3;
+	private State<Node> successState2;
+	private State<Node> successState3;
 	
 	public void setUp() {
-		TreeComponent<User> tree = new TreeComponent<User>();
-		TreeComponent<User> otherTree = new TreeComponent<User>();
-		TreeComponent<User> sameTree = otherTree;
-		this.branchState = new TreeBranchState<User>(tree);
-		this.budState = new TreeBudState<User>(tree);
-		this.emptyState = new TreeEmptyState<User>(tree);
-		this.leafState = new TreeLeafState<User>(tree);
-		this.successState = new TreeSuccessState<User>(tree);
-		this.successState2 = new TreeSuccessState<User>(otherTree);
-		this.successState3 = new TreeSuccessState<User>(sameTree);
+		TreeComponent<Node> tree = new TreeComponent<Node>();
+		TreeComponent<Node> otherTree = new TreeComponent<Node>();
+		TreeComponent<Node> sameTree = otherTree;
+		this.branchState = new TreeBranchState<Node>(tree);
+		this.budState = new TreeBudState<Node>(tree);
+		this.emptyState = new TreeEmptyState<Node>(tree);
+		this.leafState = new TreeLeafState<Node>(tree);
+		this.successState = new TreeSuccessState<Node>(tree);
+		this.successState2 = new TreeSuccessState<Node>(otherTree);
+		this.successState3 = new TreeSuccessState<Node>(sameTree);
 	}
 	
 	public void testEqualsSameTree() {
