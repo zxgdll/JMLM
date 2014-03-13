@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
 
@@ -25,7 +25,7 @@ public class BillListAction extends ActionSupport {
 		Integer userID = Integer.valueOf(ServletActionContext.getRequest().getParameter("userID"));
 		LOG.debug(userID);
 		
-		SortedSet<User> users = this.treeRepository.getBill();
+		SortedSet<Node> users = this.treeRepository.getBill();
 		LOG.debug(users.size());
 		
 		ServletActionContext.getRequest().setAttribute("billUser", userID);

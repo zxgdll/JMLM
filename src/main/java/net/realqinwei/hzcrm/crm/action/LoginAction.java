@@ -7,13 +7,13 @@ import java.util.SortedSet;
 import com.opensymphony.xwork2.ActionSupport;
 
 import net.realqinwei.hzcrm.crm.been.LoginLog;
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.domain.NodeRepository;
 import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
-import net.realqinwei.hzcrm.crm.domain.UserRepository;
 
 import net.realqinwei.hzcrm.crm.service.intf.LogService;
-import net.realqinwei.hzcrm.crm.service.intf.UserService;
+import net.realqinwei.hzcrm.crm.service.intf.NodeService;
 import net.realqinwei.hzcrm.crm.util.TimestampCreator;
 
 import org.apache.log4j.Logger;
@@ -28,9 +28,8 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	
 	private int loginId;
 	private String password;
-	
-	private UserService service;
-	private UserRepository userRepository;
+    private NodeService nodeService;
+	private NodeRepository nodeRepository;
 	private TreeRepository treeRepository;
 	private LogService logService;
 	private TimestampCreator timer;
@@ -38,20 +37,20 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	private Map<String, Object> application;
 	
 	private boolean userIDExist() {
-		return this.service.userIDExist(this.loginId);
+		return this.getNodeService().nodeIDExist(this.loginId);
 	}
 	
 	private boolean isPasswordRight() {
-		return this.service.isPasswordRight(this.loginId, this.password);
+		return this.getNodeService().isPasswordRight(this.loginId, this.password);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void loginInit(User user) {
-		Map<Integer, User> onlineUsers = (Map<Integer, User>) this.application.get("online");
+	private void loginInit(Node node) {
+		Map<Integer, Node> onlineUsers = (Map<Integer, Node>) this.application.get("online");
 		if (null == onlineUsers) {
-			onlineUsers = new HashMap<Integer, User>();
+			onlineUsers = new HashMap<Integer, Node>();
 		}
-		onlineUsers.put(user.getId(), user);
+		onlineUsers.put(node.getId(), node);
 		this.application.put("online", onlineUsers);
 	}
 	
@@ -62,25 +61,25 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 		if (this.userIDExist()) {
 			if (this.isPasswordRight()) {
 				
-				User user = this.userRepository.findById(this.loginId);
+				Node node = this.getNodeRepository().findById(this.loginId);
 				//ServletActionContext.getRequest().getSession().setAttribute("user", user);
-				this.session.put("user", user);
+				this.session.put("user", node);
 				
-				this.loginInit(user);
+				this.loginInit(node);
 				
-				TreeComponent<User> tree = this.treeRepository.getTree();
+				TreeComponent<Node> tree = this.treeRepository.getTree();
 				//ServletActionContext.getRequest().getSession().setAttribute("tree", tree);
 				//ServletActionContext.getRequest().getSession().setAttribute("userDAO", this.userRepository);
 				this.session.put("tree", tree);
-				this.session.put("userDAO", this.userRepository);
+				this.session.put("userDAO", this.getNodeRepository());
 				
-				SortedSet<User> users = this.treeRepository.getBill();
+				SortedSet<Node> users = this.treeRepository.getBill();
 				//ServletActionContext.getRequest().getSession().setAttribute("users", users);
 				this.session.put("users", users);
 				
-				this.logService.saveLog(new LoginLog(user.getId(), user.getUserName(), timer.getTimestamp()));
+				this.logService.saveLog(new LoginLog(node.getId(), node.getUserName(), timer.getTimestamp()));
 				
-				return user.getUserType() == 0 ? "admin" : SUCCESS;
+				return node.getUserType() == 0 ? "admin" : SUCCESS;
 			} else {
 				LOG.warn("Password is not right");
 				return INPUT;
@@ -90,6 +89,22 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 			return INPUT;
 		}
 	}
+
+    public NodeService getNodeService() {
+        return nodeService;
+    }
+
+    public void setNodeService(NodeService nodeService) {
+        this.nodeService = nodeService;
+    }
+
+    public NodeRepository getNodeRepository() {
+        return nodeRepository;
+    }
+
+    public void setNodeRepository(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+    }
 	
 	public int getLoginId() {
 		return loginId;
@@ -106,22 +121,6 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 
 	public String getPassword() {
 		return password;
-	}
-
-	public UserService getService() {
-		return service;
-	}
-
-	public void setService(UserService service) {
-		this.service = service;
-	}
-	
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
 	}
 	
 	public TreeRepository getTreeRepository() {

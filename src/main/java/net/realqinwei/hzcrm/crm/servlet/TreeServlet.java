@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
@@ -47,7 +47,7 @@ public class TreeServlet extends HttpServlet {
 		
 		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
 		TreeRepository treeRepository = (TreeRepository) wac.getBean("TreeRepositoryBean");
-		TreeComponent<User> tree = treeRepository.getTree();
+		TreeComponent<Node> tree = treeRepository.getTree();
 		
 		out.println("<ul>");
 		out.println(getContent(tree));
@@ -57,14 +57,14 @@ public class TreeServlet extends HttpServlet {
 		out.close();
 	}
 	
-	private static String getContent(TreeComponent<User> tree) {
+	private static String getContent(TreeComponent<Node> tree) {
 		StringBuilder content = new StringBuilder();
 
 		content.append("<li>");
 		content.append("<a href=\"#\">").append(tree.getValue().getId()).append("</a>");
 		if (null != tree.getChilds()) {
 			content.append("<ul>");
-			for (TreeComponent<User> t : tree.getChilds()) {
+			for (TreeComponent<Node> t : tree.getChilds()) {
 				content.append(getContent(t));
 			}
 			content.append("</ul>");

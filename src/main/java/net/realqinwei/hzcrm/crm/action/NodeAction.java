@@ -18,7 +18,7 @@ public class NodeAction extends ActionSupport {
     private static final long serialVersionUID = 4642124418655980697L;
     private static final Logger LOG = Logger.getLogger(NodeAction.class);
 
-    private NodeService service;
+    private NodeService nodeService;
     private BigUserService bigUserService;
     private Node node;
     private TimestampCreator timer;
@@ -49,19 +49,11 @@ public class NodeAction extends ActionSupport {
         this.bigUserService = bigUserService;
     }
 
-    public NodeService getService() {
-        return service;
-    }
-
-    public void setService(NodeService service) {
-        this.service = service;
-    }
-
     private void initDoubleSelectContent() {
         this.setUserList(this.bigUserService.getUsers());
         this.userNodeMap = new HashMap<Integer, List<Node>>();
         for (BigUser bigUser : this.getUserList()) {
-            this.userNodeMap.put(bigUser.getId(), this.service.findByOwner(bigUser));
+            this.userNodeMap.put(bigUser.getId(), this.getNodeService().findByOwner(bigUser));
         }
         LOG.debug(this.userNodeMap.get(3).size());
     }
@@ -72,8 +64,16 @@ public class NodeAction extends ActionSupport {
     }
 
     public String save() {
-        this.service.save(this.node);
+        this.getNodeService().save(this.node);
         return SUCCESS;
+    }
+
+    public NodeService getNodeService() {
+        return nodeService;
+    }
+
+    public void setNodeService(NodeService nodeService) {
+        this.nodeService = nodeService;
     }
 
     public Node getNode() {

@@ -1,6 +1,5 @@
 package net.realqinwei.hzcrm.crm.domain;
 
-import net.realqinwei.hzcrm.crm.been.User;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 

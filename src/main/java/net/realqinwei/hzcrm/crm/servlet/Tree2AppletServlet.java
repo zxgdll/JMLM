@@ -5,7 +5,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
@@ -28,7 +28,7 @@ public class Tree2AppletServlet extends HttpServlet {
 		
 		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
 		TreeRepository treeRepository = (TreeRepository) wac.getBean("TreeRepositoryBean");
-		TreeComponent<User> tree = treeRepository.getTree();
+		TreeComponent<Node> tree = treeRepository.getTree();
 		LOG.warn(tree.getValue().getUserName());
 		
 		oos.writeObject(tree);

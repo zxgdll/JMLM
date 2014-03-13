@@ -4,7 +4,7 @@ import java.io.ObjectOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.*;
 
 import org.apache.log4j.Logger;
@@ -18,7 +18,15 @@ public final class Tree2AppletAction extends ActionSupport {
 	private static final Logger LOG = Logger.getLogger(Tree2AppletAction.class);
 	private static final String RESPONSE_CONTENT_TYPE = "application/x-java-serialized-object";
 
-	private UserRepository userRepository;
+    public NodeRepository getNodeRepository() {
+        return nodeRepository;
+    }
+
+    public void setNodeRepository(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+    }
+
+    private NodeRepository nodeRepository;
 	private TreeRepository treeRepository;
 	
 	@Override
@@ -31,7 +39,7 @@ public final class Tree2AppletAction extends ActionSupport {
 		response.setContentType(RESPONSE_CONTENT_TYPE);
 		ObjectOutputStream oos = new ObjectOutputStream(response.getOutputStream());
 		
-		TreeComponent<User> tree = this.treeRepository.getTree();
+		TreeComponent<Node> tree = this.treeRepository.getTree();
 		LOG.warn(tree.getValue().getUserName());
 		
 		/**
@@ -39,7 +47,7 @@ public final class Tree2AppletAction extends ActionSupport {
 		people.setName("Thomas");
 		*/
 		
-		oos.writeObject(tree.find(this.userRepository.findById(userID)));
+		oos.writeObject(tree.find(this.getNodeRepository().findById(userID)));
 		oos.flush();
 		oos.close();
 		
@@ -53,12 +61,5 @@ public final class Tree2AppletAction extends ActionSupport {
 	public void setTreeRepository(TreeRepository treeRepository) {
 		this.treeRepository = treeRepository;
 	}
-	
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
 
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 }

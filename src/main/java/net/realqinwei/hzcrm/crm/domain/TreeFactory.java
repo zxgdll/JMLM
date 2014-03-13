@@ -2,51 +2,49 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import java.util.*;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
 public final class TreeFactory {
 
-	private UserRepository userRepository;
+    public NodeRepository getNodeRepository() {
+        return nodeRepository;
+    }
 
-	public void setUserRepository(UserRepository userRepository) {
+    public void setNodeRepository(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+    }
 
-		this.userRepository = userRepository;
-	}
+    private NodeRepository nodeRepository;
 
-	public UserRepository getUserRepository() {
+	public SortedSet<Node> getBill() {
 
-		return userRepository;
-	}
+		List<Node> allUsers = this.getNodeRepository().findAll();
 
-	public SortedSet<User> getBill() {
-
-		List<User> allUsers = this.getUserRepository().findAll();
-
-		SortedSet<User> sortedAllUsers = new TreeSet<User>();
+		SortedSet<Node> sortedAllUsers = new TreeSet<Node>();
 		sortedAllUsers.addAll(allUsers);
 		return sortedAllUsers;
 	}
 
-	public TreeComponent<User> getTree() throws AddErrorException {
+	public TreeComponent<Node> getTree() throws AddErrorException {
 
-		List<User> allUsers = this.getUserRepository().findAll();
+		List<Node> allUsers = this.getNodeRepository().findAll();
 
-		SortedSet<User> sortedAllUsers = new TreeSet<User>();
+		SortedSet<Node> sortedAllUsers = new TreeSet<Node>();
 		sortedAllUsers.addAll(allUsers);
 
-		Queue<User> allUsersQueue = new LinkedList<User>();
-		for (User user : sortedAllUsers) {
+		Queue<Node> allUsersQueue = new LinkedList<Node>();
+		for (Node user : sortedAllUsers) {
 			allUsersQueue.offer(user);
 		}
 
-		TreeComponent<User> tree = new TreeComponent<User>();
-		User tmpUser = null;
+		TreeComponent<Node> tree = new TreeComponent<Node>();
+        Node tmpUser = null;
 		while (!allUsersQueue.isEmpty() && null != tree) {
 			tmpUser = allUsersQueue.poll();
 
 			tree.addComponent(null == tmpUser.getUserReferID() ? null
-					: this.userRepository.findById(tmpUser.getUserReferID()),
+					: this.getNodeRepository().findById(tmpUser.getUserReferID()),
 					tmpUser);
 
 		}

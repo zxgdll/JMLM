@@ -30,11 +30,11 @@
 		<s:token></s:token>
 		<table class="table">
 			<s:textfield name="user.userName" label="%{getText('table.name')}" />
-			<!-- 
+            <%--
 			<s:select name="user.userReferID" label="%{getText('table.refer')}" 
 					list="list" listKey="id" listValue="userName + '(' + id + ')'" value="%{list.{userID}}"
 					headerKey="0" headerValue="%{getText('adduser.select.headerValue')}" />	
-			 -->	
+			 --%>
 			<s:textfield name="user.userIDCard" label="%{getText('table.IDcard')}" />
 			<s:textfield name="user.userLoginID" label="%{getText('table.bank')}" />
 			<s:textfield name="user.userPhone" label="%{getText('table.phone')}" />

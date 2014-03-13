@@ -28,7 +28,6 @@
 		</property>
 		<property name="mappingResources">
 			<list>
-				<value>User.hbm.xml</value>
                 <value>Node.hbm.xml</value>
                 <value>BigUser.hbm.xml</value>
 				<value>News.hbm.xml</value>
@@ -38,24 +37,18 @@
 		</property>
 	</bean>
 
-	<bean id="userDAO" class="net.realqinwei.hzcrm.crm.dao.impl.UserDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
-	</bean>
+    <bean id="nodeDAO" class="net.realqinwei.hzcrm.crm.dao.impl.NodeDAOImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
 
     <bean id="bigUserDAO" class="net.realqinwei.hzcrm.crm.dao.impl.BigUserDAOImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
     </bean>
-	
-	<bean id="nodeDAO" class="net.realqinwei.hzcrm.crm.dao.impl.NodeDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
-	</bean>
-	
+
 	<bean id="newsDAO" class="net.realqinwei.hzcrm.crm.dao.impl.NewsDAOImpl">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -68,17 +61,13 @@
 		</property>
 	</bean>
 
-	<bean id="userService" class="net.realqinwei.hzcrm.crm.service.impl.UserServiceImpl">
-		<property name="userDAO" ref="userDAO" />
+	<bean id="nodeService" class="net.realqinwei.hzcrm.crm.service.impl.NodeServiceImpl">
+		<property name="nodeDAO" ref="nodeDAO" />
 	</bean>
 
     <bean id="bigUserService" class="net.realqinwei.hzcrm.crm.service.impl.BigUserServiceImpl">
         <property name="bigUserDAO" ref="bigUserDAO" />
     </bean>
-	
-	<bean id="nodeService" class="net.realqinwei.hzcrm.crm.service.impl.NodeServiceImpl">
-		<property name="nodeDAO" ref="nodeDAO" />
-	</bean>
 	
 	<bean id="newsService" class="net.realqinwei.hzcrm.crm.service.impl.NewsServiceImpl">
 		<property name="newsDAO" ref="newsDAO" />
@@ -88,12 +77,12 @@
 		<property name="imageDAO" ref="ImageDAO" />
 	</bean>
 	
-	<bean id="UserRepositoryBean" class="net.realqinwei.hzcrm.crm.service.impl.UserRepositoryImpl" scope="singleton">
-		<property name="userDAO" ref="userDAO" />
+	<bean id="NodeRepositoryBean" class="net.realqinwei.hzcrm.crm.service.impl.NodeRepositoryImpl" scope="singleton">
+		<property name="nodeDAO" ref="nodeDAO" />
 	</bean>
 		
 	<bean id="TreeFactoryBean" class="net.realqinwei.hzcrm.crm.domain.TreeFactory" scope="singleton">
-		<property name="userRepository" ref="UserRepositoryBean" />
+		<property name="nodeRepository" ref="NodeRepositoryBean" />
 	</bean>
 	
 	<bean id="TreeRepositoryBean" class="net.realqinwei.hzcrm.crm.domain.TreeRepository" scope="singleton">
@@ -115,8 +104,8 @@
 	</bean>
 
 	<bean id="LoginAction" class="net.realqinwei.hzcrm.crm.action.LoginAction" scope="prototype">
-		<property name="service" ref="userService" />
-		<property name="userRepository" ref="UserRepositoryBean" />
+		<property name="nodeService" ref="nodeService" />
+		<property name="nodeRepository" ref="NodeRepositoryBean" />
 		<property name="treeRepository" ref="TreeRepositoryBean" />
 		<property name="logService" ref="LogService" />
 		<property name="timer" ref="TimestampCreator"/>
@@ -125,28 +114,10 @@
 	<bean id="springLogoffAction" class="net.realqinwei.hzcrm.crm.action.LogoffAction"
 		scope="prototype" />
 	
-	<bean id="AdminCheckAction" class="net.realqinwei.hzcrm.crm.action.AdminCheckAction"
-		scope="prototype">
-		<property name="userRepository" ref="UserRepositoryBean" />
-		<property name="treeRepository" ref="TreeRepositoryBean" />
-	</bean>
-	
-	<bean id="AddUserAction" class="net.realqinwei.hzcrm.crm.action.AddUserAction"
-		scope="prototype">
-		<property name="service" ref="userService"/>
-		<property name="timer" ref="TimestampCreator"/>
-	</bean>
-	
 	<bean id="UserListAction" class="net.realqinwei.hzcrm.crm.action.UserListAction"
 		scope="prototype">
-		<property name="userRepository" ref="UserRepositoryBean" />
+		<property name="nodeRepository" ref="NodeRepositoryBean" />
 		<property name="treeRepository" ref="TreeRepositoryBean" />
-	</bean>
-	
-	<bean id="ModifyUserAction" class="net.realqinwei.hzcrm.crm.action.ModifyUserAction"
-		scope="prototype">
-		<property name="userRepository" ref="UserRepositoryBean"/>
-		<property name="service" ref="userService"/>
 	</bean>
 	
 	<bean id="BillListAction" class="net.realqinwei.hzcrm.crm.action.BillListAction"
@@ -156,7 +127,7 @@
 	
 	<bean id="Tree2AppletAction" class="net.realqinwei.hzcrm.crm.action.Tree2AppletAction"
 		scope="prototype">
-		<property name="userRepository" ref="UserRepositoryBean"/>
+		<property name="nodeRepository" ref="NodeRepositoryBean"/>
 		<property name="treeRepository" ref="TreeRepositoryBean"/>
 	</bean>
 	
@@ -182,16 +153,6 @@
 		<property name="newsService" ref="newsService"/>
 	</bean>
 	
-	<bean id="ModifyNewsAction" class="net.realqinwei.hzcrm.crm.action.ModifyNewsAction"
-		scope="prototype">
-		<property name="newsService" ref="newsService"/>
-	</bean>
-	
-	<bean id="NewsShowAction" class="net.realqinwei.hzcrm.crm.action.NewsShowAction"
-		scope="prototype">
-		<property name="newsService" ref="newsService"/>
-	</bean>
-	
 	<bean id="NewsAction" class="net.realqinwei.hzcrm.crm.action.NewsAction"
 		scope="prototype">
 		<property name="newsService" ref="newsService"/>
@@ -207,29 +168,19 @@
 	
 	<bean id="UserAction" class="net.realqinwei.hzcrm.crm.action.UserAction"
 		scope="prototype">
-		<property name="userRepository" ref="UserRepositoryBean"/>
-		<property name="service" ref="userService"/>
+		<property name="bigUserService" ref="bigUserService"/>
 		<property name="timer" ref="TimestampCreator"/>
-		<property name="treeRepository" ref="TreeRepositoryBean"/>
 	</bean>
 	
 	<bean id="NodeAction" class="net.realqinwei.hzcrm.crm.action.NodeAction"
 		scope="prototype">
-		<property name="service" ref="nodeService"/>
+		<property name="nodeService" ref="nodeService"/>
         <property name="bigUserService" ref="bigUserService"/>
 		<property name="timer" ref="TimestampCreator"/>
 	</bean>
 	
 	<bean id="LogAction" class="net.realqinwei.hzcrm.crm.action.LogAction" scope="prototype">
 		<property name="logService" ref="LogService" />
-	</bean>
-	
-	<bean id="UploadAction" class="com.docword.web.action.UploadAction" scope="prototype">
-		<property name="uploader" ref="FileUploader"/>
-	</bean>
-	
-	<bean id="WordAnalyzeAction" class="com.docword.web.action.WordAnalyzeAction" scope="prototype">
-		<property name="reporter" ref="WordsAnalysis"/>
 	</bean>
 	
 	<bean id="SchoolAction" class="net.realqinwei.hzcrm.crm.action.SchoolAction" scope="prototype">

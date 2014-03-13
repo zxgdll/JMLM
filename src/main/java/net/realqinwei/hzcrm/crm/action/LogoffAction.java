@@ -6,8 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import net.realqinwei.hzcrm.crm.been.User;
-
+import net.realqinwei.hzcrm.crm.been.Node;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ApplicationAware;
@@ -21,8 +20,8 @@ public class LogoffAction extends ActionSupport implements ApplicationAware {
 	private Map<String, Object> application;
 	
 	@SuppressWarnings("unchecked")
-	private void logOff(User user) {
-		Map<Integer, User> onlineUsers = (Map<Integer, User>) this.application.get("online");
+	private void logOff(Node user) {
+		Map<Integer, Node> onlineUsers = (Map<Integer, Node>) this.application.get("online");
 		if (null != onlineUsers) {
 			onlineUsers.remove(user.getId());
 			this.application.put("online", onlineUsers);
@@ -34,7 +33,7 @@ public class LogoffAction extends ActionSupport implements ApplicationAware {
 	public String execute() throws Exception {
 		
 		HttpSession session = ServletActionContext.getRequest().getSession();
-		User user = (User) session.getAttribute("user");
+        Node user = (Node) session.getAttribute("user");
 		
 		this.logOff(user);
 		

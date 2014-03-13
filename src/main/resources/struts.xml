@@ -20,10 +20,6 @@
 			</interceptor-stack>
 		</interceptors>
 		 -->
-		
-		<action name="doc-analyze" class="WordAnalyzeAction">
-			<result>/doc-upload-success.jsp</result>
-		</action>
 
 		<action name="login" class="LoginAction">
 			<result>/login-success.jsp</result>
@@ -42,11 +38,6 @@
 		<action name="userlist" class="UserListAction">
 			<result name="input">/login-success.jsp</result>
 			<result>/userlist.jsp</result>
-		</action>
-
-		<action name="modifyuser" class="ModifyUserAction">
-			<result name="input">/login-success.jsp</result>
-			<result>/login-success.jsp</result>
 		</action>
 
 		<action name="billlist" class="BillListAction">
@@ -71,11 +62,6 @@
 
 		<action name="viewcontact" class="ContactAction" method="view">
 			<result>/contact.jsp</result>
-		</action>
-
-		<action name="modifypassword" class="ModifyPasswordAction">
-			<result>/login-success.jsp</result>
-			<result name="input">/modifypassword.jsp</result>
 		</action>
 
 		<action name="editsavenews" class="NewsAction" method="editsave">
@@ -231,10 +217,6 @@
 
 		<action name="update_contact" class="ContactAction" method="update">
 			<result>/contact.jsp</result>
-		</action>
-
-		<action name="addnews" class="AddNewsAction">
-			<result type="chain">newslist</result>
 		</action>
 
 		<action name="newslist" class="NewsListAction">

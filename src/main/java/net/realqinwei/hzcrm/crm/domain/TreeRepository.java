@@ -2,7 +2,7 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import java.util.SortedSet;
 
-import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
 public final class TreeRepository {
@@ -17,8 +17,8 @@ public final class TreeRepository {
 		return treeFactory;
 	}
 	
-	public TreeComponent<User> getTree() {
-		TreeComponent<User> tree = null;
+	public TreeComponent<Node> getTree() {
+		TreeComponent<Node> tree = null;
 		try {
 			tree = this.getTreeFactory().getTree();
 		} catch (AddErrorException e) {
@@ -27,7 +27,7 @@ public final class TreeRepository {
 		return tree;
 	}
 	
-	public SortedSet<User> getBill() {
+	public SortedSet<Node> getBill() {
 		return this.getTreeFactory().getBill();
 	}
 }
