@@ -23,14 +23,6 @@ public class UserAction extends ActionSupport {
     private String newPassword;
     private String newPasswordAgain;
 
-	public TimestampCreator getTimer() {
-		return timer;
-	}
-
-	public void setTimer(TimestampCreator timer) {
-		this.timer = timer;
-	}
-
 	public String addUser() {
         /**
          * 将新添加的用户加入排列
@@ -50,27 +42,23 @@ public class UserAction extends ActionSupport {
 	}
 	
 	public String save() {
-
 		this.user.setUserPassword(MD5.getMD5Str(this.user.getUserIDCard().substring(
 				this.user.getUserIDCard().length() - 6,
 				this.user.getUserIDCard().length())));
-		this.user.setUserType(CREATE_USER_TYPE);
-		this.user.setUserCreateTime(this.timer.getTimestamp());
+		this.user.setUserType(UserAction.CREATE_USER_TYPE);
+		this.user.setUserCreateTime(this.getTimer().getTimestamp());
 		this.getUserService().save(this.user);
 		return SUCCESS;
 	}
 	
 	public String saveEdit() {
-		this.getUserService().update(this.user);
+		this.getUserService().update(this.getUser());
 		return SUCCESS;
 	}
 	
 	public String edit() {
-        /*
-		this.user = this.getBigUserService()..findById(
-				Integer.valueOf(ServletActionContext.getRequest().getParameter("userID")));
-				*/
-		return null == this.user ? ERROR : SUCCESS;
+        this.setUser(this.getUserService().findById(Integer.valueOf(ServletActionContext.getRequest().getParameter("userID"))));
+		return null == this.getUser() ? ERROR : SUCCESS;
 	}
 	
 	public String modify() {
@@ -123,4 +111,20 @@ public class UserAction extends ActionSupport {
 	public void setNewPasswordAgain(String newPasswordAgain) {
 		this.newPasswordAgain = newPasswordAgain;
 	}
+
+    public TimestampCreator getTimer() {
+        return timer;
+    }
+
+    public void setTimer(TimestampCreator timer) {
+        this.timer = timer;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

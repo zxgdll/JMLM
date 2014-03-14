@@ -31,8 +31,5 @@
 		<property name="userCreateTime" type="java.sql.Timestamp">
 			<column name="user_create_time" length="19" not-null="true" />
 		</property>
-		<property name="userReferID" type="java.lang.Integer">
-			<column name="user_refer_id" />
-		</property>
 	</class>
 </hibernate-mapping>

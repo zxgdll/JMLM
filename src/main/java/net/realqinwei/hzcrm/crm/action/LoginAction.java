@@ -1,6 +1,7 @@
 package net.realqinwei.hzcrm.crm.action;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -68,6 +69,10 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
                 User user = this.getUserService().findById(this.getLoginId());
 				this.session.put("user", user);
 				this.loginInit(user);
+
+                List<User> allUsers = this.getUserService().getUsers();
+                LOG.debug(allUsers.size());
+                this.session.put("allUsers", allUsers);
 				
 				TreeComponent<Node> tree = this.getTreeRepository().getTree();
 				this.session.put("tree", tree);

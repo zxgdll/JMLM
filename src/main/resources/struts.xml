@@ -84,8 +84,7 @@
 		</action>
 
 	</package>
-	
-	
+
 	<package name="nm-huazhi.secure" extends="nm-huazhi" namespace="/secure">
 	
 		<action name="modify-password" class="UserAction" method="modify">

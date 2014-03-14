@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.been.User;
 import org.apache.log4j.Logger;
 
 public final class AdminFilter implements Filter {
@@ -28,8 +29,8 @@ public final class AdminFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
-        Node node = (Node) session.getAttribute("user");
-		if (null == node || node.getUserType() != 0) {
+        User user = (User) session.getAttribute("user");
+		if (null == user || user.getUserType() != 0) {
 			String realPath = req.getContextPath() + path;
 			LOG.debug(realPath);
 			res.sendRedirect(req.getContextPath() + path);

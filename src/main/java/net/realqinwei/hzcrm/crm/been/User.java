@@ -13,7 +13,6 @@ public final class User implements java.io.Serializable, Comparable<User> {
 	private Integer userType;
 	private String userLoginID;
 	private Timestamp userCreateTime;
-	private Integer userReferID;
 
 	public User() {
 
@@ -33,14 +32,12 @@ public final class User implements java.io.Serializable, Comparable<User> {
 	/** full constructor */
 	public User(String userPassword, String userIDCard, String userName,
                 String userPhone, String userAddress, Integer userType,
-                Timestamp userCreateTime, Integer userReferID, String userLoginID) {
+                Timestamp userCreateTime, String userLoginID) {
 		
 		this(userPassword, userIDCard, userName, userType, userCreateTime);
-		
-		this.userName = userName;
+
 		this.userPhone = userPhone;
 		this.userAddress = userAddress;
-		this.userReferID = userReferID;
 		this.userLoginID = userLoginID;
 	}
 	
@@ -140,14 +137,6 @@ public final class User implements java.io.Serializable, Comparable<User> {
 
 	public void setUserCreateTime(Timestamp userCreateTime) {
 		this.userCreateTime = userCreateTime;
-	}
-
-	public Integer getUserReferID() {
-		return userReferID;
-	}
-
-	public void setUserReferID(Integer userReferID) {
-		this.userReferID = userReferID;
 	}
 
 	@Override

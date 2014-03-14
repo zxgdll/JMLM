@@ -40,27 +40,24 @@
 					<th><s:text name="table.phone" /></th>
 					<th><s:text name="table.address" /></th>
 					<th><s:text name="table.date" /></th>
-					<th><s:text name="table.refer" /></th>
 					<th/>
 				</tr>
 			</thead>
 			<tbody>
-				<s:iterator value="#session['tree'].getBranchs().entrySet()">
+				<s:iterator value="#session['allUsers']">
 					<tr>
 						<td>
-							<a href="<%=basePath%>userlist.action?userID=<s:property value="value.id"/>">
-								<s:property value="value.userName" />(<s:property value="value.id" />) </a>
+							<a href="<%=basePath%>userlist.action?userID=<s:property value="id"/>">
+                                <s:property value="id" />&nbsp;<s:property value="userName" />
+                            </a>
 						</td>
-						<td><s:property value="value.userIDCard" /></td>
-						<td><s:property value="value.userLoginID" /></td>
-						<td><s:property value="value.userPhone" /></td>
-						<td><s:property value="value.userAddress" /></td>
-						<td><s:text name="format.date.user"><s:param value="value.userCreateTime" /></s:text></td>
-						<td><s:property
-								value="value.userReferID == null ? '' : #session['userDAO'].findById(value.userReferID).userName" />
-						</td>
+						<td><s:property value="userIDCard" /></td>
+						<td><s:property value="userLoginID" /></td>
+						<td><s:property value="userPhone" /></td>
+						<td><s:property value="userAddress" /></td>
+						<td><s:text name="format.date.user"><s:param value="userCreateTime" /></s:text></td>
 						<td>
-                            <a href="<%=basePath%>admin/edit-user.action?userID=<s:property value="value.id"/>">
+                            <a href="<%=basePath%>admin/edit-user.action?userID=<s:property value="id"/>">
 								<s:text name="table.modify" />
                             </a>
                         </td>
@@ -82,7 +79,7 @@
 					value="#session['tree'].find(#session['user']).getBranchs().entrySet()">
 					<tr>
 						<td><a
-							href="<%=basePath%>userlist.action?userID=<s:property value="value.id"/>">
+							href="<%=basePath%>userlist.action?userID=<s:property value="#value.id"/>">
 								<s:property value="value.userName" />(<s:property
 									value="value.id" />) </a></td>
 						<td><s:property value="value.userAddress" />
