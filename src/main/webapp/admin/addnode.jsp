@@ -26,7 +26,7 @@
 	
 	<div class="span10">
 	<div class="hero-unit">
-		<s:form action="save-node">
+		<s:form name="nodeFrom" action="save-node">
 		<s:token></s:token>
         <style>
             .table br{display:none}
