@@ -160,7 +160,7 @@
 		</action>
 		
 		<action name="save-node" class="NodeAction" method="save">
-			<result name="input">adduser.jsp</result>
+			<result name="input">addnode.jsp</result>
 			<result>/login-success.jsp</result>
 			<interceptor-ref name="token" />
 			<interceptor-ref name="defaultStack" />

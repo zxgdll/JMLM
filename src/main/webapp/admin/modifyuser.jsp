@@ -32,7 +32,6 @@
 				<s:hidden name="user.id"/>
 				<s:hidden name="user.userPassword"/>
 				<s:hidden name="user.userType"/>
-				<s:hidden name="user.userReferID"/>
 				<s:hidden name="user.userCreateTime"/>
 				<s:textfield langth="32" name="user.userName" label="%{getText('table.name')}"/>
 				<s:textfield langth="32" name="user.userIDCard" label="%{getText('table.IDcard')}"/>

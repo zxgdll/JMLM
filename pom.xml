@@ -186,11 +186,11 @@
 				<configuration>
 					<container>
 						<containerId>tomcat6x</containerId>
-						<home>/Users/qinwei2600/Downloads/apache-tomcat-6.0.32</home>
+						<home>/Users/Wei/Project/QWARE/tomcat6_64</home>
 					</container>
 					<configuration>
 						<type>existing</type>
-						<home>/Users/qinwei2600/Downloads/apache-tomcat-6.0.32</home>
+						<home>/Users/Wei/Project/QWARE/tomcat6_64</home>
 					</configuration>
 				</configuration>
 			</plugin>

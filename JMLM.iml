@@ -40,6 +40,16 @@
         <naming-strategy-map />
       </configuration>
     </facet>
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="NewPersistenceUnit" />
+        </datasource-mapping>
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/persistence.xml" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -52,6 +62,8 @@
     </content>
     <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Hibernate Validator-5.0.1" level="project" />
+    <orderEntry type="library" name="Hibernate Validator-5.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-servlet_2.5_spec:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-jsp_2.0_spec:1.1" level="project" />
@@ -93,8 +105,6 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.4.2" level="project" />
     <orderEntry type="library" name="Hibernate Validator-5.0.1" level="project" />
-    <orderEntry type="library" name="Hibernate Validator-5.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate:3.2.0.ga" level="project" />
   </component>
 </module>
 

@@ -12,11 +12,6 @@ import java.util.List;
 public final class NodeServiceImpl implements NodeService {
 	
 	private NodeDAO nodeDAO;
-
-	@Override
-	public boolean nodeIDExist(Integer userID) {
-		return null == this.getNodeDAO().findNodeByID(userID) ? false : true;
-	}
 	
 	public void setNodeDAO(NodeDAO nodeDAO) {
 		this.nodeDAO = nodeDAO;
@@ -28,26 +23,16 @@ public final class NodeServiceImpl implements NodeService {
 
 	@Override
 	public void save(Node node) {
-		this.nodeDAO.saveNode(node);
+        this.getNodeDAO().saveNode(node);
 	}
 
 	@Override
 	public void update(Node node) {
-		this.nodeDAO.updateNode(node);
-	}
-	
-	@Override
-	public List<Node> getNodes() {
-		List<Node> users = new ArrayList<Node>();
-		for (Node u: this.nodeDAO.findAll()) {
-			u.setUserName(u.getUserName() + "K");
-			users.add(u);
-		}
-		return users;
+        this.getNodeDAO().updateNode(node);
 	}
 
     @Override
     public List<Node> findByOwner(User user) {
-        return null;
+        return this.getNodeDAO().fintByOwner(user);
     }
 }

@@ -33,7 +33,7 @@ public class NodeDAOImpl extends HibernateDaoSupport implements NodeDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Node> findAll() {
-		return (List<Node>) this.getHibernateTemplate().find("FROM Node WHERE userType = 1 ORDER BY userCreateTime");
+		return (List<Node>) this.getHibernateTemplate().find("FROM Node ORDER BY userCreateTime");
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class NodeDAOImpl extends HibernateDaoSupport implements NodeDAO {
 		this.flush();
 	}
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Node> fintByOwner(User user) {
         return (List<Node>) this.getHibernateTemplate().find("FROM Node WHERE nodeUserID = " + user.getId());

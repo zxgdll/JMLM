@@ -20,11 +20,11 @@ public final class NodeRepositoryImpl implements NodeRepository {
 
 	@Override
 	public List<Node> findAll() {
-		return this.nodeDAO.findAll();
+		return this.getNodeDAO().findAll();
 	}
 
 	@Override
 	public Node findById(int id) {
-		return this.nodeDAO.findNodeByID(id);
+		return this.getNodeDAO().findNodeByID(id);
 	}
 }

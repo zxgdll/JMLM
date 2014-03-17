@@ -44,10 +44,9 @@ public class NodeAction extends ActionSupport {
     private void initDoubleSelectContent() {
         this.setUserList(this.getUserService().getUsers());
         this.setUserNodeMap(new HashMap<Integer, List<Node>>());
-        for (User bigUser : this.getUserList()) {
-            this.getUserNodeMap().put(bigUser.getId(), this.getNodeService().findByOwner(bigUser));
+        for (User usr : this.getUserList()) {
+            this.getUserNodeMap().put(usr.getId(), this.getNodeService().findByOwner(usr));
         }
-        LOG.debug(this.getUserNodeMap().get(3).size());
     }
 
     public String addNode() {
@@ -56,6 +55,13 @@ public class NodeAction extends ActionSupport {
     }
 
     public String save() {
+
+        User ownerUser = this.getUserService().findById(this.getNode().getNodeUserID());
+        int nodeNumber = this.getNodeService().findByOwner(ownerUser).size() + 1;
+        String nodeName = ownerUser.getUserName() + "（" + nodeNumber +  "）";
+
+        this.node.setUserName(nodeName);
+        this.node.setUserCreateTime(this.getTimer().getTimestamp());
         this.getNodeService().save(this.node);
         return SUCCESS;
     }

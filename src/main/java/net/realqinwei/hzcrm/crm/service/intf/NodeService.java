@@ -7,11 +7,7 @@ import java.util.List;
 
 public interface NodeService {
 
-	public boolean nodeIDExist(Integer userID);
-	
-	public void save(Node node);
+    public void save(Node node);
 	public void update(Node node);
-	
-	public List<Node> getNodes();
     public List<Node> findByOwner(User user);
 }

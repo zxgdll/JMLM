@@ -12,8 +12,9 @@ import org.apache.struts2.ServletActionContext;
 
 public class UserAction extends ActionSupport {
 
+    public static final Integer CREATE_USER_TYPE = 1;
+
 	private static final long serialVersionUID = -9183608064713571507L;
-	private static final Integer CREATE_USER_TYPE = 1;
 	private static final Logger LOG = Logger.getLogger(UserAction.class);
 
     private TimestampCreator timer;
@@ -42,6 +43,7 @@ public class UserAction extends ActionSupport {
 	}
 	
 	public String save() {
+        LOG.debug(this.user);
 		this.user.setUserPassword(MD5.getMD5Str(this.user.getUserIDCard().substring(
 				this.user.getUserIDCard().length() - 6,
 				this.user.getUserIDCard().length())));

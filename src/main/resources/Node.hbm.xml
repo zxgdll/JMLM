@@ -4,38 +4,23 @@
 <hibernate-mapping>
 	<class name="net.realqinwei.hzcrm.crm.been.Node" table="node">
 		<id name="id" type="java.lang.Integer">
-			<column name="user_id" />
+			<column name="node_id" />
 			<generator class="identity" />
 		</id>
-		<property name="userPassword" type="java.lang.String">
-			<column name="user_password" length="32" not-null="true" />
-		</property>
-		<property name="userIDCard" type="java.lang.String">
-			<column name="user_idcard" length="20" not-null="true" unique="true" />
-		</property>
 		<property name="userName" type="java.lang.String">
-			<column name="user_name" length="128" not-null="true" />
-		</property>
-		<property name="userPhone" type="java.lang.String">
-			<column name="user_phone" length="32" />
-		</property>
-		<property name="userAddress" type="java.lang.String">
-			<column name="user_address" length="128" />
-		</property>
-		<property name="userType" type="java.lang.Integer">
-			<column name="user_type" not-null="true" />
-		</property>
-		<property name="userLoginID" type="java.lang.String">
-			<column name="user_login_id" length="20" unique="true" />
+			<column name="node_name" length="128" not-null="true" />
 		</property>
 		<property name="userCreateTime" type="java.sql.Timestamp">
-			<column name="user_create_time" length="19" not-null="true" />
+			<column name="node_create_time" length="19" not-null="true" />
 		</property>
 		<property name="userReferID" type="java.lang.Integer">
-			<column name="user_refer_id" />
+			<column name="node_refer_id" />
 		</property>
         <property name="nodeUserID" type="java.lang.Integer">
-            <column name="node_user_id" />
+            <column name="node_owner_id" />
+        </property>
+        <property name="nodeLoaderID" type="java.lang.Integer">
+            <column name="node_loader_id" />
         </property>
 	</class>
 </hibernate-mapping>
