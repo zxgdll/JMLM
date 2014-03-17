@@ -26,18 +26,31 @@
 	
 	<div class="span10">
 	<div class="hero-unit">
-		<s:form name="nodeFrom" action="save-node">
+		<s:form action="save-node">
 		<s:token></s:token>
         <style>
             .table br{display:none}
         </style>
 		<table class="table">
-            <s:doubleselect id= "doubleSelectID" name="doubleSelectName" label="%{getText('table.refer')}"
-                            headerKey="0" headerValue="%{getText('adduser.select.headerValue')}"
-                            list="userList" listKey="id" listValue="userName"
+            <s:select name="node.nodeUserID" label="%{getText('table.owner')}"
+                      list="userList" listKey="id" listValue="id + ' ' + userName"
+                      headerKey="0" headerValue="%{getText('adduser.select.headerValue')}" />
+
+            <s:doubleselect id= "doubleSelectID" name="node.userReferID" label="%{getText('table.refer')}"
+                            headerKey="0" headerValue="%{getText('table.owner.select')}"
+                            list="userList" listKey="id" listValue="id + ' ' + userName"
                             doubleId="nodeSelectID" doubleName="nodeSelectName"
                             doubleValue="%{getText('adduser.select.headerValue')}"
                             doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
+
+            <s:doubleselect id= "doubleSelectID2" name="node.nodeLoaderID" label="%{getText('table.owner.load')}"
+                            headerKey="0" headerValue="%{getText('table.owner.load')}"
+                            list="userList" listKey="id" listValue="id + ' ' + userName"
+                            doubleId="nodeSelectID2" doubleName="nodeSelectName2"
+                            doubleValue="%{getText('adduser.select.headerValue')}"
+                            doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
+
+            <s:submit value="%{getText('adduser.submit')}" />
 		</table>
 		</s:form>
 	</div>
