@@ -1,9 +1,6 @@
-package net.earthcoder.ganoderma.fee;
+package net.earthcoder.jmlm.domain;
 
-import java.util.*;
-
-import net.earthcoder.ganoderma.man.Human;
-
+import java.util.Date;
 
 
 public interface Fee<E extends Human> {

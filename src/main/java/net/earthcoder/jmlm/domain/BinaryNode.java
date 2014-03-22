@@ -1,9 +1,8 @@
-package net.earthcoder.ganoderma.struct;
+package net.earthcoder.jmlm.domain;
 
-import java.util.*;
-
-import net.earthcoder.ganoderma.Relationship;
-import net.earthcoder.ganoderma.man.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BinaryNode<E extends Human> extends Node<E> {
 

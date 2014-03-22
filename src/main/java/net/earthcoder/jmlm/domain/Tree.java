@@ -1,4 +1,4 @@
-package net.earthcoder.ganoderma.struct;
+package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
 

@@ -1,20 +1,20 @@
-package net.earthcoder.ganoderma;
+package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
 
-public class BillItem<E> {
+public class BillItem {
 
     private Date date;
     private long fee;
-    private E people;
+    private Human people;
     
-    public BillItem(Date date, long fee, E people) {
+    public BillItem(Date date, long fee, Human people) {
         this.date = date;
         this.fee = fee;
         this.people = people;
     }
     
-    public E getPeople() {
+    public Human getPeople() {
         return people;
     }
     

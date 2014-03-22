@@ -1,10 +1,10 @@
 package net.earthcoder.ganoderma;
 
-import java.util.*;
+import net.earthcoder.jmlm.domain.BinaryTree;
+import net.earthcoder.jmlm.domain.People;
+import net.earthcoder.jmlm.domain.Tree;
 
-import net.earthcoder.ganoderma.man.People;
-import net.earthcoder.ganoderma.struct.BinaryTree;
-import net.earthcoder.ganoderma.struct.Tree;
+import java.util.*;
 
 public class BinaryPlanTest {
 	

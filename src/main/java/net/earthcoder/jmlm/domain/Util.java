@@ -1,9 +1,9 @@
-package net.earthcoder.ganoderma;
+package net.earthcoder.jmlm.domain;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class Util {
+public final class Util {
 
     public static final Date trunc(Date date) {
         Calendar cal = Calendar.getInstance();

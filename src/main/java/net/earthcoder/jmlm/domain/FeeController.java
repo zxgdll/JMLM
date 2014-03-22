@@ -1,7 +1,6 @@
-package net.earthcoder.ganoderma.fee;
+package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
-import net.earthcoder.ganoderma.man.Human;
 
 public final class FeeController<E extends Human> {
     

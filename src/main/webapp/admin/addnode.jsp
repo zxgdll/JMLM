@@ -36,17 +36,17 @@
                       list="userList" listKey="id" listValue="id + ' ' + userName"
                       headerKey="0" headerValue="%{getText('adduser.select.headerValue')}" />
 
-            <s:doubleselect id= "doubleSelectID" name="node.userReferID" label="%{getText('table.refer')}"
+            <s:doubleselect id= "doubleSelectID" label="%{getText('table.refer')}"
                             headerKey="0" headerValue="%{getText('table.owner.select')}"
                             list="userList" listKey="id" listValue="id + ' ' + userName"
-                            doubleId="nodeSelectID" doubleName="nodeSelectName"
+                            doubleId="nodeSelectID" doubleName="node.userReferID"
                             doubleValue="%{getText('adduser.select.headerValue')}"
                             doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
 
-            <s:doubleselect id= "doubleSelectID2" name="node.nodeLoaderID" label="%{getText('table.owner.load')}"
+            <s:doubleselect id= "doubleSelectID2" label="%{getText('table.owner.load')}"
                             headerKey="0" headerValue="%{getText('table.owner.load')}"
                             list="userList" listKey="id" listValue="id + ' ' + userName"
-                            doubleId="nodeSelectID2" doubleName="nodeSelectName2"
+                            doubleId="nodeSelectID2" doubleName="node.nodeLoaderID"
                             doubleValue="%{getText('adduser.select.headerValue')}"
                             doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
 

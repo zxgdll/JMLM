@@ -1,4 +1,4 @@
-package net.earthcoder.ganoderma;
+package net.earthcoder.jmlm.domain;
 
 public class Relationship {
 

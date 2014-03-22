@@ -1,4 +1,4 @@
-package net.earthcoder.ganoderma.man;
+package net.earthcoder.jmlm.domain;
 
 public final class People extends AbstractHuman {
     

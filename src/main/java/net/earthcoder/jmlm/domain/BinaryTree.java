@@ -1,10 +1,8 @@
-package net.earthcoder.ganoderma.struct;
+package net.earthcoder.jmlm.domain;
 
-import java.util.*;
-
-import net.earthcoder.ganoderma.Relationship;
-import net.earthcoder.ganoderma.fee.*;
-import net.earthcoder.ganoderma.man.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public final class BinaryTree<E extends Human> extends Tree<E> {
 
@@ -172,7 +170,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         }
         flash(newNode, crateDate);
     }
-    
+
     protected void printNode2(BinaryNode<E> node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
@@ -189,7 +187,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         str.append(node);
         str.append(" " + node.getContent().name());
         if (null != node) {
-            
+
             str.append(",");
             str.append("Fa:" + node.getFather()).append(",");
             str.append("Le:" + node.getLevel()).append(",");

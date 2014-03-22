@@ -1,7 +1,4 @@
-package net.earthcoder.ganoderma.struct;
-
-import net.earthcoder.ganoderma.fee.FeeController;
-import net.earthcoder.ganoderma.man.Human;
+package net.earthcoder.jmlm.domain;
 
 public class Node<E extends Human>  {
 
