@@ -3,10 +3,10 @@ package net.earthcoder.jmlm.domain;
 import java.util.Date;
 
 
-public interface Fee<E extends Human> {
+public interface Fee {
 
     long sum();
-    void add(Date date, E people);
-    void add(Date date, E people, long fee);
+    void add(Date date, Human people);
+    void add(Date date, Human people, long fee);
     long defaultValue();
 }

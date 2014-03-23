@@ -1,8 +1,6 @@
 package net.earthcoder.jmlm.domain;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public final class BinaryTree<E extends Human> extends Tree<E> {
 
@@ -10,13 +8,13 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
     private BinaryNode<E> fastNextNode;
     private long operatingExpensesSum;
     private long counselingFeeSum;
-    private Fee<E> initialFee = new InitialFee<E>();
+    private Fee initialFee = new InitialFee();
 
     private BinaryNode<E> findNodeByID(Integer id) {
         if (null != rootNode) {
             Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
             queue.offer(rootNode);
-            BinaryNode<E> node = null;
+            BinaryNode<E> node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 if (node.getContent().getID().equals(id)) {
@@ -45,7 +43,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
                         Integer newNodeFatherID = newNodeAncestor.getId();
                         Boolean nodefatherFlashed = node.flashedForAncestor(nodefatherID);
                         Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeFatherID);
-                        if (nodefatherID == newNodeFatherID && !nodefatherFlashed && !newNodeFatherFlashed
+                        if (nodefatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
                                 && !nodeAncestor.getFlag().equals(newNodeAncestor.getFlag())) {
                             return findNodeByID(nodefatherID);
                         }
@@ -60,7 +58,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         if (null != this.rootNode) {
             Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
             queue.offer(this.rootNode);
-            BinaryNode<E> node = null;
+            BinaryNode<E> node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
 
@@ -148,15 +146,13 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
 
     @Override
     public void addNode(E people, Date crateDate) {
-        BinaryNode<E> newNode = null;
+        BinaryNode<E> newNode;
         if (null == rootNode) {
             newNode = new BinaryNode<E>(people, null, crateDate);
             setRoot(newNode);
             fastNextNode = rootNode;
         } else {
-            if (fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty()) {
-                ;
-            } else {
+            if (!(fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty())) {
                 levelOrderTraverse();
             }
             newNode = new BinaryNode<E>(people, fastNextNode, crateDate);
@@ -174,7 +170,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
     protected void printNode2(BinaryNode<E> node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
-        str.append("\t" + node.getContent().name() + "\t");
+        str.append("\t").append(node.getContent().name()).append("\t");
         if (null != node) {
             str.append(node.getCounselingFee()).append("\t");
             str.append(node.getOperatingExpenses());
@@ -185,14 +181,13 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
     protected void printNode(BinaryNode<E> node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
-        str.append(" " + node.getContent().name());
+        str.append(" ").append(node.getContent().name());
         if (null != node) {
-
             str.append(",");
-            str.append("Fa:" + node.getFather()).append(",");
-            str.append("Le:" + node.getLevel()).append(",");
-            str.append("L:" + node.getLeft()).append(",");
-            str.append("R:" + node.getRight()).append(",");
+            str.append("Fa:").append(node.getFather()).append(",");
+            str.append("Le:").append(node.getLevel()).append(",");
+            str.append("L:").append(node.getLeft()).append(",");
+            str.append("R:").append(node.getRight()).append(",");
             str.append(node.getCounselingFee()).append(",");
             str.append(node.getOperatingExpenses()).append(",");
             str.append("[");
@@ -209,7 +204,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         if (null != this.rootNode) {
             Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
             queue.offer(this.rootNode);
-            BinaryNode<E> node = null;
+            BinaryNode<E> node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 printNode2(node);
@@ -231,7 +226,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         if (null != rootNode) {
             Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
             queue.offer(rootNode);
-            BinaryNode<E> node = null;
+            BinaryNode<E> node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 if (node.leftIsEmpty()) {

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Wei on 2014/3/22.
  */
-public final class DailyBonusCapStrategy extends CapStrategy {
+public final class DailyBonusCapStrategy implements CapStrategy {
 
     private static CapStrategy instance;
     private long dailyCap;

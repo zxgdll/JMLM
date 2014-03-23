@@ -1,10 +1,8 @@
 package net.earthcoder.jmlm.domain;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-public class BinaryNode<E extends Human> extends Node<E> {
+public final class BinaryNode<E extends Human> extends Node<E> {
 
     private BinaryNode<E> left;
     private BinaryNode<E> right;

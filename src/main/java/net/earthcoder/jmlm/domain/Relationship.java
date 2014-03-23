@@ -1,6 +1,6 @@
 package net.earthcoder.jmlm.domain;
 
-public class Relationship {
+public final class Relationship {
 
     public Integer getId() {
         return id;

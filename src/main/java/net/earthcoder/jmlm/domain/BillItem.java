@@ -2,7 +2,7 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
 
-public class BillItem {
+public final class BillItem {
 
     private Date date;
     private long fee;

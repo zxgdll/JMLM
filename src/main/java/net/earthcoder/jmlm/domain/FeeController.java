@@ -8,18 +8,18 @@ public final class FeeController<E extends Human> {
 
     private boolean frozen = false;
     
-    private Fee<E> counselingFee = new CounselingFee<E>();
-    private Fee<E> operatingExpenses = new OperatingExpenses<E>();
+    private Fee counselingFee = new CounselingFee();
+    private Fee operatingExpenses = new OperatingExpenses();
 
-    public Fee<E> getCounselingFee() {
+    public Fee getCounselingFee() {
         return counselingFee;
     }
 
-    public Fee<E> getOperatingExpenses() {
+    public Fee getOperatingExpenses() {
         return operatingExpenses;
     }
     
-    private void addFee(Date date, E content, Fee<E> fee) {
+    private void addFee(Date date, E content, Fee fee) {
         long sum = counselingFee.sum() + operatingExpenses.sum();
         if (sum + fee.defaultValue() < OUT_LEVEL) {
             fee.add(date, content, fee.defaultValue());

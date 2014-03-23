@@ -1,6 +1,6 @@
 package net.earthcoder.jmlm.domain;
 
-public class Node<E extends Human>  {
+public abstract class Node<E extends Human>  {
 
     protected E content;
     protected FeeController<E> feeController = new FeeController<E>();

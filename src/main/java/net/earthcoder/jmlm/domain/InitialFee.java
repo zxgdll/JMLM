@@ -1,10 +1,8 @@
 package net.earthcoder.jmlm.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public final class InitialFee<E extends Human> extends AbstractFee<E> {
+public final class InitialFee extends AbstractFee {
 
     private static final int DEFAULT_FEE = 2200;
 
@@ -18,7 +16,7 @@ public final class InitialFee<E extends Human> extends AbstractFee<E> {
     }
 
     @Override
-    public void add(Date date, E people) {
+    public void add(Date date, Human people) {
         add(date, people, DEFAULT_FEE);
     }
 }
