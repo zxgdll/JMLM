@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.nm-huazhi</groupId>
-	<artifactId>site2</artifactId>
+	<groupId>net.earthcoder</groupId>
+	<artifactId>jmlm</artifactId>
 	<packaging>war</packaging>
 	<version>2.0.1-SNAPSHOT</version>
-	<name>nm-huazhi.com</name>
+	<name>jmlm-web</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -136,7 +136,7 @@
 
 	<build>
 
-		<finalName>nm-huazhi</finalName>
+		<finalName>jmlm-web</finalName>
 
 		<resources>
 			<resource>
