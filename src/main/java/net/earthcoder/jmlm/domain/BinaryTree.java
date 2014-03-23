@@ -2,22 +2,22 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.*;
 
-public final class BinaryTree<E extends Human> extends Tree<E> {
+public final class BinaryTree implements Tree {
 
-    private BinaryNode<E> rootNode;
-    private BinaryNode<E> fastNextNode;
+    private BinaryNode rootNode;
+    private BinaryNode fastNextNode;
     private long operatingExpensesSum;
     private long counselingFeeSum;
     private Fee initialFee = new InitialFee();
 
-    private BinaryNode<E> findNodeByID(Integer id) {
+    private BinaryNode findNodeByID(Integer nodeID) {
         if (null != rootNode) {
-            Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
-            BinaryNode<E> node;
+            BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
-                if (node.getContent().getID().equals(id)) {
+                if (node.getContent().getID().equals(nodeID)) {
                     return node;
                 }
                 if (!node.leftIsEmpty()) {
@@ -31,7 +31,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         return null;
     }
 
-    private BinaryNode<E> getFlashAncestor(BinaryNode<E> node, BinaryNode<E> newNode) {
+    private BinaryNode getFlashAncestor(BinaryNode node, BinaryNode newNode) {
         if (node.getLevel() == newNode.getLevel() && !node.equals(newNode)) {
             for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
                 for (Relationship nodeAncestor : node.getRelationshipSet()) {
@@ -54,21 +54,21 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         return null;
     }
 
-    private void flashNodes(BinaryNode<E> newNode, Date date) {
+    private void flashNodes(BinaryNode newNode, Date date) {
         if (null != this.rootNode) {
-            Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(this.rootNode);
-            BinaryNode<E> node;
+            BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
 
                 if (null == newNode.getFather()) {
                     continue;
                 }
-                BinaryNode<E> flashAncestor = getFlashAncestor(node, newNode);
+                BinaryNode flashAncestor = getFlashAncestor(node, newNode);
                 if (null != flashAncestor) {
 
-                    BinaryNode<E> theNode = (null == flashAncestor.getFather() ? flashAncestor : flashAncestor.getFather());
+                    BinaryNode theNode = (null == flashAncestor.getFather() ? flashAncestor : flashAncestor.getFather());
                     theNode.addCounselingFee(date);
                     flashAncestor.addOperatingExpenses(date);
 
@@ -96,7 +96,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         }
     }
 
-    private void flash(BinaryNode<E> newNode, Date date) {
+    private void flash(BinaryNode newNode, Date date) {
         initialFee.add(date, newNode.getContent());
         flashNodes(newNode, date);
     }
@@ -114,17 +114,17 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         System.out.println(str.toString());
     }
 
-    public void addNode(E people, Date crateDate, Integer fatherNodeID, String flag) {
-        BinaryNode<E> newNode = null;
+    public void addNode(Human people, Date crateDate, Integer fatherNodeID, String flag) {
+        BinaryNode newNode = null;
         if (null == rootNode) {
-            newNode = new BinaryNode<E>(people, null, crateDate);
-            setRoot(newNode);
+            newNode = new RootBinaryNode(people, crateDate);
+            rootNode = newNode;
         } else if (null != fatherNodeID) {
-            BinaryNode<E> fatherNode = this.findNodeByID(fatherNodeID);
+            BinaryNode fatherNode = this.findNodeByID(fatherNodeID);
             if (null == fatherNode) {
                 throw new RuntimeException("Father not find.");
             } else {
-                newNode = new BinaryNode<E>(people, fatherNode, crateDate);
+                newNode = new RegularBinaryNode(people, crateDate, fatherNode);
             }
             if ("L".equals(flag)) {
                 fatherNode.leftLoad(newNode);
@@ -144,19 +144,18 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         flash(newNode, crateDate);
     }
 
-    @Override
-    public void addNode(E people, Date crateDate) {
-        BinaryNode<E> newNode;
+    public void addNode(Human people, Date crateDate) {
+        BinaryNode newNode;
         if (null == rootNode) {
-            newNode = new BinaryNode<E>(people, null, crateDate);
-            setRoot(newNode);
+            newNode = new RootBinaryNode(people, crateDate);
+            rootNode = newNode;
             fastNextNode = rootNode;
         } else {
             if (!(fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty())) {
                 levelOrderTraverse();
             }
-            newNode = new BinaryNode<E>(people, fastNextNode, crateDate);
-            fastNextNode.autoLoad(newNode);
+            newNode = new RegularBinaryNode(people, crateDate, fastNextNode);
+            fastNextNode.autoMountNode(newNode);
             if (newNode == newNode.getFather().getLeft()) {
                 newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "LEFT");
             }
@@ -167,7 +166,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         flash(newNode, crateDate);
     }
 
-    protected void printNode2(BinaryNode<E> node) {
+    protected void printNode2(BinaryNode node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
         str.append("\t").append(node.getContent().name()).append("\t");
@@ -178,7 +177,7 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         System.out.println(str.toString());
     }
 
-    protected void printNode(BinaryNode<E> node) {
+    protected void printNode(BinaryNode node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
         str.append(" ").append(node.getContent().name());
@@ -202,9 +201,9 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
 
     protected void printNode() {
         if (null != this.rootNode) {
-            Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(this.rootNode);
-            BinaryNode<E> node;
+            BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 printNode2(node);
@@ -224,9 +223,9 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
 
     private void levelOrderTraverse() {
         if (null != rootNode) {
-            Queue<BinaryNode<E>> queue = new LinkedList<BinaryNode<E>>();
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
-            BinaryNode<E> node;
+            BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 if (node.leftIsEmpty()) {
@@ -248,11 +247,6 @@ public final class BinaryTree<E extends Human> extends Tree<E> {
         }
     }
 
-    private void setRoot(BinaryNode<E> rootNode) {
-        this.rootNode = rootNode;
-    }
-
-    @Override
     public void print() {
         this.printNode();
         this.printBill();

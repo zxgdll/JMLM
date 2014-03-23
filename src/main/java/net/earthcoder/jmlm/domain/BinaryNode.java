@@ -1,67 +1,46 @@
 package net.earthcoder.jmlm.domain;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public final class BinaryNode<E extends Human> extends Node<E> {
+/**
+ * Created by Wei on 2014/3/23.
+ */
+public abstract class BinaryNode {
 
-    private BinaryNode<E> left;
-    private BinaryNode<E> right;
-    private BinaryNode<E> father;
-    private int level;
+    private Human content;
+    private FeeController feeController;
+    private BinaryNode left;
+    private BinaryNode right;
     private Set<Relationship> relationshipSet;
     private Date createDate;
-    
-    public BinaryNode(E content, BinaryNode<E> father, Date createDate) {
-        this.createDate = createDate;
+    protected int level;
+
+    public BinaryNode(Human content, Date createDate) {
         this.content = content;
-        this.father = father;
-        this.level = (null == this.father ? 1 : this.father.level + 1);
-        this.relationshipSet = new HashSet<Relationship>();
-        if (null != this.father) {
-            for (Relationship r : this.father.relationshipSet) {
-                this.relationshipSet.add(new Relationship(r.getId(), r.getFlag()));
-            }
-            this.relationshipSet.add(new Relationship(this.father.getContent().getID(), null));
-        }
-    }
-    
-    public void addCounselingFee(Date date) {
-        super.feeController.addCounselingFee(date, super.content);
+        this.createDate = createDate;
+        feeController = new FeeController();
+        relationshipSet = new HashSet<Relationship>();
     }
 
-    public void addOperatingExpenses(Date date) {
-        super.feeController.addOperatingExpenses(date, super.content);
-    }
-
-    public long getCounselingFee() {
-        return feeController.getCounselingFee().sum();
-    }
-
-    public long getOperatingExpenses() {
-        return feeController.getOperatingExpenses().sum();
-    }
-
-    public Date getCreateDate() {
-        return this.createDate;
-    }
-
-    protected void autoLoad(BinaryNode<E> newNode) {
+    protected void autoMountNode(BinaryNode newNode) {
         if (this.leftIsEmpty()) {
             this.leftLoad(newNode);
         } else if (this.rightIsEmpty()) {
             this.rightLoad(newNode);
         }
     }
-    
-    protected void leftLoad(BinaryNode<E> newNode) {
+
+    protected void leftLoad(BinaryNode newNode) {
         if (!this.leftIsEmpty()) {
             throw new RuntimeException("Load node in a not empty node.");
         } else {
             this.left = newNode;
         }
     }
-    
-    protected void rightLoad(BinaryNode<E> newNode) {
+
+    protected void rightLoad(BinaryNode newNode) {
         if (!this.rightIsEmpty()) {
             throw new RuntimeException("Load node in a not empty node.");
         } else {
@@ -69,17 +48,77 @@ public final class BinaryNode<E extends Human> extends Node<E> {
         }
     }
 
-    public boolean leftIsEmpty() {
+    protected Boolean flashedForAncestor(Integer ancestor) {
+        for (Relationship r : this.relationshipSet) {
+            if (r.getId().equals(ancestor)) {
+                return r.getFlashed();
+            }
+        }
+        return null;
+    }
+
+    protected void setRelationshipFlag(Integer id, String flag) {
+        for (Relationship r : this.relationshipSet) {
+            if (r.getId().equals(id)) {
+                r.setFlag(flag);
+                break;
+            }
+        }
+    }
+
+    protected boolean leftIsEmpty() {
         return null == this.left;
     }
 
-    public boolean rightIsEmpty() {
+    protected boolean rightIsEmpty() {
         return null == this.right;
     }
 
+    protected void addCounselingFee(Date date) {
+        feeController.addCounselingFee(date, this.getContent());
+    }
+
+    protected void addOperatingExpenses(Date date) {
+        feeController.addOperatingExpenses(date, this.getContent());
+    }
+
+    protected long getCounselingFee() {
+        return feeController.getCounselingFee().sum();
+    }
+
+    protected long getOperatingExpenses() {
+        return feeController.getOperatingExpenses().sum();
+    }
+
+    protected Set<Relationship> getRelationshipSet() {
+        return relationshipSet;
+    }
+
+    protected Human getContent() {
+        return content;
+    }
+
+    protected int getLevel() {
+        return this.level;
+    }
+
+    protected BinaryNode getLeft() {
+        return left;
+    }
+
+    protected BinaryNode getRight() {
+        return right;
+    }
+
+    protected Date getCreateDate() {
+        return createDate;
+    }
+
+    protected abstract BinaryNode getFather();
+
     @Override
     public int hashCode() {
-        return this.content.hashCode();
+        return this.getContent().hashCode();
     }
 
     @Override
@@ -94,60 +133,12 @@ public final class BinaryNode<E extends Human> extends Node<E> {
             return false;
         }
         @SuppressWarnings("unchecked")
-        BinaryNode<E> otherNode = (BinaryNode<E>) otherObject;
-        return this.content.equals(otherNode.content);
+        RegularBinaryNode otherNode = (RegularBinaryNode) otherObject;
+        return this.getContent().equals(otherNode.getContent());
     }
 
     @Override
     public String toString() {
-        return this.content.toString();
-    }
-
-    protected Boolean flashedForAncestor(Integer ancestor) {
-        for (Relationship r : this.relationshipSet) {
-            if (r.getId().equals(ancestor)) {
-                return r.getFlashed();
-            }
-        }
-        return null;
-    }
-
-    protected Set<Relationship> getRelationshipSet() {
-        return this.relationshipSet;
-    }
-
-
-
-    protected void setRelationshipFlag(Integer id, String flag) {
-        for (Relationship r : this.relationshipSet) {
-            if (r.getId().equals(id)) {
-                r.setFlag(flag);
-                break;
-            }
-        }
-    }
-
-    public int getLevel() {
-        return this.level;
-    }
-
-    protected BinaryNode<E> getFather() {
-        return this.father;
-    }
-
-    public BinaryNode<E> getLeft() {
-        return left;
-    }
-
-    protected void setLeft(BinaryNode<E> left) {
-        this.left = left;
-    }
-
-    public BinaryNode<E> getRight() {
-        return right;
-    }
-
-    protected void setRight(BinaryNode<E> right) {
-        this.right = right;
+        return this.getContent().toString();
     }
 }

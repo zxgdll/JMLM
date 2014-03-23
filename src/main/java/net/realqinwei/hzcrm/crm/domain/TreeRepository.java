@@ -20,7 +20,7 @@ public final class TreeRepository {
 	public TreeComponent<Node> getTree() {
 		TreeComponent<Node> tree = null;
 		try {
-			tree = this.getTreeFactory().getTree();
+			tree = getTreeFactory().getTree();
 		} catch (AddErrorException e) {
 			e.printStackTrace();
 		}

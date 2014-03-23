@@ -15,8 +15,8 @@ public final class BinaryPlanTest4 {
     private static final String FLAG = "|";
     private static final String FLAG_PATTERN = "\\|";
     private static final String BLANK = "";
-    
-    Tree<People> plan = new BinaryTree<People>();
+
+    Tree plan = new BinaryTree();
     Calendar calendar = Calendar.getInstance();
     private static final String[] names;
     

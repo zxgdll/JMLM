@@ -2,7 +2,7 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
 
-public final class FeeController<E extends Human> {
+public final class FeeController {
     
     private static final long OUT_LEVEL = 600000;
 
@@ -19,7 +19,7 @@ public final class FeeController<E extends Human> {
         return operatingExpenses;
     }
     
-    private void addFee(Date date, E content, Fee fee) {
+    private void addFee(Date date, Human content, Fee fee) {
         long sum = counselingFee.sum() + operatingExpenses.sum();
         if (sum + fee.defaultValue() < OUT_LEVEL) {
             fee.add(date, content, fee.defaultValue());
@@ -32,7 +32,7 @@ public final class FeeController<E extends Human> {
         }
     }
 
-    public void addCounselingFee(Date date, E content) {
+    public void addCounselingFee(Date date, Human content) {
         if (frozen) {
             return;
         } else {
@@ -40,7 +40,7 @@ public final class FeeController<E extends Human> {
         }
     }
 
-    public void addOperatingExpenses(Date date, E content) {
+    public void addOperatingExpenses(Date date, Human content) {
         if (frozen) {
             return;
         } else {

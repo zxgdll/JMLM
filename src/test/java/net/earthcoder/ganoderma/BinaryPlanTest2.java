@@ -3,14 +3,13 @@ package net.earthcoder.ganoderma;
 
 import net.earthcoder.jmlm.domain.BinaryTree;
 import net.earthcoder.jmlm.domain.People;
-import net.earthcoder.jmlm.domain.Tree;
 
 import java.util.*;
 
 public class BinaryPlanTest2 {
 	
     public static void main(String[] args) {
-    	Tree<People> plan = new BinaryTree<People>();
+        BinaryTree plan = new BinaryTree();
         Calendar calendar = Calendar.getInstance();
 
         plan.addNode(new People(1, "于景威（1）"), calendar.getTime(), null, null);

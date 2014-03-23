@@ -2,30 +2,6 @@ package net.earthcoder.jmlm.domain;
 
 public final class Relationship {
 
-    public Integer getId() {
-        return id;
-    }
-
-    protected void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    public Boolean getFlashed() {
-        return flashed;
-    }
-
-    public void setFlashed(Boolean flashed) {
-        this.flashed = flashed;
-    }
-
     private Integer id;
     private String flag;
     private Boolean flashed;
@@ -54,5 +30,29 @@ public final class Relationship {
         }
         Relationship otherRelationship = (Relationship) otherObject;
         return this.id.equals(otherRelationship.id);
+    }
+
+    protected void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public Boolean getFlashed() {
+        return flashed;
+    }
+
+    public void setFlashed(Boolean flashed) {
+        this.flashed = flashed;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

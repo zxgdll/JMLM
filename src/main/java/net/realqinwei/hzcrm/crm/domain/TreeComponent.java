@@ -2,14 +2,10 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.TreeMap;
+import java.util.*;
 
+import net.earthcoder.jmlm.domain.Human;
+import net.earthcoder.jmlm.domain.Tree;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 import net.realqinwei.hzcrm.crm.domain.exception.UpdateErrorException;
 
@@ -19,7 +15,7 @@ import net.realqinwei.hzcrm.crm.domain.exception.UpdateErrorException;
  *
  * @param <T>
  */
-public final class TreeComponent<T> extends Observable implements Serializable, Observer {
+public final class TreeComponent<T> extends Observable implements Serializable, Observer, Tree {
 	
 	private static final int MAX_OBSERVE_LEVEL = 5;
 
@@ -402,8 +398,7 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	}
 
 	/**
-	 * @param 由
-	 *            refer 介绍 value 加入
+	 * @param  refer 介绍 value 加入
 	 * 
 	 */
 	public final void addComponent(T refer, T value) throws AddErrorException {
@@ -549,4 +544,14 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 		default: return 0;
 		}
 	}
+
+    @Override
+    public void addNode(Human people, Date crateDate, Integer fatherNodeID, String flag) {
+
+    }
+
+    @Override
+    public void print() {
+
+    }
 }

@@ -49,7 +49,7 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	private boolean isPasswordRight() {
 		return this.getUserService().isPasswordRight(this.getLoginId(), this.getPassword());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void loginInit(User user) {
 		Map<Integer, User> onlineUsers = (Map<Integer, User>) this.application.get("online");
@@ -66,24 +66,24 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 		if (this.userIDExist()) {
 			if (this.isPasswordRight()) {
 
-                User user = this.getUserService().findById(this.getLoginId());
-				this.session.put("user", user);
-				this.loginInit(user);
+                User loginUser = getUserService().findById(getLoginId());
+				this.session.put("user", loginUser);
+				this.loginInit(loginUser);
 
-                List<User> allUsers = this.getUserService().getUsers();
+                List<User> allUsers = getUserService().getUsers();
                 LOG.debug(allUsers.size());
                 this.session.put("allUsers", allUsers);
 				
-				TreeComponent<Node> tree = this.getTreeRepository().getTree();
+				TreeComponent<Node> tree = getTreeRepository().getTree();
 				this.session.put("tree", tree);
-				this.session.put("userDAO", this.getNodeRepository());
+				this.session.put("userDAO", getNodeRepository());
 				
-				SortedSet<Node> users = this.getTreeRepository().getBill();
+				SortedSet<Node> users = getTreeRepository().getBill();
 				this.session.put("users", users);
 				
-				this.getLogService().saveLog(new LoginLog(user.getId(), user.getUserName(), timer.getTimestamp()));
+				this.getLogService().saveLog(new LoginLog(loginUser.getId(), loginUser.getUserName(), timer.getTimestamp()));
 				
-				return user.getUserType() == 0 ? LoginAction.USER_TYPE_ADMIN : SUCCESS;
+				return loginUser.getUserType() == 0 ? LoginAction.USER_TYPE_ADMIN : SUCCESS;
 			} else {
 				LOG.warn("Password is not right");
 				return INPUT;

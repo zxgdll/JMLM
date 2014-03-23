@@ -2,7 +2,6 @@ package net.earthcoder.ganoderma;
 
 import net.earthcoder.jmlm.domain.BinaryTree;
 import net.earthcoder.jmlm.domain.People;
-import net.earthcoder.jmlm.domain.Tree;
 
 import java.util.*;
 
@@ -12,7 +11,7 @@ public class BinaryPlanTest {
 	private static final int PEOPLE_PER_DAY = 25;
 	
     public static void main(String[] args) {
-    	Tree<People> plan = new BinaryTree<People>();
+        BinaryTree plan = new BinaryTree();
         Calendar calendar = Calendar.getInstance();
         
         int peopleID = 0;
