@@ -18,4 +18,9 @@ public final class RootBinaryNode extends BinaryNode {
     protected BinaryNode getFather() {
         return null;
     }
+
+    @Override
+    protected BinaryNode getRefer() {
+        return null;
+    }
 }

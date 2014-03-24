@@ -115,6 +115,7 @@ public abstract class BinaryNode {
     }
 
     protected abstract BinaryNode getFather();
+    protected abstract BinaryNode getRefer();
 
     @Override
     public int hashCode() {

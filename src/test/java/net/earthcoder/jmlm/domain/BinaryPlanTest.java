@@ -1,9 +1,6 @@
-package net.earthcoder.ganoderma;
+package net.earthcoder.jmlm.domain;
 
-import net.earthcoder.jmlm.domain.BinaryTree;
-import net.earthcoder.jmlm.domain.People;
-
-import java.util.*;
+import java.util.Calendar;
 
 public class BinaryPlanTest {
 	
@@ -22,6 +19,7 @@ public class BinaryPlanTest {
             }
             calendar.add(Calendar.DATE, 1);
         }
-        plan.print();
+        plan.printNode();
+        plan.printBill();
     }
 }

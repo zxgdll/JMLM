@@ -7,9 +7,11 @@ public final class RegularBinaryNode extends BinaryNode {
     private static final int BINARYNODE_LEVEL_STEP = 1;
 
     private BinaryNode father;
+    private BinaryNode refer;
 
-    public RegularBinaryNode(Human content, Date createDate, BinaryNode father) {
+    public RegularBinaryNode(Human content, Date createDate, BinaryNode refer, BinaryNode father) {
         super(content, createDate);
+        this.refer = refer;
         this.father = father;
         level = getFather().getLevel() + RegularBinaryNode.BINARYNODE_LEVEL_STEP;
         initRelationshipSet();
@@ -25,5 +27,9 @@ public final class RegularBinaryNode extends BinaryNode {
     @Override
     protected BinaryNode getFather() {
         return father;
+    }
+
+    public BinaryNode getRefer() {
+        return refer;
     }
 }

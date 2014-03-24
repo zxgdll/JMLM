@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import java.util.*;
 
-import net.earthcoder.jmlm.domain.Human;
-import net.earthcoder.jmlm.domain.Tree;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 import net.realqinwei.hzcrm.crm.domain.exception.UpdateErrorException;
 
@@ -15,7 +13,7 @@ import net.realqinwei.hzcrm.crm.domain.exception.UpdateErrorException;
  *
  * @param <T>
  */
-public final class TreeComponent<T> extends Observable implements Serializable, Observer, Tree {
+public final class TreeComponent<T> extends Observable implements Serializable, Observer {
 	
 	private static final int MAX_OBSERVE_LEVEL = 5;
 
@@ -48,7 +46,7 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	private State<T> state;
 	private final State<T> branchState = new TreeBranchState<T>(this);
 	private final State<T> budState = new TreeBudState<T>(this);
-	private final State<T> emptyState = new TreeEmptyState<T>(this);;
+	private final State<T> emptyState = new TreeEmptyState<T>(this);
 	private final State<T> leafState = new TreeLeafState<T>(this);
 	private final State<T> successState = new TreeSuccessState<T>(this);
 	
@@ -119,20 +117,17 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 		this.childs = new ArrayList<TreeComponent<T>>();
 	}
 	
-	private final TreeComponent<T> getNewTree(TreeComponent<T> refer, T value, TreeComponent<T> parent) {
+	private TreeComponent<T> getNewTree(TreeComponent<T> refer, T value, TreeComponent<T> parent) {
 		return new TreeComponent<T>(refer, value, parent);
 	}
 
 	public final List<TreeComponent<T>> all() {
-
 		List<TreeComponent<T>> list = new ArrayList<TreeComponent<T>>();
 		list.add(this);
-		if (this.getState().equals(this.leafState)) {
-			;
-		} else {
-			for (TreeComponent<T> child : this.childs) {
-				list.addAll(child.all());
-			}
+		if (!getState().equals(leafState)) {
+            for (TreeComponent<T> child : childs) {
+                list.addAll(child.all());
+            }
 		}
 		return list;
 	}
@@ -194,8 +189,7 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 
 	/**
 	 * 
-	 * @param relativeRoot
-	 * @return 相对于某一节点，当前节点处于的层数（即当前节点处于某节点所属于的子树的第几层）
+	 * 相对于某一节点，当前节点处于的层数（即当前节点处于某节点所属于的子树的第几层）
 	 */
 	public final int relativeLevel(TreeComponent<T> relativeRoot) {
 		return this.equals(relativeRoot) ? RELATIVE_ROOT_LEVEL : 
@@ -214,9 +208,6 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	}
 	*/
 
-	/**
-	 * @return
-	 */
 	/*
 	public final int relativeLevelIndex(TreeComponent<T> relativeRoot) {
 
@@ -239,12 +230,10 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	private int countReferedStartWith(TreeComponent<T> start, TreeComponent<T> myself) {
 
 		int refered = (null == start.getRefer() ? 0 : (start.getRefer().equals(myself) ? 1 : 0));
-		if (start.getState().equals(this.leafState)) {
-			;
-		} else {
-			for (TreeComponent<T> child : start.getChilds()) {
-				refered += myself.countReferedStartWith(child, myself);
-			}
+		if (!start.getState().equals(leafState)) {
+            for (TreeComponent<T> child : start.getChilds()) {
+                refered += myself.countReferedStartWith(child, myself);
+            }
 		}
 		return refered;
 	}
@@ -288,20 +277,14 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	}
 	
 	private void addTreeObserverStartWith(TreeComponent<T> startTree) {
-		if (null == startTree) {
-			;
-		} else if (startTree.equals(this.root())) {
-			;
-		} else {
-			TreeComponent<T> beAddedTree = startTree.getParent();
-			if (this.relativeLevel(beAddedTree) <= MAX_OBSERVE_LEVEL) {
-				if (beAddedTree.getState().equals(this.successState)) {
-					;
-				} else {
-					this.addObserver(beAddedTree);
-				}
-				this.addTreeObserverStartWith(beAddedTree);
-			}
+		if (!(null == startTree || startTree.equals(root()))) {
+            TreeComponent<T> beAddedTree = startTree.getParent();
+            if (relativeLevel(beAddedTree) <= MAX_OBSERVE_LEVEL) {
+                if (!beAddedTree.getState().equals(successState)) {
+                    addObserver(beAddedTree);
+                }
+                addTreeObserverStartWith(beAddedTree);
+            }
 		}
 	}
 	
@@ -339,7 +322,6 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 
 	@Override
 	public String toString() {
-		
 		StringBuilder str = new StringBuilder();
 		str.append(this.formatStr(this.value.toString(), 16)).append("\t");
 		str.append(this.bonus).append("\t");
@@ -418,7 +400,6 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	 * 
 	 * @param mountTree 负责挂接的节电对象
 	 * @param referTree 负责介绍的节点对象
-	 * @param value
 	 */
 	public final void mount(TreeComponent<T> mountTree, TreeComponent<T> referTree, T value) {
 
@@ -462,7 +443,7 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	}
 	
 	public final boolean contains(T value) {
-		return null == this.find(value) ? false : true;
+		return null != this.find(value);
 	}
 	
 	public final List<T> leafs() {
@@ -470,23 +451,18 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 		return this.getState().leafs(this);
 	}
 	
-	public final void view() {
-
-		System.out.println(this);
-		if (this.getState().equals(this.leafState)) {
-			;
-		} else {
-			for (TreeComponent<T> child : this.getChilds()) {
-				child.view();
-			}
+	public void view() {
+		if (!getState().equals(leafState)) {
+            for (TreeComponent<T> child : getChilds()) {
+                child.view();
+            }
 		}
 	}
 	
 	/**
 	 * @return 三叉树某一层的最大节点数
 	 */
-	public final static int levelMaxIndex(int level) {
-
+	public static int levelMaxIndex(int level) {
 		return (int) Math.pow(3, level - 1);
 	}
 	
@@ -544,14 +520,4 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 		default: return 0;
 		}
 	}
-
-    @Override
-    public void addNode(Human people, Date crateDate, Integer fatherNodeID, String flag) {
-
-    }
-
-    @Override
-    public void print() {
-
-    }
 }

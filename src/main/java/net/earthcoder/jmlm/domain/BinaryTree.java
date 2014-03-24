@@ -2,13 +2,17 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.*;
 
-public final class BinaryTree implements Tree {
+public final class BinaryTree {
 
     private BinaryNode rootNode;
     private BinaryNode fastNextNode;
     private long operatingExpensesSum;
     private long counselingFeeSum;
-    private Fee initialFee = new InitialFee();
+    private Fee initialFee;
+
+    public BinaryTree() {
+        initialFee = new InitialFee();
+    }
 
     private BinaryNode findNodeByID(Integer nodeID) {
         if (null != rootNode) {
@@ -35,7 +39,6 @@ public final class BinaryTree implements Tree {
         if (node.getLevel() == newNode.getLevel() && !node.equals(newNode)) {
             for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
                 for (Relationship nodeAncestor : node.getRelationshipSet()) {
-
                     if (null == node.getFather()) {
                         continue;
                     } else {
@@ -55,13 +58,12 @@ public final class BinaryTree implements Tree {
     }
 
     private void flashNodes(BinaryNode newNode, Date date) {
-        if (null != this.rootNode) {
+        if (null != rootNode) {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(this.rootNode);
+            queue.offer(rootNode);
             BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
-
                 if (null == newNode.getFather()) {
                     continue;
                 }
@@ -101,7 +103,7 @@ public final class BinaryTree implements Tree {
         flashNodes(newNode, date);
     }
 
-    protected void printBill() {
+    public void printBill() {
         StringBuilder str = new StringBuilder();
         str.append(this.initialFee.sum()).append(",");
         str.append(this.operatingExpensesSum).append(",");
@@ -110,21 +112,29 @@ public final class BinaryTree implements Tree {
                 String.format("%.2f%%", (double) (this.operatingExpensesSum + this.counselingFeeSum) / this.initialFee.sum()
                         * 100)).append(",");
         str.append(this.toString()).append(",");
-        str.append(this.rootNode.getOperatingExpenses() + this.rootNode.getCounselingFee());
+        str.append(rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
         System.out.println(str.toString());
     }
 
-    public void addNode(Human people, Date crateDate, Integer fatherNodeID, String flag) {
+    public void addNode(Human people, Integer fatherNodeID, String flag) {
+        addNode(people, Calendar.getInstance().getTime(), fatherNodeID, flag);
+    }
+
+    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID, String flag) {
+        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID, flag);
+    }
+
+    public void addNode(Human people, Date createDate, Integer referNodeID, Integer fatherNodeID, String flag) {
         BinaryNode newNode = null;
         if (null == rootNode) {
-            newNode = new RootBinaryNode(people, crateDate);
+            newNode = new RootBinaryNode(people, createDate);
             rootNode = newNode;
         } else if (null != fatherNodeID) {
-            BinaryNode fatherNode = this.findNodeByID(fatherNodeID);
+            BinaryNode fatherNode = findNodeByID(fatherNodeID);
             if (null == fatherNode) {
                 throw new RuntimeException("Father not find.");
             } else {
-                newNode = new RegularBinaryNode(people, crateDate, fatherNode);
+                newNode = new RegularBinaryNode(people, createDate, findNodeByID(referNodeID), fatherNode);
             }
             if ("L".equals(flag)) {
                 fatherNode.leftLoad(newNode);
@@ -133,7 +143,6 @@ public final class BinaryTree implements Tree {
             } else {
                 throw new RuntimeException("Wrong flag.");
             }
-
             if (newNode == newNode.getFather().getLeft()) {
                 newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "LEFT");
             }
@@ -141,20 +150,28 @@ public final class BinaryTree implements Tree {
                 newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "RIGHT");
             }
         }
-        flash(newNode, crateDate);
+        flash(newNode, createDate);
     }
 
-    public void addNode(Human people, Date crateDate) {
+    public void addNode(Human people, Date createDate, Integer fatherNodeID, String flag) {
+        addNode(people, createDate, fatherNodeID, fatherNodeID, flag);
+    }
+
+    public void addNode(Human people) {
+        addNode(people, Calendar.getInstance().getTime());
+    }
+
+    public void addNode(Human people, Date createDate) {
         BinaryNode newNode;
         if (null == rootNode) {
-            newNode = new RootBinaryNode(people, crateDate);
+            newNode = new RootBinaryNode(people, createDate);
             rootNode = newNode;
-            fastNextNode = rootNode;
+            fastNextNode = newNode;
         } else {
             if (!(fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty())) {
                 levelOrderTraverse();
             }
-            newNode = new RegularBinaryNode(people, crateDate, fastNextNode);
+            newNode = new RegularBinaryNode(people, createDate, fastNextNode, fastNextNode);
             fastNextNode.autoMountNode(newNode);
             if (newNode == newNode.getFather().getLeft()) {
                 newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "LEFT");
@@ -163,10 +180,10 @@ public final class BinaryTree implements Tree {
                 newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "RIGHT");
             }
         }
-        flash(newNode, crateDate);
+        flash(newNode, createDate);
     }
 
-    protected void printNode2(BinaryNode node) {
+    public void printNode2(BinaryNode node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
         str.append("\t").append(node.getContent().name()).append("\t");
@@ -177,7 +194,7 @@ public final class BinaryTree implements Tree {
         System.out.println(str.toString());
     }
 
-    protected void printNode(BinaryNode node) {
+    public void printNode(BinaryNode node) {
         StringBuilder str = new StringBuilder();
         str.append(node);
         str.append(" ").append(node.getContent().name());
@@ -199,10 +216,10 @@ public final class BinaryTree implements Tree {
         System.out.println(str.toString());
     }
 
-    protected void printNode() {
-        if (null != this.rootNode) {
+    public void printNode() {
+        if (null != rootNode) {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(this.rootNode);
+            queue.offer(rootNode);
             BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
@@ -245,10 +262,5 @@ public final class BinaryTree implements Tree {
                 }
             }
         }
-    }
-
-    public void print() {
-        this.printNode();
-        this.printBill();
     }
 }

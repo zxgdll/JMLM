@@ -1,8 +1,6 @@
-package net.earthcoder.ganoderma;
+package net.earthcoder.jmlm.domain;
 
-import net.earthcoder.jmlm.domain.*;
-
-import java.io.*;
+import java.io.IOException;
 import java.util.Calendar;
 
 public final class BinaryPlanTest4 {
@@ -16,8 +14,7 @@ public final class BinaryPlanTest4 {
     private static final String FLAG_PATTERN = "\\|";
     private static final String BLANK = "";
 
-    Tree plan = new BinaryTree();
-    Calendar calendar = Calendar.getInstance();
+    BinaryTree plan = new BinaryTree();
     private static final String[] names;
     
     static {
@@ -44,7 +41,7 @@ public final class BinaryPlanTest4 {
     }
     
     private void add(String name, String name2, String flag) {
-        plan.addNode(new People(getID(name), name), calendar.getTime(), getID(name2), flag);
+        plan.addNode(new People(getID(name), name), getID(name2), flag);
     }
     
     private void addOne(String name, String name2, String flag) {
@@ -161,11 +158,12 @@ public final class BinaryPlanTest4 {
         instance.addOne("杨立强（2）(71)", "杨立强（1）(70)_A", "L");
         instance.addOne("杨立强（3）(72)", "刘云侠（2）(41)_B", "L");
 
-        instance.plan.print();
+        instance.plan.printNode();
+        instance.plan.printBill();
     }
     
     private void init() {
-        plan.addNode(new People(getID(names[1]), names[1]), calendar.getTime(), null, null);
+        plan.addNode(new People(getID(names[1]), names[1]), null, null);
         for (int i = 2; i < 21; i++) {
             add(names[i], names[i - 1], "L");
         }
