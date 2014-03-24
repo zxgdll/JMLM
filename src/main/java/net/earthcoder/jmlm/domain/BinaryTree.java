@@ -14,108 +14,6 @@ public final class BinaryTree {
         initialFee = new InitialFee();
     }
 
-    private BinaryNode findNodeByID(Integer nodeID) {
-        if (null != rootNode) {
-            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(rootNode);
-            BinaryNode node;
-            while (!queue.isEmpty()) {
-                node = queue.poll();
-                if (node.getContent().getID().equals(nodeID)) {
-                    return node;
-                }
-                if (!node.leftIsEmpty()) {
-                    queue.offer(node.getLeft());
-                }
-                if (!node.rightIsEmpty()) {
-                    queue.offer(node.getRight());
-                }
-            }
-        }
-        return null;
-    }
-
-    private BinaryNode getFlashAncestor(BinaryNode node, BinaryNode newNode) {
-        if (node.getLevel() == newNode.getLevel() && !node.equals(newNode)) {
-            for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
-                for (Relationship nodeAncestor : node.getRelationshipSet()) {
-                    if (null == node.getFather()) {
-                        continue;
-                    } else {
-                        Integer nodefatherID = nodeAncestor.getId();
-                        Integer newNodeFatherID = newNodeAncestor.getId();
-                        Boolean nodefatherFlashed = node.flashedForAncestor(nodefatherID);
-                        Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeFatherID);
-                        if (nodefatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
-                                && !nodeAncestor.getFlag().equals(newNodeAncestor.getFlag())) {
-                            return findNodeByID(nodefatherID);
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private void flashNodes(BinaryNode newNode, Date date) {
-        if (null != rootNode) {
-            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(rootNode);
-            BinaryNode node;
-            while (!queue.isEmpty()) {
-                node = queue.poll();
-                if (null == newNode.getFather()) {
-                    continue;
-                }
-                BinaryNode flashAncestor = getFlashAncestor(node, newNode);
-                if (null != flashAncestor) {
-
-                    BinaryNode theNode = (null == flashAncestor.getFather() ? flashAncestor : flashAncestor.getFather());
-                    theNode.addCounselingFee(date);
-                    flashAncestor.addOperatingExpenses(date);
-
-                    for (Relationship r1 : node.getRelationshipSet()) {
-                        if (r1.getId().equals(flashAncestor.getContent().getID())) {
-                            r1.setFlashed(true);
-                            break;
-                        }
-                    }
-                    for (Relationship r2 : newNode.getRelationshipSet()) {
-                        if (r2.getId().equals(flashAncestor.getContent().getID())) {
-                            r2.setFlashed(true);
-                            break;
-                        }
-                    }
-                }
-
-                if (!node.leftIsEmpty()) {
-                    queue.offer(node.getLeft());
-                }
-                if (!node.rightIsEmpty()) {
-                    queue.offer(node.getRight());
-                }
-            }
-        }
-    }
-
-    private void flash(BinaryNode newNode, Date date) {
-        initialFee.add(date, newNode.getContent());
-        flashNodes(newNode, date);
-    }
-
-    public void printBill() {
-        StringBuilder str = new StringBuilder();
-        str.append(this.initialFee.sum()).append(",");
-        str.append(this.operatingExpensesSum).append(",");
-        str.append(this.counselingFeeSum).append(",");
-        str.append(
-                String.format("%.2f%%", (double) (this.operatingExpensesSum + this.counselingFeeSum) / this.initialFee.sum()
-                        * 100)).append(",");
-        str.append(this.toString()).append(",");
-        str.append(rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
-        System.out.println(str.toString());
-    }
-
     public void addNode(Human people, Integer fatherNodeID, String flag) {
         addNode(people, Calendar.getInstance().getTime(), fatherNodeID, flag);
     }
@@ -181,6 +79,108 @@ public final class BinaryTree {
             }
         }
         flash(newNode, createDate);
+    }
+
+    private BinaryNode findNodeByID(Integer nodeID) {
+        if (null != rootNode) {
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
+            queue.offer(rootNode);
+            BinaryNode node;
+            while (!queue.isEmpty()) {
+                node = queue.poll();
+                if (node.getContent().getID().equals(nodeID)) {
+                    return node;
+                }
+                if (!node.leftIsEmpty()) {
+                    queue.offer(node.getLeft());
+                }
+                if (!node.rightIsEmpty()) {
+                    queue.offer(node.getRight());
+                }
+            }
+        }
+        return null;
+    }
+
+    private void flash(BinaryNode newNode, Date date) {
+        initialFee.add(date, newNode.getContent());
+        flashNodes(newNode, date);
+    }
+
+    private void flashNodes(BinaryNode newNode, Date date) {
+        if (null != rootNode) {
+            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
+            queue.offer(rootNode);
+            BinaryNode node;
+            while (!queue.isEmpty()) {
+                node = queue.poll();
+                if (null == newNode.getFather()) {
+                    continue;
+                }
+                BinaryNode flashAncestor = getFlashAncestor(node, newNode);
+                if (null != flashAncestor) {
+
+                    BinaryNode theNode = (null == flashAncestor.getFather() ? flashAncestor : flashAncestor.getFather());
+                    theNode.addCounselingFee(date);
+                    flashAncestor.addOperatingExpenses(date);
+
+                    for (Relationship r1 : node.getRelationshipSet()) {
+                        if (r1.getId().equals(flashAncestor.getContent().getID())) {
+                            r1.setFlashed(true);
+                            break;
+                        }
+                    }
+                    for (Relationship r2 : newNode.getRelationshipSet()) {
+                        if (r2.getId().equals(flashAncestor.getContent().getID())) {
+                            r2.setFlashed(true);
+                            break;
+                        }
+                    }
+                }
+
+                if (!node.leftIsEmpty()) {
+                    queue.offer(node.getLeft());
+                }
+                if (!node.rightIsEmpty()) {
+                    queue.offer(node.getRight());
+                }
+            }
+        }
+    }
+
+    private BinaryNode getFlashAncestor(BinaryNode node, BinaryNode newNode) {
+        if (node.getLevel() == newNode.getLevel() && !node.equals(newNode)) {
+            for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
+                for (Relationship nodeAncestor : node.getRelationshipSet()) {
+                    if (null == node.getFather()) {
+                        continue;
+                    } else {
+                        Integer nodefatherID = nodeAncestor.getId();
+                        Integer newNodeFatherID = newNodeAncestor.getId();
+                        Boolean nodefatherFlashed = node.flashedForAncestor(nodefatherID);
+                        Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeFatherID);
+                        if (nodefatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
+                                && !nodeAncestor.getFlag().equals(newNodeAncestor.getFlag())) {
+                            return findNodeByID(nodefatherID);
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void printBill() {
+        StringBuilder str = new StringBuilder();
+        str.append(initialFee.sum()).append(",");
+        str.append(operatingExpensesSum).append(",");
+        str.append(counselingFeeSum).append(",");
+        str.append(
+                String.format("%.2f%%", (double) (operatingExpensesSum + counselingFeeSum) / initialFee.sum()
+                        * 100)).append(",");
+        str.append(this.toString()).append(",");
+        str.append(rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
+        System.out.println(str.toString());
     }
 
     public void printNode2(BinaryNode node) {
