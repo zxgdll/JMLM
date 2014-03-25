@@ -32,35 +32,54 @@ public abstract class BinaryNode {
         }
     }
 
-    protected void leftLoad(BinaryNode newNode) {
-        if (!this.leftIsEmpty()) {
-            throw new RuntimeException("Load node in a not empty node.");
+    protected void mountNode(BinaryNode newNode, String flag) {
+        if ("LEFT".equals(flag)) {
+            leftLoad(newNode);
+        } else if ("RIGHT".equals(flag)) {
+            rightLoad(newNode);
         } else {
-            this.left = newNode;
+            throw new RuntimeException("Wrong flag.");
         }
     }
 
-    protected void rightLoad(BinaryNode newNode) {
+    private void leftLoad(BinaryNode newNode) {
+        if (!this.leftIsEmpty()) {
+            throw new RuntimeException("Load node in a not empty node.");
+        } else {
+            left = newNode;
+        }
+    }
+
+    private void rightLoad(BinaryNode newNode) {
         if (!this.rightIsEmpty()) {
             throw new RuntimeException("Load node in a not empty node.");
         } else {
-            this.right =  newNode;
+            right =  newNode;
         }
     }
 
     protected Boolean flashedForAncestor(Integer ancestor) {
-        for (Relationship r : this.relationshipSet) {
-            if (r.getId().equals(ancestor)) {
-                return r.getFlashed();
+        for (Relationship relation : relationshipSet) {
+            if (relation.getId().equals(ancestor)) {
+                return relation.getFlashed();
             }
         }
         return null;
     }
 
-    protected void setRelationshipFlag(Integer id, String flag) {
-        for (Relationship r : this.relationshipSet) {
-            if (r.getId().equals(id)) {
-                r.setFlag(flag);
+    protected void setRelationshipFlag() {
+        if (this == getFather().getLeft()) {
+            setRelationshipFlag(getFather().getContent().getID(), "LEFT");
+        }
+        if (this == getFather().getRight()) {
+            setRelationshipFlag(getFather().getContent().getID(), "RIGHT");
+        }
+    }
+
+    private void setRelationshipFlag(Integer id, String flag) {
+        for (Relationship relation : relationshipSet) {
+            if (relation.getId().equals(id)) {
+                relation.setFlag(flag);
                 break;
             }
         }

@@ -34,19 +34,8 @@ public final class BinaryTree {
             } else {
                 newNode = new RegularBinaryNode(people, createDate, findNodeByID(referNodeID), fatherNode);
             }
-            if ("L".equals(flag)) {
-                fatherNode.leftLoad(newNode);
-            } else if ("R".equals(flag)) {
-                fatherNode.rightLoad(newNode);
-            } else {
-                throw new RuntimeException("Wrong flag.");
-            }
-            if (newNode == newNode.getFather().getLeft()) {
-                newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "LEFT");
-            }
-            if (newNode == newNode.getFather().getRight()) {
-                newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "RIGHT");
-            }
+            fatherNode.mountNode(newNode, flag);
+            newNode.setRelationshipFlag();
         }
         flash(newNode, createDate);
     }
@@ -71,12 +60,7 @@ public final class BinaryTree {
             }
             newNode = new RegularBinaryNode(people, createDate, fastNextNode, fastNextNode);
             fastNextNode.autoMountNode(newNode);
-            if (newNode == newNode.getFather().getLeft()) {
-                newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "LEFT");
-            }
-            if (newNode == newNode.getFather().getRight()) {
-                newNode.setRelationshipFlag(newNode.getFather().getContent().getID(), "RIGHT");
-            }
+            newNode.setRelationshipFlag();
         }
         flash(newNode, createDate);
     }
@@ -224,10 +208,8 @@ public final class BinaryTree {
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 printNode2(node);
-
-                this.operatingExpensesSum += node.getOperatingExpenses();
-                this.counselingFeeSum += node.getCounselingFee();
-
+                operatingExpensesSum += node.getOperatingExpenses();
+                counselingFeeSum += node.getCounselingFee();
                 if (!node.leftIsEmpty()) {
                     queue.offer(node.getLeft());
                 }
