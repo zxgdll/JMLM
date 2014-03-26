@@ -13,5 +13,6 @@ public interface UserService {
 	public void update(User user);
 	
 	public List<User> getUsers();
+    public List<User> getUsersHaveNodes();
     public User findById(int id);
 }

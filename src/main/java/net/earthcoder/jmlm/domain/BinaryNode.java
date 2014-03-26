@@ -16,6 +16,11 @@ public abstract class BinaryNode {
     private long[] results = {0, 0};
     private long[] current = {0, 0};
     private BinaryNode[] childs;
+
+    public boolean isFull() {
+        return null != childs[0] && null != childs[1];
+    }
+
     public BinaryNode[] getChilds() {
         return childs;
     }

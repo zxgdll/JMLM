@@ -9,35 +9,41 @@ import java.util.List;
 public class UserDAOImpl extends HibernateDaoSupport implements UserDAO {
 	
 	private void flush() {
-		this.getHibernateTemplate().flush();
+		getHibernateTemplate().flush();
 	}
 
 	@Override
 	public void saveUser(User user) {
-		this.getHibernateTemplate().save(user);
-		this.flush();
+		getHibernateTemplate().save(user);
+		flush();
 	}
 
 	@Override
 	public void removeUser(User user) {
-		this.getHibernateTemplate().delete(user);
-		this.flush();
+		getHibernateTemplate().delete(user);
+		flush();
 	}
 
 	@Override
 	public User findUserByID(Integer id) {
-		return null == id ? null : (User) this.getHibernateTemplate().get(User.class, id);
+		return null == id ? null : (User) getHibernateTemplate().get(User.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> findAll() {
-		return (List<User>) this.getHibernateTemplate().find("FROM User WHERE userType = 1 ORDER BY userCreateTime");
+		return (List<User>) getHibernateTemplate().find("FROM User WHERE userType = 1 ORDER BY userCreateTime");
 	}
 
 	@Override
 	public void updateUser(User user) {
-		this.getHibernateTemplate().update(user);
-		this.flush();
+		getHibernateTemplate().update(user);
+		flush();
 	}
+
+    @Override
+    public List<User> getUsersHaveNodes() {
+        String sql = "FROM User WHERE userType = 1 AND id IN (SELECT nodeUserID FROM Node) ORDER BY userCreateTime";
+        return (List<User>) getHibernateTemplate().find(sql);
+    }
 }

@@ -45,6 +45,11 @@ public final class UserServiceImpl implements UserService {
 	}
 
     @Override
+    public List<User> getUsersHaveNodes() {
+        return getUserDAO().getUsersHaveNodes();
+    }
+
+    @Override
     public User findById(int id) {
         return this.userDAO.findUserByID(id);
     }

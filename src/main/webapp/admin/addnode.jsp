@@ -38,14 +38,14 @@
 
             <s:doubleselect id= "doubleSelectID" label="%{getText('table.refer')}"
                             headerKey="0" headerValue="%{getText('table.owner.select')}"
-                            list="userList" listKey="id" listValue="id + ' ' + userName"
+                            list="usersHaveNodes" listKey="id" listValue="id + ' ' + userName"
                             doubleId="nodeSelectID" doubleName="node.userReferID"
                             doubleValue="%{getText('adduser.select.headerValue')}"
                             doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />
 
             <s:doubleselect id= "doubleSelectID2" label="%{getText('table.owner.load')}"
                             headerKey="0" headerValue="%{getText('table.owner.load')}"
-                            list="userList" listKey="id" listValue="id + ' ' + userName"
+                            list="usersHaveNodes" listKey="id" listValue="id + ' ' + userName"
                             doubleId="nodeSelectID2" doubleName="node.nodeLoaderID"
                             doubleValue="%{getText('adduser.select.headerValue')}"
                             doubleList="userNodeMap.get(top.id)" doubleListKey="id" doubleListValue="userName" />

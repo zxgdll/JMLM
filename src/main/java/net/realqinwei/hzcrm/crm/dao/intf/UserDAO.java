@@ -11,5 +11,6 @@ public interface UserDAO {
 	public User findUserByID(Integer id);
 	public List<User> findAll();
 	public void updateUser(User user);
+    public List<User> getUsersHaveNodes();
 
 }
