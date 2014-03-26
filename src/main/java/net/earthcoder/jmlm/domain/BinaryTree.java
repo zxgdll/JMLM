@@ -196,7 +196,9 @@ public final class BinaryTree {
             str.append(node.getCounselingFee()).append("\t");
             str.append(node.getOperatingExpenses()).append("\t");
             str.append(node.getLeftResults()).append("\t");
-            str.append(node.getRightResults());
+            str.append(node.getRightResults()).append("\t");
+            str.append(node.getLeftCurrent()).append("\t");
+            str.append(node.getRightCurrent());
         }
         System.out.println(str.toString());
     }

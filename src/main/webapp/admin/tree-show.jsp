@@ -13,10 +13,9 @@
         if (null != childs[0]) {
             content.append("<ul>");
             content.append(getContent(childs[0]));
-            content.append("</ul>");
-        } else if (null != childs[1]) {
-            content.append("<ul>");
-            content.append(getContent(childs[1]));
+            if (null != childs[1]) {
+                content.append(getContent(childs[1]));
+            }
             content.append("</ul>");
         }
 		content.append("</li>");

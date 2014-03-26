@@ -29,12 +29,30 @@ public abstract class BinaryNode {
         return results[1];
     }
 
+    protected long getLeftCurrent() {
+        return current[0];
+    }
+
+    protected long getRightCurrent() {
+        return current[1];
+    }
+
+    private void leftCurrentMinus(long feeValue) {
+        current[0] -= feeValue;
+    }
+
+    private void rightCurrentMinus(long feeValue) {
+        current[1] -= feeValue;
+    }
+
     protected void leftResultAdd(long feeValue) {
         results[0] += feeValue;
+        current[0] += feeValue;
     }
 
     protected void rightResultAdd(long feeValue) {
         results[1] += feeValue;
+        current[1] += feeValue;
     }
 
     protected int level;
@@ -129,6 +147,8 @@ public abstract class BinaryNode {
 
     protected void addOperatingExpenses(Date date) {
         feeController.addOperatingExpenses(date, content);
+        leftCurrentMinus(feeController.getInitialFee().defaultValue());
+        rightCurrentMinus(feeController.getInitialFee().defaultValue());
     }
 
     protected long getCounselingFee() {
