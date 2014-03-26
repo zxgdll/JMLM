@@ -7,7 +7,7 @@ public final class Relationship {
     private Boolean flashed;
 
     public Relationship(Integer id, String flag) {
-        this.setId(id);
+        this.id = id;
         this.setFlag(flag);
         this.setFlashed(false);
     }
@@ -30,10 +30,6 @@ public final class Relationship {
         }
         Relationship otherRelationship = (Relationship) otherObject;
         return this.id.equals(otherRelationship.id);
-    }
-
-    protected void setId(Integer id) {
-        this.id = id;
     }
 
     public String getFlag() {

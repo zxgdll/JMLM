@@ -31,7 +31,7 @@ public abstract class AbstractHuman implements Human {
             return false;
         }
         Human otherHuman = (Human) otherObject;
-        return this.serialNumber.equals(otherHuman.getID());
+        return this.serialNumber.equals(otherHuman.nodeID());
     }
     
     @Override

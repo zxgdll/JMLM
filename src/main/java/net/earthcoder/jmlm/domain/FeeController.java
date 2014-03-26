@@ -10,15 +10,8 @@ public final class FeeController {
     
     private Fee counselingFee = new CounselingFee();
     private Fee operatingExpenses = new OperatingExpenses();
+    private Fee initialFee = new InitialFee();
 
-    public Fee getCounselingFee() {
-        return counselingFee;
-    }
-
-    public Fee getOperatingExpenses() {
-        return operatingExpenses;
-    }
-    
     private void addFee(Date date, Human content, Fee fee) {
         long sum = counselingFee.sum() + operatingExpenses.sum();
         if (sum + fee.defaultValue() < OUT_LEVEL) {
@@ -29,6 +22,14 @@ public final class FeeController {
         } else {
             fee.add(date, content, OUT_LEVEL - sum);
             frozen = true;
+        }
+    }
+
+    public void addInitialFee(Date date, Human content) {
+        if (frozen) {
+            return;
+        } else {
+            addFee(date, content, initialFee);
         }
     }
 
@@ -46,5 +47,17 @@ public final class FeeController {
         } else {
             addFee(date, content, operatingExpenses);
         }
+    }
+
+    public Fee getCounselingFee() {
+        return counselingFee;
+    }
+
+    public Fee getOperatingExpenses() {
+        return operatingExpenses;
+    }
+
+    public Fee getInitialFee() {
+        return initialFee;
     }
 }

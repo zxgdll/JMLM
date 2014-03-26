@@ -21,7 +21,7 @@ public final class RegularBinaryNode extends BinaryNode {
         for (Relationship relation : father.getRelationshipSet()) {
             getRelationshipSet().add(new Relationship(relation.getId(), relation.getFlag()));
         }
-        getRelationshipSet().add(new Relationship(father.getContent().getID(), null));
+        getRelationshipSet().add(new Relationship(father.getContent().nodeID(), null));
     }
 
     @Override

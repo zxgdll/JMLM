@@ -7,11 +7,11 @@ import java.util.SortedSet;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import net.earthcoder.jmlm.domain.BinaryTree;
 import net.realqinwei.hzcrm.crm.been.LoginLog;
 import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.domain.NodeRepository;
-import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
 import net.realqinwei.hzcrm.crm.service.intf.LogService;
@@ -62,26 +62,28 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	
 	@Override
 	public String execute() throws Exception {
-		LOG.debug(this.loginId + " try to login");
-		if (this.userIDExist()) {
-			if (this.isPasswordRight()) {
+		LOG.debug(loginId + " try to login");
+		if (userIDExist()) {
+			if (isPasswordRight()) {
 
                 User loginUser = getUserService().findById(getLoginId());
-				this.session.put("user", loginUser);
-				this.loginInit(loginUser);
+				session.put("user", loginUser);
+				loginInit(loginUser);
 
                 List<User> allUsers = getUserService().getUsers();
                 LOG.debug(allUsers.size());
-                this.session.put("allUsers", allUsers);
+                session.put("allUsers", allUsers);
 				
-				TreeComponent<Node> tree = getTreeRepository().getTree();
-				this.session.put("tree", tree);
-				this.session.put("userDAO", getNodeRepository());
+				BinaryTree tree = getTreeRepository().rebuild();
+                tree.printNode();
+                tree.printBill();
+				session.put("tree", tree);
+				session.put("userDAO", getNodeRepository());
 				
 				SortedSet<Node> users = getTreeRepository().getBill();
-				this.session.put("users", users);
+				session.put("users", users);
 				
-				this.getLogService().saveLog(new LoginLog(loginUser.getId(), loginUser.getUserName(), timer.getTimestamp()));
+				getLogService().saveLog(new LoginLog(loginUser.getId(), loginUser.getUserName(), timer.getTimestamp()));
 				
 				return loginUser.getUserType() == 0 ? LoginAction.USER_TYPE_ADMIN : SUCCESS;
 			} else {
@@ -89,7 +91,7 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 				return INPUT;
 			}
 		} else {
-			LOG.warn(this.loginId + " does not exist");
+			LOG.warn(loginId + " does not exist");
 			return INPUT;
 		}
 	}

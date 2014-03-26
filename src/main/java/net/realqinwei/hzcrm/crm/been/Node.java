@@ -1,8 +1,10 @@
 package net.realqinwei.hzcrm.crm.been;
 
+import net.earthcoder.jmlm.domain.Human;
+
 import java.sql.Timestamp;
 
-public final class Node implements java.io.Serializable, Comparable<Node> {
+public final class Node implements java.io.Serializable, Comparable<Node>, Human {
 
     private Integer id;
     private String userName;
@@ -115,5 +117,30 @@ public final class Node implements java.io.Serializable, Comparable<Node> {
     @Override
     public int compareTo(Node other) {
         return this.userCreateTime.compareTo(other.getUserCreateTime());
+    }
+
+    @Override
+    public String name() {
+        return userName;
+    }
+
+    @Override
+    public Integer nodeID() {
+        return id;
+    }
+
+    @Override
+    public Integer referNodeID() {
+        return userReferID;
+    }
+
+    @Override
+    public Integer ownerUserID() {
+        return nodeUserID;
+    }
+
+    @Override
+    public Integer loadNodeID() {
+        return nodeLoaderID;
     }
 }

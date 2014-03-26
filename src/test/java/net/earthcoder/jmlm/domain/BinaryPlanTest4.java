@@ -41,7 +41,7 @@ public final class BinaryPlanTest4 {
     }
     
     private void add(String name, String name2, String flag) {
-        plan.addNode(new People(getID(name), name), getID(name2), flag);
+        plan.addNode(new People(getID(name), name), getID(name2), getID(name2));
     }
     
     private void addOne(String name, String name2, String flag) {

@@ -8,18 +8,10 @@ public final class BinaryTree {
     private BinaryNode fastNextNode;
     private long operatingExpensesSum;
     private long counselingFeeSum;
-    private Fee initialFee;
+    private long initialFeeSum;
 
-    public BinaryTree() {
-        initialFee = new InitialFee();
-    }
-
-    public void addNode(Human people, Integer fatherNodeID, String flag) {
-        addNode(people, Calendar.getInstance().getTime(), fatherNodeID, flag);
-    }
-
-    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID, String flag) {
-        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID, flag);
+    public BinaryNode getRootNode() {
+        return rootNode;
     }
 
     public void addNode(Human people, Date createDate, Integer referNodeID, Integer fatherNodeID, String flag) {
@@ -40,12 +32,30 @@ public final class BinaryTree {
         flash(newNode, createDate);
     }
 
-    public void addNode(Human people, Date createDate, Integer fatherNodeID, String flag) {
-        addNode(people, createDate, fatherNodeID, fatherNodeID, flag);
+    public void addNode(Human people, Date createDate, Integer referNodeID, Integer fatherNodeID) {
+        BinaryNode newNode = null;
+        if (null == rootNode) {
+            newNode = new RootBinaryNode(people, createDate);
+            rootNode = newNode;
+        } else if (null != fatherNodeID) {
+            BinaryNode fatherNode = findNodeByID(fatherNodeID);
+            if (null == fatherNode) {
+                throw new RuntimeException("Father not find.");
+            } else {
+                newNode = new RegularBinaryNode(people, createDate, findNodeByID(referNodeID), fatherNode);
+            }
+            fatherNode.autoMountNode(newNode);
+            newNode.setRelationshipFlag();
+        }
+        flash(newNode, createDate);
     }
 
-    public void addNode(Human people) {
-        addNode(people, Calendar.getInstance().getTime());
+    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID) {
+        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID);
+    }
+
+    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID, String flag) {
+        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID, flag);
     }
 
     public void addNode(Human people, Date createDate) {
@@ -72,7 +82,7 @@ public final class BinaryTree {
             BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
-                if (node.getContent().getID().equals(nodeID)) {
+                if (node.getContent().nodeID().equals(nodeID)) {
                     return node;
                 }
                 if (!node.leftIsEmpty()) {
@@ -87,8 +97,21 @@ public final class BinaryTree {
     }
 
     private void flash(BinaryNode newNode, Date date) {
-        initialFee.add(date, newNode.getContent());
+        newNode.addInitialFee(date);
+        updateResults(newNode);
         flashNodes(newNode, date);
+    }
+
+    private void updateResults(BinaryNode newNode) {
+        BinaryNode node;
+        for (Relationship relation: newNode.getRelationshipSet()) {
+            node = findNodeByID(relation.getId());
+            if ("LEFT".equals(relation.getFlag())) {
+                node.leftResultAdd(node.getInitialFee());
+            } else if ("RIGHT".equals(relation.getFlag())) {
+                node.rightResultAdd(node.getInitialFee());
+            }
+        }
     }
 
     private void flashNodes(BinaryNode newNode, Date date) {
@@ -96,32 +119,30 @@ public final class BinaryTree {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
             BinaryNode node;
+            BinaryNode flashAncestor;
             while (!queue.isEmpty()) {
                 node = queue.poll();
                 if (null == newNode.getFather()) {
                     continue;
                 }
-                BinaryNode flashAncestor = getFlashAncestor(node, newNode);
+                flashAncestor = getFlashAncestor(node, newNode);
                 if (null != flashAncestor) {
-
-                    BinaryNode theNode = (null == flashAncestor.getFather() ? flashAncestor : flashAncestor.getFather());
-                    theNode.addCounselingFee(date);
                     flashAncestor.addOperatingExpenses(date);
-
+                    BinaryNode theNode = (null == flashAncestor.getRefer() ? flashAncestor : flashAncestor.getRefer());
+                    theNode.addCounselingFee(date);
                     for (Relationship r1 : node.getRelationshipSet()) {
-                        if (r1.getId().equals(flashAncestor.getContent().getID())) {
+                        if (r1.getId().equals(flashAncestor.getContent().nodeID())) {
                             r1.setFlashed(true);
                             break;
                         }
                     }
                     for (Relationship r2 : newNode.getRelationshipSet()) {
-                        if (r2.getId().equals(flashAncestor.getContent().getID())) {
+                        if (r2.getId().equals(flashAncestor.getContent().nodeID())) {
                             r2.setFlashed(true);
                             break;
                         }
                     }
                 }
-
                 if (!node.leftIsEmpty()) {
                     queue.offer(node.getLeft());
                 }
@@ -139,13 +160,13 @@ public final class BinaryTree {
                     if (null == node.getFather()) {
                         continue;
                     } else {
-                        Integer nodefatherID = nodeAncestor.getId();
+                        Integer nodeFatherID = nodeAncestor.getId();
                         Integer newNodeFatherID = newNodeAncestor.getId();
-                        Boolean nodefatherFlashed = node.flashedForAncestor(nodefatherID);
+                        Boolean nodefatherFlashed = node.flashedForAncestor(nodeFatherID);
                         Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeFatherID);
-                        if (nodefatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
+                        if (nodeFatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
                                 && !nodeAncestor.getFlag().equals(newNodeAncestor.getFlag())) {
-                            return findNodeByID(nodefatherID);
+                            return findNodeByID(nodeFatherID);
                         }
                     }
                 }
@@ -156,11 +177,11 @@ public final class BinaryTree {
 
     public void printBill() {
         StringBuilder str = new StringBuilder();
-        str.append(initialFee.sum()).append(",");
-        str.append(operatingExpensesSum).append(",");
+        str.append(initialFeeSum).append(",");
         str.append(counselingFeeSum).append(",");
+        str.append(operatingExpensesSum).append(",");
         str.append(
-                String.format("%.2f%%", (double) (operatingExpensesSum + counselingFeeSum) / initialFee.sum()
+                String.format("%.2f%%", (double) (operatingExpensesSum + counselingFeeSum) / initialFeeSum
                         * 100)).append(",");
         str.append(this.toString()).append(",");
         str.append(rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
@@ -173,7 +194,9 @@ public final class BinaryTree {
         str.append("\t").append(node.getContent().name()).append("\t");
         if (null != node) {
             str.append(node.getCounselingFee()).append("\t");
-            str.append(node.getOperatingExpenses());
+            str.append(node.getOperatingExpenses()).append("\t");
+            str.append(node.getLeftResults()).append("\t");
+            str.append(node.getRightResults());
         }
         System.out.println(str.toString());
     }
@@ -210,6 +233,7 @@ public final class BinaryTree {
                 printNode2(node);
                 operatingExpensesSum += node.getOperatingExpenses();
                 counselingFeeSum += node.getCounselingFee();
+                initialFeeSum += node.getInitialFee();
                 if (!node.leftIsEmpty()) {
                     queue.offer(node.getLeft());
                 }

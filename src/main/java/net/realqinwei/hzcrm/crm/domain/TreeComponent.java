@@ -367,7 +367,7 @@ public final class TreeComponent<T> extends Observable implements Serializable, 
 	}
 
 	public final List<TreeComponent<T>> getChilds() {
-		return this.childs;
+		return childs;
 	}
 	
 	@Override

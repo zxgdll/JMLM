@@ -2,6 +2,7 @@ package net.realqinwei.hzcrm.crm.domain;
 
 import java.util.*;
 
+import net.earthcoder.jmlm.domain.BinaryTree;
 import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
@@ -25,6 +26,20 @@ public final class TreeFactory {
 		sortedAllUsers.addAll(allUsers);
 		return sortedAllUsers;
 	}
+
+    public BinaryTree getBinaryTree() {
+        Queue<Node> allUsersQueue = new LinkedList<Node>();
+        for (Node user : nodeRepository.findSortedSet()) {
+            allUsersQueue.offer(user);
+        }
+        BinaryTree tree = new BinaryTree();
+        Node node;
+        while (!allUsersQueue.isEmpty() && null != tree) {
+            node = allUsersQueue.poll();
+            tree.addNode(node, node.getUserReferID(), node.getNodeLoaderID());
+        }
+        return tree;
+    }
 
 	public TreeComponent<Node> getTree() throws AddErrorException {
 

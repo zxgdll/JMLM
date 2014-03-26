@@ -1,7 +1,10 @@
 package net.realqinwei.hzcrm.crm.domain;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.SortedSet;
 
+import net.earthcoder.jmlm.domain.BinaryTree;
 import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
@@ -30,4 +33,8 @@ public final class TreeRepository {
 	public SortedSet<Node> getBill() {
 		return this.getTreeFactory().getBill();
 	}
+
+    public BinaryTree rebuild() {
+          return treeFactory.getBinaryTree();
+    }
 }

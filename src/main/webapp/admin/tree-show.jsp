@@ -1,24 +1,25 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
-<%@ page import="net.realqinwei.hzcrm.crm.domain.TreeComponent" %>
-<%@ page import="net.realqinwei.hzcrm.crm.been.User" %>
-<%@ page import="java.io.PrintWriter" %>
+<%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <%!
-	private String getContent(TreeComponent<User> tree) {
+	private String getContent(BinaryNode tree) {
 		StringBuilder content = new StringBuilder();
-
 		content.append("<li>");
-		content.append("<a href=\"#\">").append(tree.getValue().getId()).append("</a>");
-		if (null != tree.getChilds()) {
-			content.append("<ul>");
-			for (TreeComponent<User> t : tree.getChilds()) {
-				content.append(getContent(t));
-			}
-			content.append("</ul>");
-		}
+		content.append("<a href=\"#\">");
+        content.append(tree.getContent().nodeID()).append(" ").append(tree.getContent().name());
+        content.append("</a>");
+        BinaryNode[] childs = tree.getChilds();
+        if (null != childs[0]) {
+            content.append("<ul>");
+            content.append(getContent(childs[0]));
+            content.append("</ul>");
+        } else if (null != childs[1]) {
+            content.append("<ul>");
+            content.append(getContent(childs[1]));
+            content.append("</ul>");
+        }
 		content.append("</li>");
-
 		return content.toString();
 	}
 %>
@@ -45,9 +46,9 @@
 	<div class="tree">
 		<ul>
 <%
-TreeComponent<User> tree = (TreeComponent<User>) session.getAttribute("tree");
+    BinaryTree tree = (BinaryTree) session.getAttribute("tree");
  %>
-<%=getContent(tree) %>
+<%=getContent(tree.getRootNode()) %>
 		</ul>
 	</div>
 </body></html>
