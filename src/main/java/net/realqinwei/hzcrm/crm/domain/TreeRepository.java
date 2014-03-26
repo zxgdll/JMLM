@@ -31,10 +31,14 @@ public final class TreeRepository {
 	}
 	
 	public SortedSet<Node> getBill() {
-		return this.getTreeFactory().getBill();
+		return treeFactory.getBill();
 	}
 
     public BinaryTree rebuild() {
           return treeFactory.getBinaryTree();
+    }
+
+    public SortedSet<Node> getBinaryBill() {
+        return treeFactory.getBinaryBill();
     }
 }

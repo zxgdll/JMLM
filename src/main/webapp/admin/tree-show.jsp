@@ -46,6 +46,7 @@
 		<ul>
 <%
     BinaryTree tree = (BinaryTree) session.getAttribute("tree");
+
  %>
 <%=getContent(tree.getRootNode()) %>
 		</ul>

@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
+<%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ include file="../header.jsp"%>
     
 <div class="container-fluid">
@@ -28,57 +29,28 @@
 		<table class="table table-condensed">
 		<thead>
 			<tr>
-				<th width="50">#</th>
 				<th width="125"><s:text name="bill.name"/></th>
-				<th width="125"><s:text name="bill.bank"/></th>
-				<th width="100"><s:text name="bill.in"/></th>
-				<th width="100"><s:text name="bill.out"/></th>
+				<th width="100">A区业绩</th>
+                <th width="100">B区业绩></th>
+                <th width="100">运营奖</th>
+                <th width="100">辅导奖</th>
 			</tr>
 		</thead>
 		<tbody>
-		<s:set name="peopleId" value="0"/>
-		<s:set name="totalIN" value="0"/>
-		<s:set name="totalOUT" value="0"/>
-		<s:iterator value="#session['users']" var="user">
-			<s:set name="total" value="0"/>
-			<s:set var="peopleId" value="#peopleId + 1"/>
-					<s:iterator value="#session['tree'].createAndBill(#user)" status="rowstatus">
-						<tr>
-							<th width="50">
-							<s:if test="#rowstatus.first">
-								<s:property value="#peopleId"/>
-							</s:if>
-							</th>
-							<td width="125">
-								<a href="<%=basePath%>billlist.action?userID=<s:property value="value.id"/>">
-									<s:property value="value.userName"/>(<s:property value="value.id"/>)
-								</a>
-							</td>
-							<td width="125"><s:property value="value.userLoginID"/></td>
-							<td width="100" style="color: green"><s:property value="billIN"/></td>
-							<td width="100" style="color: red"><s:property value="billOUT"/></td>
-							<s:set var="totalIN" value="#totalIN + billIN"/>
-							<s:set var="totalOUT" value="#totalOUT + billOUT"/>
-							<s:set var="total" value="#total + billOUT"/>
-						</tr>
-					</s:iterator>
-					<tr>
-						<td/>
-						<td/>
-						<td/>
-						<td/>
-						<td style="color: red; font-weight: bold">
-							<s:property value="#total"/>
-						</td>
-					</tr>
-		</s:iterator>
-				<tr>
-								<th width="50" />
-								<td width="125"></td>
-								<td width="125"></td>
-								<td width="100"><span style="color: green; font-weight: bold"><s:property value="#totalIN"/></span></td>
-								<td width="100"><span style="color: red; font-weight: bold"><s:property value="#totalOUT"/></span></td>
-							</tr>
+<%
+    BinaryTree tree = (BinaryTree) session.getAttribute("tree");
+    for (BinaryNode bnode: tree.getNodes()) {
+       %>
+<tr>
+    <td><%=bnode.getContent().name() %></td>
+    <td><%=bnode.getLeftCurrent() %></td>
+    <td><%=bnode.getRightCurrent() %></td>
+    <td><%=bnode.getOperatingExpenses() %></td>
+    <td><%=bnode.getCounselingFee() %></td>
+</tr>
+<%
+    }
+%>
 		</tbody>
 		</table>
 	</div>

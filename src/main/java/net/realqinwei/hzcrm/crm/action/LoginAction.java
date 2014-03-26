@@ -80,7 +80,7 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 				session.put("tree", tree);
 				session.put("userDAO", getNodeRepository());
 				
-				SortedSet<Node> users = getTreeRepository().getBill();
+				SortedSet<Node> users = getTreeRepository().getBinaryBill();
 				session.put("users", users);
 				
 				getLogService().saveLog(new LoginLog(loginUser.getId(), loginUser.getUserName(), timer.getTimestamp()));

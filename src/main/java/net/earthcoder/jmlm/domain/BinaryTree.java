@@ -9,6 +9,11 @@ public final class BinaryTree {
     private long operatingExpensesSum;
     private long counselingFeeSum;
     private long initialFeeSum;
+    private List<BinaryNode> nodes = new ArrayList<BinaryNode>();
+
+    public List<BinaryNode> getNodes() {
+        return nodes;
+    }
 
     public BinaryNode getRootNode() {
         return rootNode;
@@ -97,6 +102,7 @@ public final class BinaryTree {
     }
 
     private void flash(BinaryNode newNode, Date date) {
+        nodes.add(newNode);
         newNode.addInitialFee(date);
         updateResults(newNode);
         flashNodes(newNode, date);

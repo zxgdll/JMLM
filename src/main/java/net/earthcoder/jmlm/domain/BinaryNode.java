@@ -16,24 +16,23 @@ public abstract class BinaryNode {
     private long[] results = {0, 0};
     private long[] current = {0, 0};
     private BinaryNode[] childs;
-
     public BinaryNode[] getChilds() {
         return childs;
     }
 
-    protected long getLeftResults() {
+    public long getLeftResults() {
         return results[0];
     }
 
-    protected long getRightResults() {
+    public long getRightResults() {
         return results[1];
     }
 
-    protected long getLeftCurrent() {
+    public long getLeftCurrent() {
         return current[0];
     }
 
-    protected long getRightCurrent() {
+    public long getRightCurrent() {
         return current[1];
     }
 
@@ -151,11 +150,11 @@ public abstract class BinaryNode {
         rightCurrentMinus(feeController.getInitialFee().defaultValue());
     }
 
-    protected long getCounselingFee() {
+    public long getCounselingFee() {
         return feeController.getCounselingFee().sum();
     }
 
-    protected long getOperatingExpenses() {
+    public long getOperatingExpenses() {
         return feeController.getOperatingExpenses().sum();
     }
 

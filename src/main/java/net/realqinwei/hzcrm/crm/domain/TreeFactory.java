@@ -27,6 +27,10 @@ public final class TreeFactory {
 		return sortedAllUsers;
 	}
 
+    public SortedSet<Node> getBinaryBill() {
+        return nodeRepository.findSortedSet();
+    }
+
     public BinaryTree getBinaryTree() {
         Queue<Node> allUsersQueue = new LinkedList<Node>();
         for (Node user : nodeRepository.findSortedSet()) {
