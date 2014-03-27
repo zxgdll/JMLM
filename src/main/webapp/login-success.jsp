@@ -1,4 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
+<%@ page import="net.earthcoder.jmlm.domain.core.*" %>
+<%@ page import="java.util.List" %>
+<%@ page import="net.realqinwei.hzcrm.crm.been.Node" %>
+<%@ page import="net.realqinwei.hzcrm.crm.dao.intf.UserDAO" %>
+<%@ page import="net.realqinwei.hzcrm.crm.domain.NodeRepository" %>
 <%@ include file="header.jsp"%>
 
 <div class="container-fluid">
@@ -66,31 +71,34 @@
 			</tbody>
 		</s:if>
 		<s:else>
-			<thead>
-				<tr align="center">
-					<th width="135"><s:text name="table.name" /></th>
-					<th><s:text name="table.address" /></th>
-					<th width="130"><s:text name="table.date" /></th>
-					<th width="135"><s:text name="table.refer" /></th>
-				</tr>
-			</thead>
-			<tbody>
-				<s:iterator
-					value="#session['tree'].find(#session['user']).getBranchs().entrySet()">
-					<tr>
-						<td><a
-							href="<%=basePath%>userlist.action?userID=<s:property value="#value.id"/>">
-								<s:property value="value.userName" />(<s:property
-									value="value.id" />) </a></td>
-						<td><s:property value="value.userAddress" />
-						</td>
-						<td><s:text name="format.date.user"><s:param value="value.userCreateTime" /></s:text></td>
-						<td><s:property
-								value="value.userReferID == null ? '' : #session['userDAO'].findById(value.userReferID).userName" />
-						</td>
-					</tr>
-				</s:iterator>
-			</tbody>
+            <thead>
+            <tr>
+                <th width="125"><s:text name="bill.name"/></th>
+                <th width="100">A区业绩</th>
+                <th width="100">B区业绩></th>
+                <th width="100">运营奖</th>
+                <th width="100">辅导奖</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                BinaryTree tree = (BinaryTree) session.getAttribute("tree");
+                NodeRepository getNodeRepository = (NodeRepository) session.getAttribute("userDAO");
+                List<Node> nods = getNodeRepository.
+                //List<BinaryNode> nodes = tree.getNodesByContentID();
+                for (BinaryNode bnode: tree.getNodes()) {
+            %>
+            <tr>
+                <td><%=bnode.getContent().name() %></td>
+                <td><%=bnode.getLeftCurrent() %></td>
+                <td><%=bnode.getRightCurrent() %></td>
+                <td><%=bnode.getOperatingExpenses() %></td>
+                <td><%=bnode.getCounselingFee() %></td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
 		</s:else>
 	</table>
 	</div>

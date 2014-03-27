@@ -2,7 +2,6 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.Date;
 
-
 public interface Fee {
 
     long sum();

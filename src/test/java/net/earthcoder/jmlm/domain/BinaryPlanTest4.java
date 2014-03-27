@@ -1,7 +1,6 @@
 package net.earthcoder.jmlm.domain;
 
 import java.io.IOException;
-import java.util.Calendar;
 
 public final class BinaryPlanTest4 {
 

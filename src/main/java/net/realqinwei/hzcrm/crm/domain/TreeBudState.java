@@ -7,8 +7,6 @@ import java.util.Observable;
 import net.realqinwei.hzcrm.crm.domain.exception.*;
 
 public final class TreeBudState<T> extends State<T> {
-
-	private static final long serialVersionUID = -3452557320532151605L;
 	
 	public TreeBudState(TreeComponent<T> treeComponent) {
 		super(treeComponent);

@@ -1,10 +1,9 @@
 package net.realqinwei.hzcrm.crm.domain;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.SortedSet;
 
 import net.earthcoder.jmlm.domain.BinaryTree;
+import net.earthcoder.jmlm.domain.TreeFactory;
 import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 

@@ -1,10 +1,11 @@
-package net.realqinwei.hzcrm.crm.domain;
+package net.earthcoder.jmlm.domain;
+
+import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.domain.NodeRepository;
+import net.realqinwei.hzcrm.crm.domain.TreeComponent;
+import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
 import java.util.*;
-
-import net.earthcoder.jmlm.domain.BinaryTree;
-import net.realqinwei.hzcrm.crm.been.Node;
-import net.realqinwei.hzcrm.crm.domain.exception.AddErrorException;
 
 public final class TreeFactory {
 

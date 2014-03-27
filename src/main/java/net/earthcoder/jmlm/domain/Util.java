@@ -5,7 +5,7 @@ import java.util.Date;
 
 public final class Util {
 
-    public static final Date trunc(Date date) {
+    public static Date trunc(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
