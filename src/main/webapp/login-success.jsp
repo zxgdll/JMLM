@@ -1,9 +1,11 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
-<%@ page import="net.earthcoder.jmlm.domain.core.*" %>
+<%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="net.realqinwei.hzcrm.crm.been.Node" %>
-<%@ page import="net.realqinwei.hzcrm.crm.dao.intf.UserDAO" %>
 <%@ page import="net.realqinwei.hzcrm.crm.domain.NodeRepository" %>
+<%@ page import="net.realqinwei.hzcrm.crm.been.User" %>
+<%@ page import="net.realqinwei.hzcrm.crm.service.intf.NodeService" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ include file="header.jsp"%>
 
 <div class="container-fluid">
@@ -82,11 +84,20 @@
             </thead>
             <tbody>
             <%
+                User loginUser = (User) session.getAttribute("user");
+                NodeService service = (NodeService) session.getAttribute("service");
+                List<Node> nodes = service.findByOwner(loginUser);
                 BinaryTree tree = (BinaryTree) session.getAttribute("tree");
-                NodeRepository getNodeRepository = (NodeRepository) session.getAttribute("userDAO");
-                List<Node> nods = getNodeRepository.
-                //List<BinaryNode> nodes = tree.getNodesByContentID();
-                for (BinaryNode bnode: tree.getNodes()) {
+                List<BinaryNode> binaryNodes = tree.getNodes();
+                List<BinaryNode> result = new ArrayList<BinaryNode>();
+                for (BinaryNode bn: binaryNodes) {
+                    for (Node content: nodes) {
+                        if (bn.contains(content)) {
+                            result.add(bn);
+                        }
+                    }
+                }
+                for (BinaryNode bnode: result) {
             %>
             <tr>
                 <td><%=bnode.getContent().name() %></td>

@@ -52,12 +52,12 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 
 	@SuppressWarnings("unchecked")
 	private void loginInit(User user) {
-		Map<Integer, User> onlineUsers = (Map<Integer, User>) this.application.get("online");
+		Map<Integer, User> onlineUsers = (Map<Integer, User>) application.get("online");
 		if (null == onlineUsers) {
 			onlineUsers = new HashMap<Integer, User>();
+            onlineUsers.put(user.getId(), user);
+            application.put("online", onlineUsers);
 		}
-		onlineUsers.put(user.getId(), user);
-		this.application.put("online", onlineUsers);
 	}
 	
 	@Override
@@ -73,6 +73,8 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
                 List<User> allUsers = getUserService().getUsers();
                 LOG.debug(allUsers.size());
                 session.put("allUsers", allUsers);
+
+                session.put("service", getNodeService());
 				
 				BinaryTree tree = getTreeRepository().rebuild();
                 tree.printNode();

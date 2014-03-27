@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
-<%@ page import="net.earthcoder.jmlm.domain.core.*" %>
+<%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ include file="../header.jsp"%>
     
 <div class="container-fluid">

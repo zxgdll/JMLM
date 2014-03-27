@@ -17,6 +17,10 @@ public abstract class BinaryNode {
     private long[] current = {0, 0};
     private BinaryNode[] childs;
 
+    public boolean contains (Human content) {
+        return this.content.equals(content);
+    }
+
     public boolean isFull() {
         return null != childs[0] && null != childs[1];
     }

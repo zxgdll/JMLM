@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
-<%@ page import="net.earthcoder.jmlm.domain.core.*" %>
-<%@ page import="net.earthcoder.jmlm.domain.core.BinaryTree" %>
+<%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <%!
@@ -37,17 +36,12 @@
 <meta charset="utf-8">
 <title>test.html</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>test.css">
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 </head>
 <body style="width: 33300px;">
 	<div class="tree">
 		<ul>
 <%
     BinaryTree tree = (BinaryTree) session.getAttribute("tree");
-
  %>
 <%=getContent(tree.getRootNode()) %>
 		</ul>

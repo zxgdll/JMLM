@@ -7,38 +7,34 @@ import javax.servlet.http.HttpSession;
 import com.opensymphony.xwork2.ActionSupport;
 
 import net.realqinwei.hzcrm.crm.been.Node;
+import net.realqinwei.hzcrm.crm.been.User;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ApplicationAware;
 
 public class LogoffAction extends ActionSupport implements ApplicationAware {
-	
-	private static final long serialVersionUID = 2631180091700482230L;
 
 	private static final Logger LOG = Logger.getLogger(LogoffAction.class);
 	
 	private Map<String, Object> application;
 	
 	@SuppressWarnings("unchecked")
-	private void logOff(Node user) {
-		Map<Integer, Node> onlineUsers = (Map<Integer, Node>) this.application.get("online");
+	private void logOff(User user) {
+		Map<Integer, User> onlineUsers = (Map<Integer, User>) application.get("online");
 		if (null != onlineUsers) {
 			onlineUsers.remove(user.getId());
-			this.application.put("online", onlineUsers);
-			LOG.warn(onlineUsers.size());
+			application.put("online", onlineUsers);
+			LOG.info(onlineUsers.size());
 		}
 	}
 	
 	@Override
 	public String execute() throws Exception {
-		
 		HttpSession session = ServletActionContext.getRequest().getSession();
-        Node user = (Node) session.getAttribute("user");
-		
-		this.logOff(user);
-		
+        User user = (User) session.getAttribute("user");
+		logOff(user);
 		session.invalidate();
-		LOG.debug("Logoff");
+		LOG.info("Logoff");
 		return LOGIN;
 	}
 
