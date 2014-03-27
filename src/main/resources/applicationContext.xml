@@ -38,27 +38,19 @@
 	</bean>
 
     <bean id="nodeDAO" class="net.realqinwei.hzcrm.crm.dao.impl.NodeDAOImpl">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <bean id="userDAO" class="net.realqinwei.hzcrm.crm.dao.impl.UserDAOImpl">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
 	<bean id="newsDAO" class="net.realqinwei.hzcrm.crm.dao.impl.NewsDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<bean id="ImageDAO" class="net.realqinwei.hzcrm.crm.dao.impl.ImageDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
+	<bean id="imageDAO" class="net.realqinwei.hzcrm.crm.dao.impl.ImageDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
 	<bean id="nodeService" class="net.realqinwei.hzcrm.crm.service.impl.NodeServiceImpl">
@@ -73,130 +65,128 @@
 		<property name="newsDAO" ref="newsDAO" />
 	</bean>
 	
-	<bean id="ImageService" class="net.realqinwei.hzcrm.crm.service.impl.ImageServiceImpl">
-		<property name="imageDAO" ref="ImageDAO" />
+	<bean id="imageService" class="net.realqinwei.hzcrm.crm.service.impl.ImageServiceImpl">
+		<property name="imageDAO" ref="imageDAO" />
 	</bean>
 	
-	<bean id="NodeRepositoryBean" class="net.realqinwei.hzcrm.crm.service.impl.NodeRepositoryImpl" scope="singleton">
+	<bean id="nodeRepositoryBean" class="net.realqinwei.hzcrm.crm.service.impl.NodeRepositoryImpl">
 		<property name="nodeDAO" ref="nodeDAO" />
 	</bean>
 		
-	<bean id="TreeFactoryBean" class="net.realqinwei.hzcrm.crm.domain.TreeFactory" scope="singleton">
-		<property name="nodeRepository" ref="NodeRepositoryBean" />
+	<bean id="treeFactoryBean" class="net.earthcoder.jmlm.domain.TreeFactory">
+		<property name="nodeRepository" ref="nodeRepositoryBean" />
 	</bean>
 	
-	<bean id="TreeRepositoryBean" class="net.realqinwei.hzcrm.crm.domain.TreeRepository" scope="singleton">
-		<property name="treeFactory" ref="TreeFactoryBean" />
+	<bean id="treeRepositoryBean" class="net.realqinwei.hzcrm.crm.domain.TreeRepository">
+		<property name="treeFactory" ref="treeFactoryBean" />
 	</bean>
 	
-	<bean id="FileUploader" class="net.realqinwei.hzcrm.crm.util.FileUploader" scope="singleton" />
+	<bean id="fileUploader" class="net.realqinwei.hzcrm.crm.util.FileUploader" />
 	
-	<bean id="TimestampCreator" class="net.realqinwei.hzcrm.crm.util.TimestampInMillis" scope="singleton" />
+	<bean id="timestampCreator" class="net.realqinwei.hzcrm.crm.util.TimestampInMillis" />
 	
-	<bean id="LogDAO" class="net.realqinwei.hzcrm.crm.dao.impl.LogDAOImpl" scope="singleton">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
+	<bean id="logDAO" class="net.realqinwei.hzcrm.crm.dao.impl.LogDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<bean id="LogService" class="net.realqinwei.hzcrm.crm.service.impl.LogServiceImpl" scope="singleton">
-		<property name="logDAO" ref="LogDAO" />
+	<bean id="logService" class="net.realqinwei.hzcrm.crm.service.impl.LogServiceImpl">
+		<property name="logDAO" ref="logDAO" />
 	</bean>
 
-	<bean id="LoginAction" class="net.realqinwei.hzcrm.crm.action.LoginAction" scope="prototype">
+	<bean id="loginAction" class="net.realqinwei.hzcrm.crm.action.LoginAction" scope="prototype">
 		<property name="nodeService" ref="nodeService" />
-		<property name="nodeRepository" ref="NodeRepositoryBean" />
-		<property name="treeRepository" ref="TreeRepositoryBean" />
-		<property name="logService" ref="LogService" />
-		<property name="timer" ref="TimestampCreator"/>
+		<property name="nodeRepository" ref="nodeRepositoryBean" />
+		<property name="treeRepository" ref="treeRepositoryBean" />
+		<property name="logService" ref="logService" />
+		<property name="timer" ref="timestampCreator"/>
         <property name="userService" ref="userService"/>
 	</bean>
 
 	<bean id="springLogoffAction" class="net.realqinwei.hzcrm.crm.action.LogoffAction"
 		scope="prototype" />
 	
-	<bean id="UserListAction" class="net.realqinwei.hzcrm.crm.action.UserListAction"
+	<bean id="userListAction" class="net.realqinwei.hzcrm.crm.action.UserListAction"
 		scope="prototype">
-		<property name="nodeRepository" ref="NodeRepositoryBean" />
-		<property name="treeRepository" ref="TreeRepositoryBean" />
+		<property name="nodeRepository" ref="nodeRepositoryBean" />
+		<property name="treeRepository" ref="treeRepositoryBean" />
 	</bean>
 	
-	<bean id="BillListAction" class="net.realqinwei.hzcrm.crm.action.BillListAction"
+	<bean id="billListAction" class="net.realqinwei.hzcrm.crm.action.BillListAction"
 		scope="prototype">
-		<property name="treeRepository" ref="TreeRepositoryBean"/>
+		<property name="treeRepository" ref="treeRepositoryBean"/>
 	</bean>
 	
-	<bean id="Tree2AppletAction" class="net.realqinwei.hzcrm.crm.action.Tree2AppletAction"
+	<bean id="tree2AppletAction" class="net.realqinwei.hzcrm.crm.action.Tree2AppletAction"
 		scope="prototype">
-		<property name="nodeRepository" ref="NodeRepositoryBean"/>
-		<property name="treeRepository" ref="TreeRepositoryBean"/>
+		<property name="nodeRepository" ref="nodeRepositoryBean"/>
+		<property name="treeRepository" ref="treeRepositoryBean"/>
 	</bean>
 	
-	<bean id="IndexAction" class="net.realqinwei.hzcrm.crm.action.IndexAction"
-		scope="prototype">
-		<property name="newsService" ref="newsService"/>
-	</bean>
-	
-	<bean id="AboutAction" class="net.realqinwei.hzcrm.crm.action.AboutAction"
-		scope="prototype">
-		<property name="newsService" ref="newsService"/>
-		<property name="timer" ref="TimestampCreator"/>
-	</bean>
-	
-	<bean id="ContactAction" class="net.realqinwei.hzcrm.crm.action.ContactAction"
-		scope="prototype">
-		<property name="newsService" ref="newsService"/>
-		<property name="timer" ref="TimestampCreator"/>
-	</bean>
-	
-	<bean id="NewsListAction" class="net.realqinwei.hzcrm.crm.action.NewsListAction"
+	<bean id="indexAction" class="net.realqinwei.hzcrm.crm.action.IndexAction"
 		scope="prototype">
 		<property name="newsService" ref="newsService"/>
 	</bean>
 	
-	<bean id="NewsAction" class="net.realqinwei.hzcrm.crm.action.NewsAction"
+	<bean id="aboutAction" class="net.realqinwei.hzcrm.crm.action.AboutAction"
 		scope="prototype">
 		<property name="newsService" ref="newsService"/>
-		<property name="timer" ref="TimestampCreator"/>
+		<property name="timer" ref="timestampCreator"/>
 	</bean>
 	
-	<bean id="ProductAction" class="net.realqinwei.hzcrm.crm.action.ProductAction"
+	<bean id="contactAction" class="net.realqinwei.hzcrm.crm.action.ContactAction"
 		scope="prototype">
 		<property name="newsService" ref="newsService"/>
-		<property name="timer" ref="TimestampCreator"/>
-		<property name="uploader" ref="FileUploader"/>
+		<property name="timer" ref="timestampCreator"/>
 	</bean>
 	
-	<bean id="UserAction" class="net.realqinwei.hzcrm.crm.action.UserAction"
+	<bean id="newsListAction" class="net.realqinwei.hzcrm.crm.action.NewsListAction"
+		scope="prototype">
+		<property name="newsService" ref="newsService"/>
+	</bean>
+	
+	<bean id="newsAction" class="net.realqinwei.hzcrm.crm.action.NewsAction"
+		scope="prototype">
+		<property name="newsService" ref="newsService"/>
+		<property name="timer" ref="timestampCreator"/>
+	</bean>
+	
+	<bean id="productAction" class="net.realqinwei.hzcrm.crm.action.ProductAction"
+		scope="prototype">
+		<property name="newsService" ref="newsService"/>
+		<property name="timer" ref="timestampCreator"/>
+		<property name="uploader" ref="fileUploader"/>
+	</bean>
+	
+	<bean id="userAction" class="net.realqinwei.hzcrm.crm.action.UserAction"
 		scope="prototype">
 		<property name="userService" ref="userService"/>
-		<property name="timer" ref="TimestampCreator"/>
+		<property name="timer" ref="timestampCreator"/>
 	</bean>
 	
-	<bean id="NodeAction" class="net.realqinwei.hzcrm.crm.action.NodeAction"
+	<bean id="nodeAction" class="net.realqinwei.hzcrm.crm.action.NodeAction"
 		scope="prototype">
 		<property name="nodeService" ref="nodeService"/>
         <property name="userService" ref="userService"/>
-		<property name="timer" ref="TimestampCreator"/>
-        <property name="treeRepository" ref="TreeRepositoryBean" />
+		<property name="timer" ref="timestampCreator"/>
+        <property name="treeRepository" ref="treeRepositoryBean" />
 	</bean>
 	
-	<bean id="LogAction" class="net.realqinwei.hzcrm.crm.action.LogAction" scope="prototype">
-		<property name="logService" ref="LogService" />
+	<bean id="logAction" class="net.realqinwei.hzcrm.crm.action.LogAction" scope="prototype">
+		<property name="logService" ref="logService" />
 	</bean>
 	
-	<bean id="SchoolAction" class="net.realqinwei.hzcrm.crm.action.SchoolAction" scope="prototype">
+	<bean id="schoolAction" class="net.realqinwei.hzcrm.crm.action.SchoolAction" scope="prototype">
 		<property name="newsService" ref="newsService"/>
-		<property name="timer" ref="TimestampCreator"/>
+		<property name="timer" ref="timestampCreator"/>
 	</bean>
 	
-	<bean id="ImageAction" class="net.realqinwei.hzcrm.crm.action.ImageAction" scope="prototype">
-		<property name="imageService" ref="ImageService"/>
-		<property name="uploader" ref="FileUploader"/>
+	<bean id="imageAction" class="net.realqinwei.hzcrm.crm.action.ImageAction" scope="prototype">
+		<property name="imageService" ref="imageService"/>
+		<property name="uploader" ref="fileUploader"/>
 	</bean>
 	
-	<bean id="TreeAction" class="net.realqinwei.hzcrm.crm.action.TreeAction" scope="prototype">
-		<property name="treeRepository" ref="TreeRepositoryBean"/>
+	<bean id="treeAction" class="net.realqinwei.hzcrm.crm.action.TreeAction" scope="prototype">
+		<property name="treeRepository" ref="treeRepositoryBean"/>
 	</bean>
 
 </beans>

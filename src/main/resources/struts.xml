@@ -21,7 +21,7 @@
 		</interceptors>
 		 -->
 
-		<action name="login" class="LoginAction">
+		<action name="login" class="loginAction">
 			<result>/login-success.jsp</result>
 			<result name="admin" type="chain">
 				<param name="actionName">newslist</param>
@@ -35,36 +35,36 @@
 			<result name="login">/goodbye.jsp</result>
 		</action>
 
-		<action name="userlist" class="UserListAction">
+		<action name="userlist" class="userListAction">
 			<result name="input">/login-success.jsp</result>
 			<result>/userlist.jsp</result>
 		</action>
 
-		<action name="billlist" class="BillListAction">
+		<action name="billlist" class="billListAction">
 			<result>/admin/bill-list.jsp</result>
 		</action>
 
-		<action name="tree2applet" class="Tree2AppletAction">
+		<action name="tree2applet" class="tree2AppletAction">
 			<result>/login.jsp</result>
 		</action>
 
-		<action name="index" class="IndexAction">
+		<action name="index" class="indexAction">
 			<result>/index.jsp</result>
 		</action>
 
-		<action name="viewnews" class="NewsAction" method="view">
+		<action name="viewnews" class="newsAction" method="view">
 			<result>/news.jsp</result>
 		</action>
 
-		<action name="viewabout" class="AboutAction" method="view">
+		<action name="viewabout" class="aboutAction" method="view">
 			<result>/about.jsp</result>
 		</action>
 
-		<action name="viewcontact" class="ContactAction" method="view">
+		<action name="viewcontact" class="contactAction" method="view">
 			<result>/contact.jsp</result>
 		</action>
 
-		<action name="editsavenews" class="NewsAction" method="editsave">
+		<action name="editsavenews" class="newsAction" method="editsave">
 			<result type="chain">
 				<param name="namespace">/admin</param>
 				<param name="actionName">newslist</param>
@@ -75,11 +75,11 @@
 			</result>
 		</action>
 
-		<action name="viewproduct" class="ProductAction" method="view">
+		<action name="viewproduct" class="productAction" method="view">
 			<result>/product.jsp</result>
 		</action>
 		
-		<action name="product-show" class="ProductAction" method="show">
+		<action name="product-show" class="productAction" method="show">
 			<result>/product-detail.jsp</result>
 		</action>
 
@@ -87,7 +87,7 @@
 
 	<package name="nm-huazhi.secure" extends="nm-huazhi" namespace="/secure">
 	
-		<action name="modify-password" class="UserAction" method="modify">
+		<action name="modify-password" class="userAction" method="modify">
 			<result type="chain">
 				<param name="namespace">/admin</param>
 				<param name="actionName">newslist</param>
@@ -95,7 +95,7 @@
 			<result name="input">/secure/modifypassword.jsp</result>
 		</action>
 		
-		<action name="courses-list" class="SchoolAction" method="list">
+		<action name="courses-list" class="schoolAction" method="list">
 			<result>/secure/nm-huazhi-school.jsp</result>
 		</action>
 		
@@ -103,55 +103,55 @@
 
 	<package name="nm-huazhi.admin" extends="nm-huazhi" namespace="/admin">
 	
-	    <action name="tree-show" class="TreeAction" method="show">
+	    <action name="tree-show" class="treeAction" method="show">
 			<result>/admin/tree-show.jsp</result>
 		</action>
 		
-		<action name="image-list" class="ImageAction" method="list">
+		<action name="image-list" class="imageAction" method="list">
 			<result>/admin/image-manage.jsp</result>
 		</action>
 		
-		<action name="image-delete" class="ImageAction" method="delete">
+		<action name="image-delete" class="imageAction" method="delete">
 			<result type="chain">image-list</result>
 		</action>
 		
-		<action name="image-upload" class="ImageAction" method="upload">
+		<action name="image-upload" class="imageAction" method="upload">
 			<result type="chain">image-list</result>
 		</action>
 	
-		<action name="courses-manage" class="SchoolAction" method="manage">
+		<action name="courses-manage" class="schoolAction" method="manage">
 			<result>/admin/course-manage.jsp</result>
 		</action>
 		
-		<action name="courses-edit" class="SchoolAction" method="edit">
+		<action name="courses-edit" class="schoolAction" method="edit">
 			<result>/admin/course-edit.jsp</result>
 		</action>
 		
-		<action name="courses-delete" class="SchoolAction" method="delete">
+		<action name="courses-delete" class="schoolAction" method="delete">
 			<result type="chain">courses-manage</result>
 		</action>
 		
-		<action name="courses-modify" class="SchoolAction" method="modify">
+		<action name="courses-modify" class="schoolAction" method="modify">
 			<result type="chain">courses-manage</result>
 		</action>
 		
-		<action name="courses-create" class="SchoolAction" method="create">
+		<action name="courses-create" class="schoolAction" method="create">
 			<result type="chain">courses-manage</result>
 		</action>
 
-		<action name="view-log" class="LogAction">
+		<action name="view-log" class="logAction">
 			<result>/admin/login-log.jsp</result>
 		</action>
 
-		<action name="adduser" class="UserAction" method="addUser">
+		<action name="adduser" class="userAction" method="addUser">
 			<result>/admin/adduser.jsp</result>
 		</action>
 		
-		<action name="addnode" class="NodeAction" method="addNode">
+		<action name="addnode" class="nodeAction" method="addNode">
 			<result>/admin/addnode.jsp</result>
 		</action>
 
-		<action name="save-user" class="UserAction" method="save">
+		<action name="save-user" class="userAction" method="save">
 			<result name="input">adduser.jsp</result>
 			<result>/login-success.jsp</result>
 			<interceptor-ref name="token" />
@@ -159,7 +159,7 @@
 			<result name="invalid.token">/login.jsp</result>
 		</action>
 		
-		<action name="save-node" class="NodeAction" method="save">
+		<action name="save-node" class="nodeAction" method="save">
 			<result name="input">addnode.jsp</result>
 			<result>/login-success.jsp</result>
 			<interceptor-ref name="token" />
@@ -167,66 +167,66 @@
 			<result name="invalid.token">/login.jsp</result>
 		</action>
 
-		<action name="edit-user" class="UserAction" method="edit">
+		<action name="edit-user" class="userAction" method="edit">
 			<result>/admin/modifyuser.jsp</result>
 			<result name="input">/login-success.jsp</result>
 		</action>
 
-		<action name="edit-user-save" class="UserAction" method="saveEdit">
+		<action name="edit-user-save" class="userAction" method="saveEdit">
 			<result name="input">/admin/modifyuser.jsp</result>
 			<result>/login-success.jsp</result>
 		</action>
 
-		<action name="editnews" class="NewsAction" method="edit">
+		<action name="editnews" class="newsAction" method="edit">
 			<result>/admin/editnews.jsp</result>
 		</action>
 
-		<action name="create-product" class="ProductAction" method="create">
+		<action name="create-product" class="productAction" method="create">
 			<result type="chain">listproduct</result>
 			<result name="input">/admin/product-create.jsp</result>
 		</action>
 
-		<action name="delete-product" class="ProductAction" method="delete">
+		<action name="delete-product" class="productAction" method="delete">
 			<result type="chain">listproduct</result>
 		</action>
 
-		<action name="edit-product" class="ProductAction" method="edit">
+		<action name="edit-product" class="productAction" method="edit">
 			<result>/admin/product-edit.jsp</result>
 		</action>
 
-		<action name="save-product" class="ProductAction" method="update">
+		<action name="save-product" class="productAction" method="update">
 			<result type="chain">listproduct</result>
 		</action>
 
-		<action name="listproduct" class="ProductAction" method="list">
+		<action name="listproduct" class="productAction" method="list">
 			<result>/admin/product-list.jsp</result>
 		</action>
 
-		<action name="editabout" class="AboutAction" method="edit">
+		<action name="editabout" class="aboutAction" method="edit">
 			<result>/admin/modifyabout.jsp</result>
 		</action>
 
-		<action name="update_about" class="AboutAction" method="update">
+		<action name="update_about" class="aboutAction" method="update">
 			<result>/about.jsp</result>
 		</action>
 
-		<action name="editcontact" class="ContactAction" method="edit">
+		<action name="editcontact" class="contactAction" method="edit">
 			<result>/admin/editcontact.jsp</result>
 		</action>
 
-		<action name="update_contact" class="ContactAction" method="update">
+		<action name="update_contact" class="contactAction" method="update">
 			<result>/contact.jsp</result>
 		</action>
 
-		<action name="newslist" class="NewsListAction">
+		<action name="newslist" class="newsListAction">
 			<result>/admin/newslist.jsp</result>
 		</action>
 
-		<action name="deletenews" class="NewsAction" method="delete">
+		<action name="deletenews" class="newsAction" method="delete">
 			<result type="chain">newslist</result>
 		</action>
 
-		<action name="createsavenews" class="NewsAction" method="createsave">
+		<action name="createsavenews" class="newsAction" method="createsave">
 			<result type="chain">newslist</result>
 			<result name="input">/createnews.jsp</result>
 		</action>
