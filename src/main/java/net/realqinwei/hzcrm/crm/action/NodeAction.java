@@ -9,12 +9,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import net.earthcoder.jmlm.domain.BinaryNode;
 import net.earthcoder.jmlm.domain.BinaryTree;
+import net.earthcoder.jmlm.domain.Human;
 import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.been.User;
+import net.realqinwei.hzcrm.crm.domain.NodeRepository;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 import net.realqinwei.hzcrm.crm.service.intf.NodeService;
 import net.realqinwei.hzcrm.crm.service.intf.UserService;
 import net.realqinwei.hzcrm.crm.util.TimestampCreator;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -26,33 +29,58 @@ public class NodeAction extends ActionSupport implements SessionAware {
     private UserService userService;
     private Node node;
     private TimestampCreator timer;
-    private List<User> userList;
-    private List<User> usersHaveNodes;
-    private Map<Integer, List<Node>> userNodeMap;
+    private NodeRepository nodeRepository;
     private TreeRepository treeRepository;
     private Map<String, Object> session;
+    private List<User> users;
+    private List<User> ownersOfAllNodes;
+    private List<User> ownersOfnonfullNodes;
+    private Map<Integer, List<Node>> allNodesOwnersMap;
+    private Map<Integer, List<Node>> nonfullNodesOwnerMap;
+
+    public NodeAction() {
+    }
 
     public String addNode() {
-        initDoubleSelectContent();
+        initNewNodeOwnerSelect();
+        initReferNodeSelect();
+        initLoaderNodeSelect();
         return SUCCESS;
     }
 
-    private void initDoubleSelectContent() {
-        setUserList(getUserService().getUsers());
-        setUserNodeMap(new HashMap<Integer, List<Node>>());
+    private void initNewNodeOwnerSelect() {
+        users = userService.getUsers();
+    }
+
+    private void initReferNodeSelect() {
+        ownersOfAllNodes = userService.getUsersHaveNodes();
+        allNodesOwnersMap = new HashMap<Integer, List<Node>>();
+        for (User user: ownersOfAllNodes) {
+            allNodesOwnersMap.put(user.getId(), nodeService.findByOwner(user));
+        }
+    }
+
+    private void initLoaderNodeSelect() {
+        nonfullNodesOwnerMap = new HashMap<Integer, List<Node>>();
+        List<User> allUsers = userService.getUsers();
         BinaryTree binaryTree = (BinaryTree) session.get("tree");
         List<BinaryNode> binaryNodes = binaryTree.getNodes();
         List<Node> nodes;
-        for (User usr : getUserList()) {
+        for (User user : allUsers) {
             nodes = new ArrayList<Node>();
-            for (Node node: getNodeService().findByOwner(usr)) {
+            for (Node node: nodeService.findByOwner(user)) {
                 if (!nodeBeanIsFull(binaryNodes, node)) {
                     nodes.add(node);
                 }
             }
-            getUserNodeMap().put(usr.getId(), nodes);
+            if (nodes.size() != 0) {
+                nonfullNodesOwnerMap.put(user.getId(), nodes);
+            }
         }
-        setUsersHaveNodes(getUserService().getUsersHaveNodes());
+        ownersOfnonfullNodes = new ArrayList<User>();
+        for (Integer userID : nonfullNodesOwnerMap.keySet()) {
+            ownersOfnonfullNodes.add(userService.findById(userID));
+        }
     }
 
     private boolean nodeBeanIsFull(List<BinaryNode> binaryNodes, Node nodeBean) {
@@ -107,28 +135,12 @@ public class NodeAction extends ActionSupport implements SessionAware {
         this.userService = userService;
     }
 
-    public Map<Integer, List<Node>> getUserNodeMap() {
-        return userNodeMap;
+    public Map<Integer, List<Node>> getAllNodesOwnersMap() {
+        return allNodesOwnersMap;
     }
 
-    public void setUserNodeMap(Map<Integer, List<Node>> userNodeMap) {
-        this.userNodeMap = userNodeMap;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
-    public List<User> getUsersHaveNodes() {
-        return usersHaveNodes;
-    }
-
-    public void setUsersHaveNodes(List<User> usersHaveNodes) {
-        this.usersHaveNodes = usersHaveNodes;
+    public void setAllNodesOwnersMap(Map<Integer, List<Node>> allNodesOwnersMap) {
+        this.allNodesOwnersMap = allNodesOwnersMap;
     }
 
     public TreeRepository getTreeRepository() {
@@ -137,6 +149,46 @@ public class NodeAction extends ActionSupport implements SessionAware {
 
     public void setTreeRepository(TreeRepository treeRepository) {
         this.treeRepository = treeRepository;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public Map<Integer, List<Node>> getNonfullNodesOwnerMap() {
+        return nonfullNodesOwnerMap;
+    }
+
+    public void setNonfullNodesOwnerMap(Map<Integer, List<Node>> nonfullNodesOwnerMap) {
+        this.nonfullNodesOwnerMap = nonfullNodesOwnerMap;
+    }
+
+    public List<User> getOwnersOfAllNodes() {
+        return ownersOfAllNodes;
+    }
+
+    public void setOwnersOfAllNodes(List<User> ownersOfAllNodes) {
+        this.ownersOfAllNodes = ownersOfAllNodes;
+    }
+
+    public NodeRepository getNodeRepository() {
+        return nodeRepository;
+    }
+
+    public void setNodeRepository(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+    }
+
+    public List<User> getOwnersOfnonfullNodes() {
+        return ownersOfnonfullNodes;
+    }
+
+    public void setOwnersOfnonfullNodes(List<User> ownersOfnonfullNodes) {
+        this.ownersOfnonfullNodes = ownersOfnonfullNodes;
     }
 
     @Override

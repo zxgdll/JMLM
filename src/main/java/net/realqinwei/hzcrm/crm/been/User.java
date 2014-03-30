@@ -18,18 +18,20 @@ public final class User implements java.io.Serializable, Comparable<User> {
 
 	}
 
-	/** minimal constructor */
+    public User(Integer id, String userPassword) {
+        this.id = id;
+        this.userPassword = userPassword;
+    }
+
 	public User(String userPassword, String userIDCard, String userName,
                 Integer userType, Timestamp userCreateTime) {
-
-		this.userPassword = userPassword;
+        this.userName = userName;
+        this.userPassword = userPassword;
 		this.userIDCard = userIDCard;
-		this.userName = userName;
 		this.userType = userType;
 		this.userCreateTime = userCreateTime;
 	}
 
-	/** full constructor */
 	public User(String userPassword, String userIDCard, String userName,
                 String userPhone, String userAddress, Integer userType,
                 Timestamp userCreateTime, String userLoginID) {

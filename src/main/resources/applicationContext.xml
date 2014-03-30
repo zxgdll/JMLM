@@ -169,6 +169,7 @@
         <property name="userService" ref="userService"/>
 		<property name="timer" ref="timestampCreator"/>
         <property name="treeRepository" ref="treeRepositoryBean" />
+        <property name="nodeRepository" ref="nodeRepositoryBean" />
 	</bean>
 	
 	<bean id="logAction" class="net.realqinwei.hzcrm.crm.action.LogAction" scope="prototype">

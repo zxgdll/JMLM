@@ -1,7 +1,10 @@
 package net.realqinwei.hzcrm.crm.dao.impl;
 
+import net.earthcoder.jmlm.domain.Human;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.dao.intf.UserDAO;
+import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
@@ -45,5 +48,10 @@ public class UserDAOImpl extends HibernateDaoSupport implements UserDAO {
     public List<User> getUsersHaveNodes() {
         String sql = "FROM User WHERE userType = 1 AND id IN (SELECT nodeUserID FROM Node) ORDER BY userCreateTime";
         return (List<User>) getHibernateTemplate().find(sql);
+    }
+
+    @Override
+    public boolean userWithPasswordExists(User user) {
+        return getHibernateTemplate().findByExample(user).size() > 0;
     }
 }

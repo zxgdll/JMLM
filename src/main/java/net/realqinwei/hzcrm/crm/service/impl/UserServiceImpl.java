@@ -1,5 +1,7 @@
 package net.realqinwei.hzcrm.crm.service.impl;
 
+import net.earthcoder.jmlm.domain.Human;
+import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.been.User;
 import net.realqinwei.hzcrm.crm.dao.intf.UserDAO;
 import net.realqinwei.hzcrm.crm.service.intf.UserService;
@@ -10,6 +12,11 @@ import java.util.List;
 public final class UserServiceImpl implements UserService {
 	
 	private UserDAO userDAO;
+
+    @Override
+    public boolean userWithPasswordExists(User user) {
+        return userDAO.userWithPasswordExists(user);
+    }
 
 	@Override
 	public boolean userIDExist(Integer userID) {

@@ -62,7 +62,7 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 	
 	@Override
 	public String execute() throws Exception {
-		LOG.debug(loginId + " try to login");
+		LOG.debug(userService.userWithPasswordExists(new User(loginId, password)));
 		if (userIDExist()) {
 			if (isPasswordRight()) {
 
