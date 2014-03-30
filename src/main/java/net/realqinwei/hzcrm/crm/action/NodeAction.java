@@ -1,9 +1,6 @@
 package net.realqinwei.hzcrm.crm.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -81,6 +78,7 @@ public class NodeAction extends ActionSupport implements SessionAware {
         for (Integer userID : nonfullNodesOwnerMap.keySet()) {
             ownersOfnonfullNodes.add(userService.findById(userID));
         }
+        Collections.sort(ownersOfnonfullNodes);
     }
 
     private boolean nodeBeanIsFull(List<BinaryNode> binaryNodes, Node nodeBean) {
