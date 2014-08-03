@@ -10,29 +10,24 @@ public abstract class BinaryNode {
     private static final long DEFAULT_VALUE = 2200;
     private static final int RELATION_INIT = 20;
 
-    protected Map<Date, List<BillItem>> getBillList() {
-        return feeController.getBillList();
-    }
-
     private Human content;
     private FeeController feeController;
-    private BinaryNode left;
-    private BinaryNode right;
     private Set<Relationship> relationshipSet;
     private long[] results = {0, 0};
     private long[] current = {0, 0};
-    private BinaryNode[] childs;
     private long historyValue;
     private long currentValue;
     private BinaryPlanArea a_area;
     private BinaryPlanArea b_area;
     protected int level;
 
+    private NodeStruct nodeStruct;
+
     public BinaryNode(Human content) {
         this.content = content;
+        nodeStruct = new NodeStruct();
         feeController = new FeeController();
         relationshipSet = new HashSet<Relationship>(RELATION_INIT);
-        childs = new BinaryNode[2];
 
         a_area = new BinaryPlanArea();
         b_area = new BinaryPlanArea();
@@ -45,11 +40,11 @@ public abstract class BinaryNode {
     }
 
     public boolean isFull() {
-        return null != childs[0] && null != childs[1];
+        return nodeStruct.isFull();
     }
 
     public BinaryNode[] getChilds() {
-        return childs;
+        return nodeStruct.getChilds();
     }
 
     public long getLeftResults() {
@@ -76,6 +71,10 @@ public abstract class BinaryNode {
         current[1] -= feeValue;
     }
 
+    protected Map<Date, List<BillItem>> getBillList() {
+        return feeController.getBillList();
+    }
+
     protected void leftResultAdd(long feeValue) {
         results[0] += feeValue;
         current[0] += feeValue;
@@ -87,29 +86,7 @@ public abstract class BinaryNode {
     }
 
     protected void autoMountNode(BinaryNode newNode) {
-        if (leftIsEmpty()) {
-            leftLoad(newNode);
-            childs[0] = newNode;
-        } else if (rightIsEmpty()) {
-            rightLoad(newNode);
-            childs[1] = newNode;
-        }
-    }
-
-    private void leftLoad(BinaryNode newNode) {
-        if (!this.leftIsEmpty()) {
-            throw new RuntimeException("Load node in a not empty node.");
-        } else {
-            left = newNode;
-        }
-    }
-
-    private void rightLoad(BinaryNode newNode) {
-        if (!this.rightIsEmpty()) {
-            throw new RuntimeException("Load node in a not empty node.");
-        } else {
-            right =  newNode;
-        }
+        nodeStruct.autoMountNode(newNode);
     }
 
     protected Boolean flashedForAncestor(Integer ancestor) {
@@ -139,11 +116,11 @@ public abstract class BinaryNode {
     }
 
     protected boolean leftIsEmpty() {
-        return null == this.left;
+        return nodeStruct.leftIsEmpty();
     }
 
     protected boolean rightIsEmpty() {
-        return null == this.right;
+        return nodeStruct.rightIsEmpty();
     }
 
     protected void addInitialFee() {
@@ -185,11 +162,11 @@ public abstract class BinaryNode {
     }
 
     protected BinaryNode getLeft() {
-        return left;
+        return nodeStruct.getLeft();
     }
 
     protected BinaryNode getRight() {
-        return right;
+        return nodeStruct.getRight();
     }
 
     protected Date getCreateDate() {
