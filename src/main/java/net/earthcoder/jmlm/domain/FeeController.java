@@ -26,14 +26,14 @@ public final class FeeController {
     }
 
     private void addFee(Date date, Human content, Fee fee) {
-        long sum = counselingFee.sum() + operatingExpenses.sum();
-        if (sum + fee.defaultValue() < OUT_LEVEL) {
+        long twoFeeSum = counselingFee.sum() + operatingExpenses.sum();
+        if (twoFeeSum + fee.defaultValue() < OUT_LEVEL) {
             fee.add(date, content, fee.defaultValue());
-        } else if (sum + fee.defaultValue() == OUT_LEVEL) {
+        } else if (twoFeeSum + fee.defaultValue() == OUT_LEVEL) {
             fee.add(date, content, fee.defaultValue());
             frozen = true;
         } else {
-            fee.add(date, content, OUT_LEVEL - sum);
+            fee.add(date, content, OUT_LEVEL - twoFeeSum);
             frozen = true;
         }
     }

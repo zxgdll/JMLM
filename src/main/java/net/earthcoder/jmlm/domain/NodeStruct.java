@@ -49,18 +49,15 @@ public final class NodeStruct {
 
     private void setLeft(BinaryNode left) {
         if (leftIsEmpty()) {
-            this.left = left;
-            childs[0] = left;
+            childs[0] = this.left = left;
         } else {
             throw new RuntimeException(ERROR);
         }
-
     }
 
     private void setRight(BinaryNode right) {
         if (rightIsEmpty()) {
-            this.right = right;
-            childs[1] = right;
+            childs[1] = this.right = right;
         } else {
             throw new RuntimeException(ERROR);
         }

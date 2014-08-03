@@ -11,28 +11,25 @@ public abstract class BinaryNode {
     private static final int RELATION_INIT = 20;
 
     private Human content;
+    private NodeStruct nodeStruct;
     private FeeController feeController;
     private Set<Relationship> relationshipSet;
-    private long[] results = {0, 0};
-    private long[] current = {0, 0};
+    private NodeSales nodeSales;
     private long historyValue;
     private long currentValue;
-    private BinaryPlanArea a_area;
-    private BinaryPlanArea b_area;
     protected int level;
 
-    private NodeStruct nodeStruct;
-
-    public BinaryNode(Human content) {
+    public BinaryNode(Human content, long value) {
         this.content = content;
         nodeStruct = new NodeStruct();
         feeController = new FeeController();
         relationshipSet = new HashSet<Relationship>(RELATION_INIT);
+        historyValue = currentValue = value;
+        nodeSales = new NodeSales();
+    }
 
-        a_area = new BinaryPlanArea();
-        b_area = new BinaryPlanArea();
-
-        historyValue = currentValue = BinaryNode.DEFAULT_VALUE;
+    public BinaryNode(Human content) {
+        this(content, DEFAULT_VALUE);
     }
 
     public boolean contains (Human content) {
@@ -48,27 +45,19 @@ public abstract class BinaryNode {
     }
 
     public long getLeftResults() {
-        return results[0];
+        return nodeSales.getLeftHistorySales();
     }
 
     public long getRightResults() {
-        return results[1];
+        return nodeSales.getRightHistorySales();
     }
 
     public long getLeftCurrent() {
-        return current[0];
+        return nodeSales.getLeftCurrentSales();
     }
 
     public long getRightCurrent() {
-        return current[1];
-    }
-
-    private void leftCurrentMinus(long feeValue) {
-        current[0] -= feeValue;
-    }
-
-    private void rightCurrentMinus(long feeValue) {
-        current[1] -= feeValue;
+        return nodeSales.getRightCurrentSales();
     }
 
     protected Map<Date, List<BillItem>> getBillList() {
@@ -76,13 +65,11 @@ public abstract class BinaryNode {
     }
 
     protected void leftResultAdd(long feeValue) {
-        results[0] += feeValue;
-        current[0] += feeValue;
+        nodeSales.leftResultAdd(feeValue);
     }
 
     protected void rightResultAdd(long feeValue) {
-        results[1] += feeValue;
-        current[1] += feeValue;
+        nodeSales.rightResultAdd(feeValue);
     }
 
     protected void autoMountNode(BinaryNode newNode) {
@@ -133,8 +120,6 @@ public abstract class BinaryNode {
 
     protected void addOperatingExpenses(Date date) {
         feeController.addOperatingExpenses(date, content);
-        leftCurrentMinus(feeController.getInitialFee().defaultValue());
-        rightCurrentMinus(feeController.getInitialFee().defaultValue());
     }
 
     public long getCounselingFee() {
@@ -173,9 +158,6 @@ public abstract class BinaryNode {
         return content.initDateTime();
     }
 
-    protected abstract BinaryNode getFather();
-    protected abstract BinaryNode getRefer();
-
     public long getHistoryValue() {
         return historyValue;
     }
@@ -183,6 +165,9 @@ public abstract class BinaryNode {
     public long getCurrentValue() {
         return currentValue;
     }
+
+    protected abstract BinaryNode getFather();
+    protected abstract BinaryNode getRefer();
 
     @Override
     public int hashCode() {
