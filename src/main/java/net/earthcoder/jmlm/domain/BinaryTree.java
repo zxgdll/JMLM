@@ -196,7 +196,7 @@ public final class BinaryTree {
     public void printBill() {
         out.printf("%10d%10d%10d%6.2f%%%10d", initialFeeSum, counselingFeeSum, operatingExpensesSum,
                 (double) (operatingExpensesSum + counselingFeeSum) / initialFeeSum * 100,
-                rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
+                (null == rootNode ? 0 : rootNode.getOperatingExpenses()) + (null == rootNode ? 0 : rootNode.getCounselingFee()));
     }
 
     public void printNode(BinaryNode node) {
