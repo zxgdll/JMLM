@@ -8,6 +8,7 @@ import java.util.*;
 public abstract class BinaryNode {
 
     private static final long DEFAULT_VALUE = 2200;
+    private static final int RELATION_INIT = 20;
 
     protected Map<Date, List<BillItem>> getBillList() {
         return feeController.getBillList();
@@ -30,7 +31,7 @@ public abstract class BinaryNode {
     public BinaryNode(Human content) {
         this.content = content;
         feeController = new FeeController();
-        relationshipSet = new HashSet<Relationship>();
+        relationshipSet = new HashSet<Relationship>(RELATION_INIT);
         childs = new BinaryNode[2];
 
         a_area = new BinaryPlanArea();
