@@ -27,4 +27,8 @@ public abstract class AbstractFee implements Fee {
             e.printStackTrace();
         }
     }
+
+    public Map<Date, List<BillItem>> getBillList() {
+        return book.getBillList();
+    }
 }

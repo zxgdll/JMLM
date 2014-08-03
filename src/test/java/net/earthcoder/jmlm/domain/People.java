@@ -1,26 +1,30 @@
 package net.earthcoder.jmlm.domain;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public final class People extends AbstractHuman {
-    
-    private String name;
+
+    private Date date;
 
     public People(Integer serialNumber) {
         super(serialNumber);
+        date = Calendar.getInstance().getTime();
     }
-    
-    public People(Integer serialNumber, String name) {
+
+    public People(Integer serialNumber, Date date) {
         this(serialNumber);
-        this.name = name;
+        this.date = date;
     }
 
     @Override
     public String name() {
-        return name;
+        return getID().toString();
     }
 
     @Override
     public Integer nodeID() {
-        return null;
+        return getID();
     }
 
     @Override
@@ -36,5 +40,10 @@ public final class People extends AbstractHuman {
     @Override
     public Integer loadNodeID() {
         return null;
+    }
+
+    @Override
+    public Date initDateTime() {
+        return date;
     }
 }

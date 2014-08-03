@@ -19,6 +19,10 @@ public final class DailyBook {
         flushSum();
     }
 
+    protected List<BillItem> getBillItemList() {
+        return billItemList;
+    }
+
     private void flushSum() {
         dailySum = 0;
         for (BillItem billItem: billItemList) {

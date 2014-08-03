@@ -1,6 +1,6 @@
 package net.earthcoder.jmlm.domain;
 
-import java.util.Date;
+import java.util.*;
 
 public final class FeeController {
     
@@ -11,6 +11,19 @@ public final class FeeController {
     private Fee counselingFee = new CounselingFee();
     private Fee operatingExpenses = new OperatingExpenses();
     private Fee initialFee = new InitialFee();
+
+    protected Map<Date, List<BillItem>> getBillList() {
+        Map<Date, List<BillItem>> counselingFeeMap = counselingFee.getBillList();
+        Map<Date, List<BillItem>> operatingExpensesMap = operatingExpenses.getBillList();
+        for (Date date: counselingFeeMap.keySet()) {
+            if (operatingExpensesMap.containsKey(date)) {
+                operatingExpensesMap.get(date).addAll(counselingFeeMap.get(date));
+            } else {
+                operatingExpensesMap.put(date, counselingFeeMap.get(date));
+            }
+        }
+        return operatingExpensesMap;
+    }
 
     private void addFee(Date date, Human content, Fee fee) {
         long sum = counselingFee.sum() + operatingExpenses.sum();

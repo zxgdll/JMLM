@@ -13,6 +13,11 @@ public final class BillItem {
         this.fee = fee;
         this.people = people;
     }
+
+    @Override
+    public String toString() {
+        return "[" + date + ", " + fee + ", " + people + "]";
+    }
     
     public Human getPeople() {
         return people;

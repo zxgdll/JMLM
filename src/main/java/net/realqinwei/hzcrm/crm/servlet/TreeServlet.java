@@ -12,12 +12,13 @@ import net.realqinwei.hzcrm.crm.been.Node;
 import net.realqinwei.hzcrm.crm.domain.TreeComponent;
 import net.realqinwei.hzcrm.crm.domain.TreeRepository;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class TreeServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -8159057704190460477L;
+    private static final Logger LOG = Logger.getLogger(TreeServlet.class);
 
 	public TreeServlet() {
 		super();
@@ -29,6 +30,9 @@ public class TreeServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+        String param = request.getParameter("Node");
+        LOG.debug(param);
 
 		this.doPost(request, response);
 	}

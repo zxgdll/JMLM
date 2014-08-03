@@ -16,6 +16,14 @@ public final class Book{
         this.capStrategy = capStrategy;
     }
 
+    protected Map<Date, List<BillItem>> getBillList() {
+        Map<Date, List<BillItem>> map = new HashMap<Date, List<BillItem>>();
+        for (Date date : dailyBooks.keySet()) {
+            map.put(date, dailyBooks.get(date).getBillItemList());
+        }
+        return map;
+    }
+
     public void write(Date date, Human people, long fee) throws OverDailyCapException {
         if (hasDailyBook(date)) {
             capStrategy.getFee(getDailyBook(date), date, people, fee);

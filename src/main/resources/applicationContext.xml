@@ -104,6 +104,11 @@
 
 	<bean id="springLogoffAction" class="net.realqinwei.hzcrm.crm.action.LogoffAction"
 		scope="prototype" />
+
+    <bean id="outbillAction" class="net.realqinwei.hzcrm.crm.action.OutbillAction"
+          scope="prototype">
+        <property name="treeRepository" ref="treeRepositoryBean" />
+    </bean>
 	
 	<bean id="userListAction" class="net.realqinwei.hzcrm.crm.action.UserListAction"
 		scope="prototype">

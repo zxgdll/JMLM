@@ -83,10 +83,14 @@
 			<result>/product-detail.jsp</result>
 		</action>
 
+        <action name="tree-show" class="treeAction" method="show">
+            <result name="admin">/admin/tree-show-admin.jsp</result>
+            <result>/tree-show.jsp</result>
+        </action>
+
 	</package>
 
 	<package name="nm-huazhi.secure" extends="nm-huazhi" namespace="/secure">
-	
 		<action name="modify-password" class="userAction" method="modify">
 			<result type="chain">
 				<param name="namespace">/admin</param>
@@ -98,15 +102,14 @@
 		<action name="courses-list" class="schoolAction" method="list">
 			<result>/secure/nm-huazhi-school.jsp</result>
 		</action>
-		
 	</package>
 
 	<package name="nm-huazhi.admin" extends="nm-huazhi" namespace="/admin">
-	
-	    <action name="tree-show" class="treeAction" method="show">
-			<result>/admin/tree-show.jsp</result>
-		</action>
-		
+
+        <action name="outbill" class="outbillAction">
+            <result>/admin/outbill.jsp</result>
+        </action>
+
 		<action name="image-list" class="imageAction" method="list">
 			<result>/admin/image-manage.jsp</result>
 		</action>

@@ -7,15 +7,37 @@ import java.util.*;
  */
 public abstract class BinaryNode {
 
+    private static final long DEFAULT_VALUE = 2200;
+
+    protected Map<Date, List<BillItem>> getBillList() {
+        return feeController.getBillList();
+    }
+
     private Human content;
     private FeeController feeController;
     private BinaryNode left;
     private BinaryNode right;
     private Set<Relationship> relationshipSet;
-    private Date createDate;
     private long[] results = {0, 0};
     private long[] current = {0, 0};
     private BinaryNode[] childs;
+    private long historyValue;
+    private long currentValue;
+    private BinaryPlanArea a_area;
+    private BinaryPlanArea b_area;
+    protected int level;
+
+    public BinaryNode(Human content) {
+        this.content = content;
+        feeController = new FeeController();
+        relationshipSet = new HashSet<Relationship>();
+        childs = new BinaryNode[2];
+
+        a_area = new BinaryPlanArea();
+        b_area = new BinaryPlanArea();
+
+        historyValue = currentValue = BinaryNode.DEFAULT_VALUE;
+    }
 
     public boolean contains (Human content) {
         return this.content.equals(content);
@@ -63,16 +85,6 @@ public abstract class BinaryNode {
         current[1] += feeValue;
     }
 
-    protected int level;
-
-    public BinaryNode(Human content, Date createDate) {
-        this.content = content;
-        this.createDate = createDate;
-        feeController = new FeeController();
-        relationshipSet = new HashSet<Relationship>();
-        childs = new BinaryNode[2];
-    }
-
     protected void autoMountNode(BinaryNode newNode) {
         if (leftIsEmpty()) {
             leftLoad(newNode);
@@ -80,18 +92,6 @@ public abstract class BinaryNode {
         } else if (rightIsEmpty()) {
             rightLoad(newNode);
             childs[1] = newNode;
-        }
-    }
-
-    protected void mountNode(BinaryNode newNode, String flag) {
-        if ("LEFT".equals(flag)) {
-            leftLoad(newNode);
-            childs[0] = newNode;
-        } else if ("RIGHT".equals(flag)) {
-            rightLoad(newNode);
-            childs[1] = newNode;
-        } else {
-            throw new RuntimeException("Wrong flag.");
         }
     }
 
@@ -145,8 +145,8 @@ public abstract class BinaryNode {
         return null == this.right;
     }
 
-    protected void addInitialFee(Date date) {
-        feeController.addInitialFee(date, content);
+    protected void addInitialFee() {
+        feeController.addInitialFee(content.initDateTime(), content);
     }
 
     protected void addCounselingFee(Date date) {
@@ -192,11 +192,19 @@ public abstract class BinaryNode {
     }
 
     protected Date getCreateDate() {
-        return createDate;
+        return content.initDateTime();
     }
 
     protected abstract BinaryNode getFather();
     protected abstract BinaryNode getRefer();
+
+    public long getHistoryValue() {
+        return historyValue;
+    }
+
+    public long getCurrentValue() {
+        return currentValue;
+    }
 
     @Override
     public int hashCode() {
@@ -216,7 +224,7 @@ public abstract class BinaryNode {
         }
         @SuppressWarnings("unchecked")
         RegularBinaryNode otherNode = (RegularBinaryNode) otherObject;
-        return this.getContent().equals(otherNode.getContent());
+        return content.equals(otherNode.getContent());
     }
 
     @Override

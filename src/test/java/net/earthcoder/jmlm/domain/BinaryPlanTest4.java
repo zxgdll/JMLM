@@ -13,7 +13,7 @@ public final class BinaryPlanTest4 {
     private static final String FLAG_PATTERN = "\\|";
     private static final String BLANK = "";
 
-    BinaryTree plan = new BinaryTree();
+    BinaryTree plan = BinaryTree.getNewTree();
     private static final String[] names;
     
     static {
@@ -40,7 +40,7 @@ public final class BinaryPlanTest4 {
     }
     
     private void add(String name, String name2, String flag) {
-        plan.addNode(new People(getID(name), name), getID(name2), getID(name2));
+        plan.addNode(new People(getID(name)), getID(name2), getID(name2));
     }
     
     private void addOne(String name, String name2, String flag) {
@@ -163,7 +163,7 @@ public final class BinaryPlanTest4 {
     }
     
     private void init() {
-        plan.addNode(new People(getID(names[1]), names[1]), null, null);
+        plan.addNode(new People(getID(names[1])), null, null);
         for (int i = 2; i < 21; i++) {
             add(names[i], names[i - 1], "LEFT");
         }

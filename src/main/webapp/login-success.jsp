@@ -2,7 +2,6 @@
 <%@ page import="net.earthcoder.jmlm.domain.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="net.realqinwei.hzcrm.crm.been.Node" %>
-<%@ page import="net.realqinwei.hzcrm.crm.domain.NodeRepository" %>
 <%@ page import="net.realqinwei.hzcrm.crm.been.User" %>
 <%@ page import="net.realqinwei.hzcrm.crm.service.intf.NodeService" %>
 <%@ page import="java.util.ArrayList" %>
@@ -28,7 +27,8 @@
 		<li><a href="<%=basePath%>admin/addnode.action"><s:text name="addnode.submit"/></a></li>
 		<li><a href="<%=basePath%>admin/bill.jsp"><s:text name="menu.bill"/></a></li>
 		<li class="active"><a href="#"><s:text name="menu.user"/></a></li>
-		<li><a href="<%=basePath%>admin/tree-show"><s:text name="home.tree"/></a></li>
+		<li><a href="<%=basePath%>tree-show"><s:text name="home.tree"/></a></li>
+        <li><a href="<%=basePath%>admin/outbill.action">出账</a></li>
 		</ul>
 		</div>
 	</s:if>
@@ -77,7 +77,7 @@
             <tr>
                 <th width="125"><s:text name="bill.name"/></th>
                 <th width="100">A区业绩</th>
-                <th width="100">B区业绩></th>
+                <th width="100">B区业绩</th>
                 <th width="100">运营奖</th>
                 <th width="100">辅导奖</th>
             </tr>
@@ -89,8 +89,14 @@
                 List<Node> nodes = service.findByOwner(loginUser);
                 BinaryTree tree = (BinaryTree) session.getAttribute("tree");
                 List<BinaryNode> binaryNodes = tree.getNodes();
+
+                boolean newStart = false;
+
                 List<BinaryNode> result = new ArrayList<BinaryNode>();
                 for (BinaryNode bn: binaryNodes) {
+                    if (!newStart && bn.getContent().nodeID() > 691) {
+                        newStart = true;
+                    }
                     for (Node content: nodes) {
                         if (bn.contains(content)) {
                             result.add(bn);
@@ -100,11 +106,15 @@
                 for (BinaryNode bnode: result) {
             %>
             <tr>
-                <td><%=bnode.getContent().name() %></td>
-                <td><%=bnode.getLeftCurrent() %></td>
-                <td><%=bnode.getRightCurrent() %></td>
-                <td><%=bnode.getOperatingExpenses() %></td>
-                <td><%=bnode.getCounselingFee() %></td>
+                <td>
+                    <a href="<%=basePath%>tree-show.action?nodeID=<%=bnode.getContent().nodeID()%>">
+                        <%=bnode.getContent().name()%>
+                    </a>
+                </td>
+                <td><%=newStart ? bnode.getLeftCurrent() : 0 %></td>
+                <td><%=newStart ? bnode.getRightCurrent() : 0 %></td>
+                <td><%=newStart ? bnode.getOperatingExpenses() : 0 %></td>
+                <td><%=newStart ? bnode.getCounselingFee() : 0 %></td>
             </tr>
             <%
                 }

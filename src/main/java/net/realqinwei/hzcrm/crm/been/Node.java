@@ -3,6 +3,7 @@ package net.realqinwei.hzcrm.crm.been;
 import net.earthcoder.jmlm.domain.Human;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public final class Node implements java.io.Serializable, Comparable<Node>, Human {
 
@@ -42,7 +43,7 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
 
     @Override
     public String toString() {
-        return this.userName;
+        return "(" + id.toString() + ") " + userName;
     }
 
     private String objectID() {
@@ -142,5 +143,10 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
     @Override
     public Integer loadNodeID() {
         return nodeLoaderID;
+    }
+
+    @Override
+    public Date initDateTime() {
+        return new Date(userCreateTime.getTime());
     }
 }

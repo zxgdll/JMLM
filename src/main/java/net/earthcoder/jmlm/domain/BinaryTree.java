@@ -1,6 +1,7 @@
 package net.earthcoder.jmlm.domain;
 
 import java.util.*;
+import static java.lang.System.out;
 
 public final class BinaryTree {
 
@@ -9,78 +10,60 @@ public final class BinaryTree {
     private long operatingExpensesSum;
     private long counselingFeeSum;
     private long initialFeeSum;
-    private List<BinaryNode> nodes = new ArrayList<BinaryNode>();
+    private List<BinaryNode> nodes;
 
-    public List<BinaryNode> getNodes() {
-        return nodes;
+    public static BinaryTree getNewTree() {
+        return new BinaryTree();
     }
 
-    public BinaryNode getRootNode() {
-        return rootNode;
+    private BinaryTree() {
+        nodes = new ArrayList<BinaryNode>();
     }
 
-    public void addNode(Human people, Date createDate, Integer referNodeID, Integer fatherNodeID, String flag) {
-        BinaryNode newNode = null;
+    public void addNode(Human point, Integer referPointID, Integer fatherPointID) {
+        BinaryNode newNode;
         if (null == rootNode) {
-            newNode = new RootBinaryNode(people, createDate);
-            rootNode = newNode;
-        } else if (null != fatherNodeID) {
-            BinaryNode fatherNode = findNodeByID(fatherNodeID);
+            rootNode = newNode = new RootBinaryNode(point);
+        } else if (null == fatherPointID) {
+            throw new RuntimeException("No Father ID, can not add node.");
+        } else {
+            BinaryNode fatherNode = findNodeByID(fatherPointID);
             if (null == fatherNode) {
                 throw new RuntimeException("Father not find.");
             } else {
-                newNode = new RegularBinaryNode(people, createDate, findNodeByID(referNodeID), fatherNode);
-            }
-            fatherNode.mountNode(newNode, flag);
-            newNode.setRelationshipFlag();
-        }
-        flash(newNode, createDate);
-    }
-
-    public void addNode(Human people, Date createDate, Integer referNodeID, Integer fatherNodeID) {
-        BinaryNode newNode = null;
-        if (null == rootNode) {
-            newNode = new RootBinaryNode(people, createDate);
-            rootNode = newNode;
-        } else if (null != fatherNodeID) {
-            BinaryNode fatherNode = findNodeByID(fatherNodeID);
-            if (null == fatherNode) {
-                throw new RuntimeException("Father not find.");
-            } else {
-                newNode = new RegularBinaryNode(people, createDate, findNodeByID(referNodeID), fatherNode);
+                newNode = new RegularBinaryNode(point, findNodeByID(referPointID), fatherNode);
             }
             fatherNode.autoMountNode(newNode);
             newNode.setRelationshipFlag();
         }
-        flash(newNode, createDate);
+        flash(newNode);
     }
 
-    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID) {
-        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID);
-    }
-
-    public void addNode(Human people, Integer referNodeID, Integer fatherNodeID, String flag) {
-        addNode(people, Calendar.getInstance().getTime(), referNodeID, fatherNodeID, flag);
-    }
-
-    public void addNode(Human people, Date createDate) {
+    public void addNode(Human people) {
         BinaryNode newNode;
         if (null == rootNode) {
-            newNode = new RootBinaryNode(people, createDate);
+            newNode = new RootBinaryNode(people);
             rootNode = newNode;
             fastNextNode = newNode;
         } else {
             if (!(fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty())) {
                 levelOrderTraverse();
             }
-            newNode = new RegularBinaryNode(people, createDate, fastNextNode, fastNextNode);
+            newNode = new RegularBinaryNode(people, fastNextNode, fastNextNode);
             fastNextNode.autoMountNode(newNode);
             newNode.setRelationshipFlag();
         }
-        flash(newNode, createDate);
+        flash(newNode);
     }
 
     private BinaryNode findNodeByID(Integer nodeID) {
+        /**
+        for (BinaryNode binaryNode: nodes) {
+            if (binaryNode.getContent().nodeID().equals(nodeID)) {
+                return binaryNode;
+            }
+        }
+         */
         if (null != rootNode) {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
@@ -101,11 +84,11 @@ public final class BinaryTree {
         return null;
     }
 
-    private void flash(BinaryNode newNode, Date date) {
+    private void flash(BinaryNode newNode) {
         nodes.add(newNode);
-        newNode.addInitialFee(date);
+        newNode.addInitialFee();
         updateResults(newNode);
-        flashNodes(newNode, date);
+        flashNodes(newNode);
     }
 
     private void updateResults(BinaryNode newNode) {
@@ -114,29 +97,60 @@ public final class BinaryTree {
             node = findNodeByID(relation.getId());
             if ("LEFT".equals(relation.getFlag())) {
                 node.leftResultAdd(node.getInitialFee());
+                //doTempBook(newNode, node);
             } else if ("RIGHT".equals(relation.getFlag())) {
                 node.rightResultAdd(node.getInitialFee());
+                //doTempBook(newNode, node);
             }
         }
     }
 
-    private void flashNodes(BinaryNode newNode, Date date) {
+    /*
+    private void doTempBook(BinaryNode newNode, BinaryNode relationNode) {
+        if (tempBook.containsKey(newNode.getCreateDate())) {
+            tempBook.get(newNode.getCreateDate()).add(relationNode.getContent().name() + " " + );
+        } else {
+            List<String> list = new ArrayList<String>();
+            list.add("");
+            tempBook.put(newNode.getCreateDate(), list);
+        }
+    }     */
+
+    public Map<Date, List<BillItem>> getDailyBillList() {
+        Map<Date, List<BillItem>> map = new TreeMap<Date, List<BillItem>>();
+        Map<Date, List<BillItem>> nodeMap;
+        for (BinaryNode node : nodes) {
+            nodeMap = node.getBillList();
+            for (Date date: nodeMap.keySet()) {
+                if (map.containsKey(date)) {
+                    map.get(date).addAll(nodeMap.get(date));
+                } else {
+                    map.put(date, nodeMap.get(date));
+                }
+            }
+        }
+        return map;
+    }
+
+    protected void flashNodes(BinaryNode newNode) {
         if (null != rootNode) {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
-            BinaryNode node;
+            BinaryNode currentNode;
             BinaryNode flashAncestor;
             while (!queue.isEmpty()) {
-                node = queue.poll();
+                currentNode = queue.poll();
                 if (null == newNode.getFather()) {
                     continue;
                 }
-                flashAncestor = getFlashAncestor(node, newNode);
+                flashAncestor = getFlashAncestor(currentNode, newNode);
                 if (null != flashAncestor) {
-                    flashAncestor.addOperatingExpenses(date);
+                    flashAncestor.addOperatingExpenses(newNode.getCreateDate());
+
                     BinaryNode theNode = (null == flashAncestor.getRefer() ? flashAncestor : flashAncestor.getRefer());
-                    theNode.addCounselingFee(date);
-                    for (Relationship r1 : node.getRelationshipSet()) {
+                    theNode.addCounselingFee(newNode.getCreateDate());
+
+                    for (Relationship r1 : currentNode.getRelationshipSet()) {
                         if (r1.getId().equals(flashAncestor.getContent().nodeID())) {
                             r1.setFlashed(true);
                             break;
@@ -149,11 +163,11 @@ public final class BinaryTree {
                         }
                     }
                 }
-                if (!node.leftIsEmpty()) {
-                    queue.offer(node.getLeft());
+                if (!currentNode.leftIsEmpty()) {
+                    queue.offer(currentNode.getLeft());
                 }
-                if (!node.rightIsEmpty()) {
-                    queue.offer(node.getRight());
+                if (!currentNode.rightIsEmpty()) {
+                    queue.offer(currentNode.getRight());
                 }
             }
         }
@@ -163,9 +177,7 @@ public final class BinaryTree {
         if (node.getLevel() == newNode.getLevel() && !node.equals(newNode)) {
             for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
                 for (Relationship nodeAncestor : node.getRelationshipSet()) {
-                    if (null == node.getFather()) {
-                        continue;
-                    } else {
+                    if (null != node.getFather()) {
                         Integer nodeFatherID = nodeAncestor.getId();
                         Integer newNodeFatherID = newNodeAncestor.getId();
                         Boolean nodefatherFlashed = node.flashedForAncestor(nodeFatherID);
@@ -182,63 +194,33 @@ public final class BinaryTree {
     }
 
     public void printBill() {
-        StringBuilder str = new StringBuilder();
-        str.append(initialFeeSum).append(",");
-        str.append(counselingFeeSum).append(",");
-        str.append(operatingExpensesSum).append(",");
-        str.append(
-                String.format("%.2f%%", (double) (operatingExpensesSum + counselingFeeSum) / initialFeeSum
-                        * 100)).append(",");
-        str.append(this.toString()).append(",");
-        str.append(rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
-        System.out.println(str.toString());
-    }
-
-    public void printNode2(BinaryNode node) {
-        StringBuilder str = new StringBuilder();
-        str.append(node);
-        str.append("\t").append(node.getContent().name()).append("\t");
-        if (null != node) {
-            str.append(node.getCounselingFee()).append("\t");
-            str.append(node.getOperatingExpenses()).append("\t");
-            str.append(node.getLeftResults()).append("\t");
-            str.append(node.getRightResults()).append("\t");
-            str.append(node.getLeftCurrent()).append("\t");
-            str.append(node.getRightCurrent());
-        }
-        System.out.println(str.toString());
+        out.printf("%10d%10d%10d%6.2f%%%10d", initialFeeSum, counselingFeeSum, operatingExpensesSum,
+                (double) (operatingExpensesSum + counselingFeeSum) / initialFeeSum * 100,
+                rootNode.getOperatingExpenses() + rootNode.getCounselingFee());
     }
 
     public void printNode(BinaryNode node) {
-        StringBuilder str = new StringBuilder();
-        str.append(node);
-        str.append(" ").append(node.getContent().name());
-        if (null != node) {
-            str.append(",");
-            str.append("Fa:").append(node.getFather()).append(",");
-            str.append("Le:").append(node.getLevel()).append(",");
-            str.append("L:").append(node.getLeft()).append(",");
-            str.append("R:").append(node.getRight()).append(",");
-            str.append(node.getCounselingFee()).append(",");
-            str.append(node.getOperatingExpenses()).append(",");
-            str.append("[");
-            for (Relationship r : node.getRelationshipSet()) {
-                str.append(r.getId()).append(", ");
-            }
-            str.append("]").append(",");
-            str.append(node.getCreateDate());
-        }
-        System.out.println(str.toString());
+        out.printf("%-4s %-4s %-3d %-4s %-4s%8d%8d%8d%8d%8d%8d %-16s\n",
+                node.getContent(),
+                node.getFather(), node.getLevel(),
+                node.getLeft(), node.getRight(),
+                node.getLeftResults(), node.getRightResults(),
+                node.getLeftCurrent(), node.getRightCurrent(),
+                node.getOperatingExpenses(), node.getCounselingFee(),
+                node.getRelationshipSet());
     }
 
     public void printNode() {
+        out.printf("%-4s %-4s %-3s %-4s %-4s%8s%8s%8s%8s%8s%8s %-16s\n",
+                "ID", "FTHR", "LVL", "LEFT", "RGHT", "L_R", "R_R", "L_C", "R_C", "O_FEE", "C_FEE",
+                "RELATION");
         if (null != rootNode) {
             Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
             queue.offer(rootNode);
             BinaryNode node;
             while (!queue.isEmpty()) {
                 node = queue.poll();
-                printNode2(node);
+                printNode(node);
                 operatingExpensesSum += node.getOperatingExpenses();
                 counselingFeeSum += node.getCounselingFee();
                 initialFeeSum += node.getInitialFee();
@@ -276,5 +258,13 @@ public final class BinaryTree {
                 }
             }
         }
+    }
+
+    public List<BinaryNode> getNodes() {
+        return nodes;
+    }
+
+    public BinaryNode getRootNode() {
+        return rootNode;
     }
 }

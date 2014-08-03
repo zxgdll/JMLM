@@ -1,5 +1,7 @@
 package net.earthcoder.jmlm.domain;
 
+import java.util.Date;
+
 public interface Human {
     
     String name();
@@ -7,4 +9,5 @@ public interface Human {
     Integer referNodeID();
     Integer ownerUserID();
     Integer loadNodeID();
+    Date initDateTime();
 }

@@ -37,7 +37,7 @@ public final class TreeFactory {
         for (Node user : nodeRepository.findSortedSet()) {
             allUsersQueue.offer(user);
         }
-        BinaryTree tree = new BinaryTree();
+        BinaryTree tree = BinaryTree.getNewTree();
         Node node;
         while (!allUsersQueue.isEmpty() && null != tree) {
             node = allUsersQueue.poll();

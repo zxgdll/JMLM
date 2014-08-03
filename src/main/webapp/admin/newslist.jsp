@@ -21,7 +21,7 @@
 		<li><a href="<%=basePath%>admin/addnode.action"><s:text name="addnode.submit"/></a></li>
 		<li><a href="<%=basePath%>admin/bill.jsp"><s:text name="menu.bill"/></a></li>
 		<li><a href="<%=basePath%>login-success.jsp"><s:text name="menu.user"/></a></li>
-		<li><a href="<%=basePath%>admin/tree-show"><s:text name="home.tree"/></a></li>
+		<li><a href="<%=basePath%>tree-show"><s:text name="home.tree"/></a></li>
 		</ul>
 		</div>
 	</div>

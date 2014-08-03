@@ -13,8 +13,6 @@ import org.apache.struts2.ServletActionContext;
 public class UserAction extends ActionSupport {
 
     public static final Integer CREATE_USER_TYPE = 1;
-
-	private static final long serialVersionUID = -9183608064713571507L;
 	private static final Logger LOG = Logger.getLogger(UserAction.class);
 
     private TimestampCreator timer;
@@ -64,7 +62,7 @@ public class UserAction extends ActionSupport {
 	}
 	
 	public String modify() {
-		if (this.newPassword.equals(this.newPasswordAgain)) {
+		if (newPassword.equals(newPasswordAgain)) {
 			this.user = (User) ServletActionContext.getRequest().getSession().getAttribute("user");
 			if (this.user.getUserPassword().equals(MD5.getMD5Str(this.oldPassword))) {
 				this.user.setUserPassword(MD5.getMD5Str(this.newPassword));
