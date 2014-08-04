@@ -35,39 +35,20 @@ public final class BinaryTree {
             fatherNode.autoMountNode(newNode);
             newNode.setRelationshipFlag();
         }
+        nodes.add(newNode);
         flash(newNode);
     }
 
     private BinaryNode findNodeByID(Integer nodeID) {
-        /**
         for (BinaryNode binaryNode: nodes) {
             if (binaryNode.getContent().nodeID().equals(nodeID)) {
                 return binaryNode;
-            }
-        }
-         */
-        if (null != rootNode) {
-            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(rootNode);
-            BinaryNode node;
-            while (!queue.isEmpty()) {
-                node = queue.poll();
-                if (node.getContent().nodeID().equals(nodeID)) {
-                    return node;
-                }
-                if (!node.leftIsEmpty()) {
-                    queue.offer(node.getLeft());
-                }
-                if (!node.rightIsEmpty()) {
-                    queue.offer(node.getRight());
-                }
             }
         }
         return null;
     }
 
     private void flash(BinaryNode newNode) {
-        nodes.add(newNode);
         newNode.addInitialFee();
         updateResults(newNode);
         flashNodes(newNode);
@@ -84,17 +65,6 @@ public final class BinaryTree {
             }
         }
     }
-
-    /*
-    private void doTempBook(BinaryNode newNode, BinaryNode relationNode) {
-        if (tempBook.containsKey(newNode.getCreateDate())) {
-            tempBook.get(newNode.getCreateDate()).add(relationNode.getContent().name() + " " + );
-        } else {
-            List<String> list = new ArrayList<String>();
-            list.add("");
-            tempBook.put(newNode.getCreateDate(), list);
-        }
-    }     */
 
     public Map<Date, List<BillItem>> getDailyBillList() {
         Map<Date, List<BillItem>> map = new TreeMap<Date, List<BillItem>>();
