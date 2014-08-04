@@ -2,24 +2,24 @@ package net.earthcoder.jmlm.domain;
 
 public final class Relationship {
 
-    private Integer id;
+    private BinaryNode binaryNode;
     private String flag;
     private Boolean flashed;
 
-    public Relationship(Integer id, String flag) {
-        this.id = id;
+    public Relationship(BinaryNode binaryNode, String flag) {
+        this.binaryNode = binaryNode;
         this.setFlag(flag);
         this.setFlashed(false);
     }
 
     @Override
     public String toString() {
-       return id.toString();
+       return binaryNode.toString();
     }
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        return binaryNode.hashCode();
     }
 
     @Override
@@ -34,7 +34,7 @@ public final class Relationship {
             return false;
         }
         Relationship otherRelationship = (Relationship) otherObject;
-        return this.id.equals(otherRelationship.id);
+        return this.binaryNode.equals(otherRelationship.binaryNode);
     }
 
     public String getFlag() {
@@ -53,7 +53,7 @@ public final class Relationship {
         this.flashed = flashed;
     }
 
-    public Integer getId() {
-        return id;
+    public BinaryNode getBinaryNode() {
+        return binaryNode;
     }
 }

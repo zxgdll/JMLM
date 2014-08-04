@@ -53,7 +53,7 @@ public final class BinaryTree {
     private void updateResults(BinaryNode newNode) {
         BinaryNode node;
         for (Relationship relation: newNode.getRelationshipSet()) {
-            node = findNodeByID(relation.getId());
+            node = relation.getBinaryNode();
             if ("LEFT".equals(relation.getFlag())) {
                 node.leftResultAdd(node.getInitialFee());
             } else if ("RIGHT".equals(relation.getFlag())) {
@@ -97,13 +97,13 @@ public final class BinaryTree {
                     theNode.addCounselingFee(newNode.getCreateDate());
 
                     for (Relationship r1 : currentNode.getRelationshipSet()) {
-                        if (r1.getId().equals(flashAncestor.getContent().nodeID())) {
+                        if (r1.getBinaryNode().equals(flashAncestor)) {
                             r1.setFlashed(true);
                             break;
                         }
                     }
                     for (Relationship r2 : newNode.getRelationshipSet()) {
-                        if (r2.getId().equals(flashAncestor.getContent().nodeID())) {
+                        if (r2.getBinaryNode().equals(flashAncestor)) {
                             r2.setFlashed(true);
                             break;
                         }
@@ -124,13 +124,11 @@ public final class BinaryTree {
             for (Relationship newNodeAncestor : newNode.getRelationshipSet()) {
                 for (Relationship nodeAncestor : node.getRelationshipSet()) {
                     if (null != node.getFather()) {
-                        Integer nodeFatherID = nodeAncestor.getId();
-                        Integer newNodeFatherID = newNodeAncestor.getId();
-                        Boolean nodefatherFlashed = node.flashedForAncestor(nodeFatherID);
-                        Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeFatherID);
-                        if (nodeFatherID.equals(newNodeFatherID) && !nodefatherFlashed && !newNodeFatherFlashed
+                        Boolean nodefatherFlashed = node.flashedForAncestor(nodeAncestor.getBinaryNode());
+                        Boolean newNodeFatherFlashed = newNode.flashedForAncestor(newNodeAncestor.getBinaryNode());
+                        if (nodeAncestor.getBinaryNode().equals(newNodeAncestor.getBinaryNode()) && !nodefatherFlashed && !newNodeFatherFlashed
                                 && !nodeAncestor.getFlag().equals(newNodeAncestor.getFlag())) {
-                            return findNodeByID(nodeFatherID);
+                            return nodeAncestor.getBinaryNode();
                         }
                     }
                 }

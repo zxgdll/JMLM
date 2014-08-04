@@ -69,9 +69,9 @@ public abstract class BinaryNode {
         nodeStruct.autoMountNode(newNode);
     }
 
-    protected Boolean flashedForAncestor(Integer ancestor) {
+    protected Boolean flashedForAncestor(BinaryNode ancestor) {
         for (Relationship relation : relationshipSet) {
-            if (relation.getId().equals(ancestor)) {
+            if (relation.getBinaryNode().equals(ancestor)) {
                 return relation.getFlashed();
             }
         }
@@ -80,15 +80,15 @@ public abstract class BinaryNode {
 
     protected void setRelationshipFlag() {
         if (this == getFather().getLeft()) {
-            setRelationshipFlag(getFather().getContent().nodeID(), "LEFT");
+            setRelationshipFlag(getFather(), "LEFT");
         } else if (this == getFather().getRight()) {
-            setRelationshipFlag(getFather().getContent().nodeID(), "RIGHT");
+            setRelationshipFlag(getFather(), "RIGHT");
         }
     }
 
-    private void setRelationshipFlag(Integer id, String flag) {
+    private void setRelationshipFlag(BinaryNode node, String flag) {
         for (Relationship relation : relationshipSet) {
-            if (relation.getId().equals(id)) {
+            if (relation.getBinaryNode().equals(node)) {
                 relation.setFlag(flag);
                 break;
             }
