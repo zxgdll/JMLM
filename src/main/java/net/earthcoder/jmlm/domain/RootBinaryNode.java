@@ -7,8 +7,8 @@ public final class RootBinaryNode extends BinaryNode {
 
     private static final int BINARYNODE_ROOT_LEVEL = 1;
 
-    public RootBinaryNode(Human content) {
-        super(content);
+    public RootBinaryNode(Human content, Long value) {
+        super(content, value);
         level = RootBinaryNode.BINARYNODE_ROOT_LEVEL;
     }
 

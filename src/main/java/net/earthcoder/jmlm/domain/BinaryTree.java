@@ -22,7 +22,7 @@ public final class BinaryTree {
     public void addNode(Human point, Integer referPointID, Integer fatherPointID) {
         BinaryNode newNode;
         if (null == rootNode) {
-            rootNode = newNode = new RootBinaryNode(point);
+            rootNode = newNode = new RootBinaryNode(point, null);
         } else if (null == fatherPointID) {
             throw new RuntimeException("No Father ID, can not add node.");
         } else {
@@ -30,13 +30,15 @@ public final class BinaryTree {
             if (null == fatherNode) {
                 throw new RuntimeException("Father not find.");
             } else {
-                newNode = new RegularBinaryNode(point, findNodeByID(referPointID), fatherNode);
+                newNode = new RegularBinaryNode(point, findNodeByID(referPointID), fatherNode, null);
             }
             fatherNode.autoMountNode(newNode);
             newNode.setRelationshipFlag();
         }
         nodes.add(newNode);
-        flash(newNode);
+        newNode.addInitialFee();
+        updateResults(newNode);
+        flashNodes(newNode);
     }
 
     private BinaryNode findNodeByID(Integer nodeID) {
@@ -46,12 +48,6 @@ public final class BinaryTree {
             }
         }
         return null;
-    }
-
-    private void flash(BinaryNode newNode) {
-        newNode.addInitialFee();
-        updateResults(newNode);
-        flashNodes(newNode);
     }
 
     private void updateResults(BinaryNode newNode) {

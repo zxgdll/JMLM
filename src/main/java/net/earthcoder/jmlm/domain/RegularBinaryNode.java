@@ -7,8 +7,8 @@ public final class RegularBinaryNode extends BinaryNode {
     private BinaryNode father;
     private BinaryNode refer;
 
-    public RegularBinaryNode(Human content, BinaryNode refer, BinaryNode father) {
-        super(content);
+    public RegularBinaryNode(Human content, BinaryNode refer, BinaryNode father, Long value) {
+        super(content, value);
         this.refer = refer;
         this.father = father;
         level = getFather().getLevel() + RegularBinaryNode.BINARYNODE_LEVEL_STEP;

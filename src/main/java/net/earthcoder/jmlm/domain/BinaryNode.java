@@ -16,17 +16,13 @@ public abstract class BinaryNode {
     private long currentValue;
     protected int level;
 
-    public BinaryNode(Human content, long value) {
+    public BinaryNode(Human content, Long value) {
         this.content = content;
         nodeStruct = new NodeStruct();
         feeController = new FeeController();
         relationshipSet = new HashSet<Relationship>(RELATION_INIT);
-        historyValue = currentValue = value;
+        historyValue = currentValue = (null == value ? DEFAULT_VALUE : value);
         nodeSales = new NodeSales();
-    }
-
-    public BinaryNode(Human content) {
-        this(content, DEFAULT_VALUE);
     }
 
     public boolean contains (Human content) {
