@@ -6,7 +6,6 @@ import static java.lang.System.out;
 public final class BinaryTree {
 
     private BinaryNode rootNode;
-    private BinaryNode fastNextNode;
     private long operatingExpensesSum;
     private long counselingFeeSum;
     private long initialFeeSum;
@@ -34,23 +33,6 @@ public final class BinaryTree {
                 newNode = new RegularBinaryNode(point, findNodeByID(referPointID), fatherNode);
             }
             fatherNode.autoMountNode(newNode);
-            newNode.setRelationshipFlag();
-        }
-        flash(newNode);
-    }
-
-    public void addNode(Human people) {
-        BinaryNode newNode;
-        if (null == rootNode) {
-            newNode = new RootBinaryNode(people);
-            rootNode = newNode;
-            fastNextNode = newNode;
-        } else {
-            if (!(fastNextNode.leftIsEmpty() || fastNextNode.rightIsEmpty())) {
-                levelOrderTraverse();
-            }
-            newNode = new RegularBinaryNode(people, fastNextNode, fastNextNode);
-            fastNextNode.autoMountNode(newNode);
             newNode.setRelationshipFlag();
         }
         flash(newNode);
@@ -97,10 +79,8 @@ public final class BinaryTree {
             node = findNodeByID(relation.getId());
             if ("LEFT".equals(relation.getFlag())) {
                 node.leftResultAdd(node.getInitialFee());
-                //doTempBook(newNode, node);
             } else if ("RIGHT".equals(relation.getFlag())) {
                 node.rightResultAdd(node.getInitialFee());
-                //doTempBook(newNode, node);
             }
         }
     }
@@ -224,32 +204,6 @@ public final class BinaryTree {
                 operatingExpensesSum += node.getOperatingExpenses();
                 counselingFeeSum += node.getCounselingFee();
                 initialFeeSum += node.getInitialFee();
-                if (!node.leftIsEmpty()) {
-                    queue.offer(node.getLeft());
-                }
-                if (!node.rightIsEmpty()) {
-                    queue.offer(node.getRight());
-                }
-            }
-        }
-    }
-
-    private void levelOrderTraverse() {
-        if (null != rootNode) {
-            Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
-            queue.offer(rootNode);
-            BinaryNode node;
-            while (!queue.isEmpty()) {
-                node = queue.poll();
-                if (node.leftIsEmpty()) {
-                    fastNextNode = node;
-                    break;
-                } else {
-                    if (node.rightIsEmpty()) {
-                        fastNextNode = node;
-                        break;
-                    }
-                }
                 if (!node.leftIsEmpty()) {
                     queue.offer(node.getLeft());
                 }

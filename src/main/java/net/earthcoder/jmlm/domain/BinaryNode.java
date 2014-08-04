@@ -2,9 +2,6 @@ package net.earthcoder.jmlm.domain;
 
 import java.util.*;
 
-/**
- * Created by Wei on 2014/3/23.
- */
 public abstract class BinaryNode {
 
     private static final long DEFAULT_VALUE = 2200;
