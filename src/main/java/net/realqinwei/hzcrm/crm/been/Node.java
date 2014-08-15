@@ -46,10 +46,6 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
         return "(" + id.toString() + ") " + userName;
     }
 
-    private String objectID() {
-        return this.id + this.userCreateTime.toString();
-    }
-
     @Override
     public boolean equals(Object anotherObject) {
         if (this == anotherObject) {
@@ -62,12 +58,12 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
             return false;
         }
         Node anotherUser = (Node) anotherObject;
-        return anotherUser.objectID().equals(this.objectID()) ? true : false;
+        return id.equals(anotherUser.getId());
     }
 
     @Override
     public int hashCode() {
-        return this.objectID().hashCode();
+        return id.hashCode();
     }
 
     public Integer getId() {
