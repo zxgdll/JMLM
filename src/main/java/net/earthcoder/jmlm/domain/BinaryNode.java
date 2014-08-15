@@ -180,6 +180,10 @@ public abstract class BinaryNode {
         }
         @SuppressWarnings("unchecked")
         RegularBinaryNode otherNode = (RegularBinaryNode) otherObject;
+        if (level != otherNode.level || historyValue != otherNode.getHistoryValue()
+                || currentValue != otherNode.getCurrentValue()) {
+            return false;
+        }
         return content.equals(otherNode.getContent());
     }
 

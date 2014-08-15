@@ -52,14 +52,17 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
 
     @Override
     public boolean equals(Object anotherObject) {
+        if (this == anotherObject) {
+            return true;
+        }
         if (null == anotherObject) {
             return false;
-        } else if (this == anotherObject) {
-            return true;
-        } else {
-            Node anotherUser = (Node) anotherObject;
-            return anotherUser.objectID().equals(this.objectID()) ? true : false;
         }
+        if (getClass() != anotherObject.getClass()) {
+            return false;
+        }
+        Node anotherUser = (Node) anotherObject;
+        return anotherUser.objectID().equals(this.objectID()) ? true : false;
     }
 
     @Override
