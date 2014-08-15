@@ -43,7 +43,7 @@ public final class Node implements java.io.Serializable, Comparable<Node>, Human
 
     @Override
     public String toString() {
-        return "(" + id.toString() + ") " + userName;
+        return userName;
     }
 
     @Override
